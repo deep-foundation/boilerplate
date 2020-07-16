@@ -1,1 +1,1 @@
-# deepcase builerplate app
+# deepcase app

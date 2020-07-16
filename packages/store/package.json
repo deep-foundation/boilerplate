@@ -1,8 +1,7 @@
 {
   "name": "@deepcase/store",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "ISC",
-  "main": "use-store.js",
   "author": "Ivan S Glazunov <ivansglazunov@gmail.com>",
   "repository": {
     "type": "git",
