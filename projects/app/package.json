@@ -1,16 +1,16 @@
 {
   "name": "@deepcase/app",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "license": "ISC",
   "author": "Ivan S Glazunov <ivansglazunov@gmail.com>",
   "repository": {
     "type": "git",
     "url": "ssh://git@github.com/deepcase/boilerplate.git",
-    "directory": "deepcase/boilerplate"
+    "directory": "projects/app"
   },
   "description": "",
   "dependencies": {
-    "@deepcase/store": "^0.0.0",
+    "@deepcase/store": "~0.0.4",
     "next": "^9.4.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

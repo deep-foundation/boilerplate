@@ -1,8 +1,11 @@
 dependencies:
   '@rush-temp/app': 'file:projects/app.tgz'
   '@rush-temp/store': 'file:projects/store.tgz'
+  '@types/next': 9.0.0_ac1925d3b18bab26b8f85315f9db8478
   '@types/node': 14.0.23
   '@types/react': 16.9.43
+  '@types/react-dom': 16.9.8
+  debug: 4.1.1
   next: 9.4.4_ac1925d3b18bab26b8f85315f9db8478
   react: 16.13.1
   react-dom: 16.13.1_react@16.13.1
@@ -1129,6 +1132,17 @@ packages:
     dev: false
     resolution:
       integrity: sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
+  /@types/next/9.0.0_ac1925d3b18bab26b8f85315f9db8478:
+    dependencies:
+      next: 9.4.4_ac1925d3b18bab26b8f85315f9db8478
+    deprecated: 'This is a stub types definition. next provides its own type definitions, so you do not need this installed.'
+    dev: false
+    peerDependencies:
+      react: '*'
+      react-dom: '*'
+      typescript: '*'
+    resolution:
+      integrity: sha512-gnBXM8rP1mnCgT1uE2z8SnpFTKRWReJlhbZLZkOLq/CH1ifvTNwjIVtXvsywTy1dwVklf+y/MB0Eh6FOa94yrg==
   /@types/node/14.0.23:
     dev: false
     resolution:
@@ -1141,6 +1155,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-1HcDas8SEj4z1Wc696tH56G8OlRaH/sqZOynNNB+HF0WOeXPaxTtbYzJY2oEfiUxjSKjhCKr+MvR7dCHcEelug==
+  /@types/react-dom/16.9.8:
+    dependencies:
+      '@types/react': 16.9.43
+    dev: false
+    resolution:
+      integrity: sha512-ykkPQ+5nFknnlU6lDd947WbQ6TE3NNzbQAkInC2EKY1qeYdTKp7onFusmYZb+ityzx2YviqT6BXSu+LyWWJwcA==
   /@types/react/16.9.43:
     dependencies:
       '@types/prop-types': 15.7.3
@@ -5956,18 +5976,26 @@ packages:
       next: 9.4.4_ac1925d3b18bab26b8f85315f9db8478
       react: 16.13.1
       react-dom: 16.13.1_react@16.13.1
+      tslint: 6.1.2_typescript@3.9.7
+      tslint-config-airbnb: 5.11.2_tslint@6.1.2+typescript@3.9.7
+      tslint-eslint-rules: 5.4.0_tslint@6.1.2+typescript@3.9.7
       typescript: 3.9.7
     dev: false
     name: '@rush-temp/app'
     resolution:
-      integrity: sha512-C1ogn7OuLAiViJ43m9E9nRZkfwwTwstH/pyY7J9nNZ7LhcqvjuARWZZmE+anqCez0M5VU+cyhmSfneBpu0xNfA==
+      integrity: sha512-d19hPSGU2HNSrLnwiNgZCP37rf+loW+4CyyJM2jeKeekjhV0Yn8TYudXHmDyMwQHoXnE5PIjyCXBs0hIb0WPew==
       tarball: 'file:projects/app.tgz'
     version: 0.0.0
   'file:projects/store.tgz':
     dependencies:
+      '@types/next': 9.0.0_ac1925d3b18bab26b8f85315f9db8478
       '@types/node': 14.0.23
       '@types/react': 16.9.43
+      '@types/react-dom': 16.9.8
+      debug: 4.1.1
+      next: 9.4.4_ac1925d3b18bab26b8f85315f9db8478
       react: 16.13.1
+      react-dom: 16.13.1_react@16.13.1
       tslint: 6.1.2_typescript@3.9.7
       tslint-config-airbnb: 5.11.2_tslint@6.1.2+typescript@3.9.7
       tslint-eslint-rules: 5.4.0_tslint@6.1.2+typescript@3.9.7
@@ -5975,15 +6003,18 @@ packages:
     dev: false
     name: '@rush-temp/store'
     resolution:
-      integrity: sha512-wTHApyT1ybkHFZIozJfc0DZp3anDF7JImTnzuC9khGJNq6aZHpa9ZuFMzs12ien+Jh/9bYsyy4rJ36hGp8d8Gw==
+      integrity: sha512-qU3dIF8AS24KGXro5+U7h4MrZ3EFEoBUJ7rY/NQB4DP8bcfo7WqOeG6RsI8UuSKjj+xQbAmyMJiM75JkAZ4KPw==
       tarball: 'file:projects/store.tgz'
     version: 0.0.0
 registry: ''
 specifiers:
   '@rush-temp/app': 'file:./projects/app.tgz'
   '@rush-temp/store': 'file:./projects/store.tgz'
+  '@types/next': ^9.0.0
   '@types/node': ^14.0.23
   '@types/react': ^16.9.43
+  '@types/react-dom': ^16.9.8
+  debug: ^4.1.1
   next: ^9.4.4
   react: ^16.13.1
   react-dom: ^16.13.1
