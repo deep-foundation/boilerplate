@@ -1,6 +1,6 @@
 {
   "name": "@deepcase/store",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "license": "ISC",
   "author": "Ivan S Glazunov <ivansglazunov@gmail.com>",
   "repository": {
@@ -15,7 +15,9 @@
     "tslint-config-airbnb": "^5.11.2",
     "tslint-eslint-rules": "^5.4.0"
   },
-  "scripts": {},
+  "scripts": {
+    "lint": "npx tslint -c tslint.json --project tsconfig.json"
+  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   },
