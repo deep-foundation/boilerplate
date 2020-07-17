@@ -6,13 +6,16 @@ dependencies:
   '@types/react': 16.9.43
   '@types/react-dom': 16.9.8
   debug: 4.1.1
+  local-storage: 2.0.0
   next: 9.4.4_ac1925d3b18bab26b8f85315f9db8478
   react: 16.13.1
+  react-cookie: 4.0.3_react@16.13.1
   react-dom: 16.13.1_react@16.13.1
   tslint: 6.1.2_typescript@3.9.7
   tslint-config-airbnb: 5.11.2_tslint@6.1.2+typescript@3.9.7
   tslint-eslint-rules: 5.4.0_tslint@6.1.2+typescript@3.9.7
   typescript: 3.9.7
+  universal-cookie: 4.0.3
 lockfileVersion: 5.1
 packages:
   /@ampproject/toolbox-core/2.5.4:
@@ -1132,6 +1135,17 @@ packages:
     dev: false
     resolution:
       integrity: sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
+  /@types/cookie/0.3.3:
+    dev: false
+    resolution:
+      integrity: sha512-LKVP3cgXBT9RYj+t+9FDKwS5tdI+rPBXaNSkma7hvqy35lc7mAokC2zsqWJH0LaqIt3B962nuYI77hsJoT1gow==
+  /@types/hoist-non-react-statics/3.3.1:
+    dependencies:
+      '@types/react': 16.9.43
+      hoist-non-react-statics: 3.3.2
+    dev: false
+    resolution:
+      integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
   /@types/next/9.0.0_ac1925d3b18bab26b8f85315f9db8478:
     dependencies:
       next: 9.4.4_ac1925d3b18bab26b8f85315f9db8478
@@ -1147,6 +1161,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-Z4U8yDAl5TFkmYsZdFPdjeMa57NOvnaf1tljHzhouaPEp7LCj2JKkejpI1ODviIAQuW4CcQmxkQ77rnLsOOoKw==
+  /@types/object-assign/4.0.30:
+    dev: false
+    resolution:
+      integrity: sha1-iUk3HVqZ9Dge4PHfCpt6GH4H5lI=
   /@types/prop-types/15.7.3:
     dev: false
     resolution:
@@ -2045,6 +2063,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-4FJkXzKXEDB1snCFZlLP4gpC3JILicCpGbzG9f9G7tGqGCzETQ2hWPrcinA9oU4wtf2biUaEH5065UnMeR33oA==
+  /cookie/0.4.1:
+    dev: false
+    engines:
+      node: '>= 0.6'
+    resolution:
+      integrity: sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==
   /copy-concurrently/1.0.5:
     dependencies:
       aproba: 1.2.0
@@ -3023,6 +3047,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-0nRXAQJabHdabFRXk+1QL8DGSaE=
+  /hoist-non-react-statics/3.3.2:
+    dependencies:
+      react-is: 16.13.1
+    dev: false
+    resolution:
+      integrity: sha512-/gGivxi8JPKWNm/W0jSmzcMPpfpPLc3dY/6GxhX2hQ9iGj3aDfklV4ET7NjKpSinLpJ5vafa9iiGIEZg10SfBw==
   /hsl-regex/1.0.0:
     dev: false
     resolution:
@@ -3508,6 +3538,10 @@ packages:
       node: '>=8.9.0'
     resolution:
       integrity: sha512-rP4F0h2RaWSvPEkD7BLDFQnvSf+nK+wr3ESUjNTyAGobqrijmW92zc+SO6d4p4B1wh7+B/Jg1mkQe5NYUEHtHQ==
+  /local-storage/2.0.0:
+    dev: false
+    resolution:
+      integrity: sha512-/0sRoeijw7yr/igbVVygDuq6dlYCmtsuTmmpnweVlVtl/s10pf5BCq8LWBxW/AMyFJ3MhMUuggMZiYlx6qr9tw==
   /locate-path/2.0.0:
     dependencies:
       p-locate: 2.0.0
@@ -4746,6 +4780,17 @@ packages:
     dev: false
     resolution:
       integrity: sha512-87lcbR8+MhcWcUiQ+9e+Rwx8MyR2P7qnt15ynUlbm3TU/fjbgz4GsvfSUDTemtCCtVCqb4ZcEFlyPNTh9bBTLw==
+  /react-cookie/4.0.3_react@16.13.1:
+    dependencies:
+      '@types/hoist-non-react-statics': 3.3.1
+      hoist-non-react-statics: 3.3.2
+      react: 16.13.1
+      universal-cookie: 4.0.3
+    dev: false
+    peerDependencies:
+      react: '>= 16.3.0'
+    resolution:
+      integrity: sha512-cmi6IpdVgTSvjqssqIEvo779Gfqc4uPGHRrKMEdHcqkmGtPmxolGfsyKj95bhdLEKqMdbX8MLBCwezlnhkHK0g==
   /react-dom/16.13.1_react@16.13.1:
     dependencies:
       loose-envify: 1.4.0
@@ -5766,6 +5811,15 @@ packages:
     dev: false
     resolution:
       integrity: sha512-zoWr9ObaxALD3DOPfjPSqxt4fnZiWblxHIgeWqW8x7UqDzEtHEQLzji2cuJYQFCU6KmoJikOYAZlrTHHebjx2w==
+  /universal-cookie/4.0.3:
+    dependencies:
+      '@types/cookie': 0.3.3
+      '@types/object-assign': 4.0.30
+      cookie: 0.4.1
+      object-assign: 4.1.1
+    dev: false
+    resolution:
+      integrity: sha512-YbEHRs7bYOBTIWedTR9koVEe2mXrq+xdjTJZcoKJK/pQaE6ni28ak2AKXFpevb+X6w3iU5SXzWDiJkmpDRb9qw==
   /unquote/1.1.1:
     dev: false
     resolution:
@@ -5993,17 +6047,20 @@ packages:
       '@types/react': 16.9.43
       '@types/react-dom': 16.9.8
       debug: 4.1.1
+      local-storage: 2.0.0
       next: 9.4.4_ac1925d3b18bab26b8f85315f9db8478
       react: 16.13.1
+      react-cookie: 4.0.3_react@16.13.1
       react-dom: 16.13.1_react@16.13.1
       tslint: 6.1.2_typescript@3.9.7
       tslint-config-airbnb: 5.11.2_tslint@6.1.2+typescript@3.9.7
       tslint-eslint-rules: 5.4.0_tslint@6.1.2+typescript@3.9.7
       typescript: 3.9.7
+      universal-cookie: 4.0.3
     dev: false
     name: '@rush-temp/store'
     resolution:
-      integrity: sha512-qU3dIF8AS24KGXro5+U7h4MrZ3EFEoBUJ7rY/NQB4DP8bcfo7WqOeG6RsI8UuSKjj+xQbAmyMJiM75JkAZ4KPw==
+      integrity: sha512-hUGRpvRR7fHDywLPZV3Fh4fYIDDvvXxNKVhXawdtYEKPm1dXc6aqw077ml7jGPD7MAXH/EK1/vhd1nDDOznmHg==
       tarball: 'file:projects/store.tgz'
     version: 0.0.0
 registry: ''
@@ -6015,10 +6072,13 @@ specifiers:
   '@types/react': ^16.9.43
   '@types/react-dom': ^16.9.8
   debug: ^4.1.1
+  local-storage: ^2.0.0
   next: ^9.4.4
   react: ^16.13.1
+  react-cookie: ^4.0.3
   react-dom: ^16.13.1
   tslint: ^6.1.2
   tslint-config-airbnb: ^5.11.2
   tslint-eslint-rules: ^5.4.0
   typescript: ^3.9.7
+  universal-cookie: ^4.0.3

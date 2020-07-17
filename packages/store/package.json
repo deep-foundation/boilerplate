@@ -1,6 +1,6 @@
 {
   "name": "@deepcase/store",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "ISC",
   "author": "Ivan S Glazunov <ivansglazunov@gmail.com>",
   "repository": {
@@ -13,10 +13,12 @@
     "@types/react-dom": "^16.9.8",
     "debug": "^4.1.1",
     "react": "^16.13.1",
+    "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "tslint": "^6.1.2",
     "tslint-config-airbnb": "^5.11.2",
-    "tslint-eslint-rules": "^5.4.0"
+    "tslint-eslint-rules": "^5.4.0",
+    "universal-cookie": "^4.0.3"
   },
   "scripts": {
     "build": "npx tsc --project tsconfig.json",
