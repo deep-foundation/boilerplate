@@ -1,5 +1,10 @@
 # deepcase boilerplate
 
+## requirements
+
+- node.js v8.6 or later
+- capacitor v2.2 or later
+
 ## install
 
 - Global

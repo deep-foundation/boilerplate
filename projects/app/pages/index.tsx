@@ -61,7 +61,8 @@ export function ContentLocalListener() {
 let rerendered = 0;
 export function Content() {
   return <>
-    page rerendered: {rerendered++}
+    <div>page rerendered: {rerendered++}</div>
+    <div>store</div>
     <ContentQuery/>
     <ContentQueryListener/>
     <ContentCookies/>
