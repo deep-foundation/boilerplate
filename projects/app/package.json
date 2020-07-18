@@ -12,7 +12,7 @@
   "dependencies": {
     "@capacitor/cli": "^2.3.0",
     "@capacitor/core": "^2.3.0",
-    "@deepcase/store": "~0.0.4",
+    "@deepcase/store": "^0.0.4",
     "next": "^9.4.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -23,6 +23,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
+    "export": "rm -rf .export && next export -o .export && (cd .export && npx @deepcase/android-lodash-fix)",
     "start": "next start",
     "lint": "npx tslint -c tslint.json --project tsconfig.json"
   },
@@ -30,6 +31,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "devDependencies": {
+    "@deepcase/android-lodash-fix": "~0.0.6",
     "@types/node": "^14.0.23",
     "@types/react": "^16.9.43",
     "typescript": "^3.9.7"

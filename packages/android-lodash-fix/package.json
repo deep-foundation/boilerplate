@@ -1,0 +1,21 @@
+{
+  "name": "@deepcase/android-lodash-fix",
+  "version": "0.0.6",
+  "license": "ISC",
+  "author": "Ivan S Glazunov <ivansglazunov@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/deepcase/boilerplate.git",
+    "directory": "packages/android-lodash-fix"
+  },
+  "description": "",
+  "scripts": {},
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "bin": "./index.js",
+  "dependencies": {
+    "debug": "^4.1.1",
+    "replace-in-file": "^6.1.0"
+  }
+}
