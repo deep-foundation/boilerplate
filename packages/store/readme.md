@@ -1,5 +1,26 @@
 # deepcase store
 
+## usage
+
+```tsx
+<QueryStoreProvider>
+  <CookiesStoreProvider>
+    <LocalStoreProvider>
+      <Content/>
+    </LocalStoreProvider>
+  </CookiesStoreProvider>
+</QueryStoreProvider>
+```
+
+```tsx
+const [query, setQuery] = useQueryStore('demo', 5);
+// ?demo=5
+const [cookie, setCookie] = useCookiesStore('demo', 5);
+// cookies demo=5
+const [local, setLocal] = useLocalStore('demo', 5);
+// localStorage.getItem('demo') === 5
+```
+
 ## compatibility
 
 - [x] useStore
