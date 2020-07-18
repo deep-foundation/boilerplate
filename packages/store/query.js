@@ -26,9 +26,9 @@ exports.useQueryStore = exports.QueryStoreProvider = exports.fakeRouter = export
 const router_1 = require("next/router");
 const react_1 = __importStar(require("react"));
 const debug_1 = __importDefault(require("debug"));
-const use_store_1 = require("./use-store");
+const store_1 = require("./store");
 const debug = debug_1.default('deepcase:store:use-store-query');
-exports.QueryStoreContext = react_1.createContext(use_store_1.defaultContext);
+exports.QueryStoreContext = react_1.createContext(store_1.defaultContext);
 exports.fakeRouter = {};
 exports.QueryStoreProvider = ({ context = exports.QueryStoreContext, children, }) => {
     const [useStore] = react_1.useState(() => {
@@ -59,7 +59,7 @@ exports.QueryStoreProvider = ({ context = exports.QueryStoreContext, children, }
     return react_1.default.createElement(context.Provider, { value: { useStore } }, children);
 };
 function useQueryStore(key, defaultValue, context = exports.QueryStoreContext) {
-    return use_store_1.useStore(key, defaultValue, context);
+    return store_1.useStore(key, defaultValue, context);
 }
 exports.useQueryStore = useQueryStore;
-//# sourceMappingURL=use-query-store.js.map
+//# sourceMappingURL=query.js.map

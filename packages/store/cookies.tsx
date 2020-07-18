@@ -3,7 +3,7 @@ import { useCookies, CookiesProvider, ReactCookieProps } from 'react-cookie';
 import Cookies, { Cookie, CookieSetOptions } from 'universal-cookie';
 import Debug from 'debug';
 
-import { StoreContext, IStoreContext, defaultContext, useStore } from './use-store';
+import { StoreContext, IStoreContext, defaultContext, useStore } from './store';
 
 const debug = Debug('deepcase:use-store:cookie');
 

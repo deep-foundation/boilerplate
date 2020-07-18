@@ -6,7 +6,9 @@
 <QueryStoreProvider>
   <CookiesStoreProvider>
     <LocalStoreProvider>
-      <Content/>
+      <CapacitorStoreProvider fetchInterval={5000}>
+        <Content/>
+      </CapacitorStoreProvider>
     </LocalStoreProvider>
   </CookiesStoreProvider>
 </QueryStoreProvider>
@@ -18,7 +20,9 @@ const [query, setQuery] = useQueryStore('demo', 5);
 const [cookie, setCookie] = useCookiesStore('demo', 5);
 // cookies demo=5
 const [local, setLocal] = useLocalStore('demo', 5);
-// localStorage.getItem('demo') === 5
+// localStorage.getItem('demo') // 5
+const [capacitor, setCapacitor] = useCapacitorStore('demo', 5);
+// await Storage.get('demo') // { value: 5 }
 ```
 
 ## compatibility
@@ -43,8 +47,8 @@ const [local, setLocal] = useLocalStore('demo', 5);
   - [x] android
   - [x] ios
   - [x] electron
-- [ ] useCapacitorStore
-  - [ ] web
-  - [ ] android
-  - [ ] ios
-  - [ ] electron
+- [x] useCapacitorStore
+  - [x] web
+  - [x] android
+  - [x] ios
+  - [x] electron

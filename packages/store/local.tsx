@@ -2,7 +2,7 @@ import React, { Context, ReactNode, useState, createContext, useEffect } from 'r
 import { EventEmitter } from 'events';
 import Debug from 'debug';
 
-import { StoreContext, IStoreContext, defaultContext, useStore } from './use-store';
+import { StoreContext, IStoreContext, defaultContext, useStore } from './store';
 
 const debug = Debug('deepcase:use-store:local');
 

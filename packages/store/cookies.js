@@ -27,9 +27,9 @@ const react_1 = __importStar(require("react"));
 const react_cookie_1 = require("react-cookie");
 const universal_cookie_1 = __importDefault(require("universal-cookie"));
 const debug_1 = __importDefault(require("debug"));
-const use_store_1 = require("./use-store");
+const store_1 = require("./store");
 const debug = debug_1.default('deepcase:use-store:cookie');
-exports.CookiesStoreContext = react_1.createContext(use_store_1.defaultContext);
+exports.CookiesStoreContext = react_1.createContext(store_1.defaultContext);
 exports.CookiesStoreProvider = ({ context = exports.CookiesStoreContext, children, defaultCookies, options = {}, }) => {
     const [cookies] = react_1.useState(() => defaultCookies && new universal_cookie_1.default(defaultCookies));
     return react_1.default.createElement(react_cookie_1.CookiesProvider, { cookies: cookies },
@@ -53,7 +53,7 @@ exports.CookiesStoreProviderCore = ({ context = exports.CookiesStoreContext, chi
     return react_1.default.createElement(context.Provider, { value: { useStore } }, children);
 };
 function useCookiesStore(key, defaultValue, context = exports.CookiesStoreContext) {
-    return use_store_1.useStore(key, defaultValue, context);
+    return store_1.useStore(key, defaultValue, context);
 }
 exports.useCookiesStore = useCookiesStore;
-//# sourceMappingURL=use-cookies-store.js.map
+//# sourceMappingURL=cookies.js.map

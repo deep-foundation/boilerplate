@@ -26,10 +26,10 @@ exports.useLocalStore = exports.LocalStoreProvider = exports.LocalContext = void
 const react_1 = __importStar(require("react"));
 const events_1 = require("events");
 const debug_1 = __importDefault(require("debug"));
-const use_store_1 = require("./use-store");
+const store_1 = require("./store");
 const debug = debug_1.default('deepcase:use-store:local');
 const localStorageEvent = new events_1.EventEmitter();
-exports.LocalContext = react_1.createContext(use_store_1.defaultContext);
+exports.LocalContext = react_1.createContext(store_1.defaultContext);
 exports.LocalStoreProvider = ({ context = exports.LocalContext, children, }) => {
     const [useStore] = react_1.useState(() => {
         return function useStore(key, defaultValue) {
@@ -58,7 +58,7 @@ exports.LocalStoreProvider = ({ context = exports.LocalContext, children, }) => 
     return react_1.default.createElement(context.Provider, { value: { useStore } }, children);
 };
 function useLocalStore(key, defaultValue, context = exports.LocalContext) {
-    return use_store_1.useStore(key, defaultValue, context);
+    return store_1.useStore(key, defaultValue, context);
 }
 exports.useLocalStore = useLocalStore;
-//# sourceMappingURL=use-local-store.js.map
+//# sourceMappingURL=local.js.map

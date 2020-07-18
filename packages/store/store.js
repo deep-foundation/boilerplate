@@ -11,4 +11,4 @@ function useStore(key, defaultValue, context = exports.StoreContext) {
     return useStore(key, defaultValue);
 }
 exports.useStore = useStore;
-//# sourceMappingURL=use-store.js.map
+//# sourceMappingURL=store.js.map

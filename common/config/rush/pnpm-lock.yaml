@@ -4,7 +4,6 @@ dependencies:
   '@capacitor/core': 2.3.0
   '@capacitor/ios': 2.3.0_@capacitor+core@2.3.0
   '@deepcase/android-lodash-fix': 0.0.6
-  '@deepcase/store': 0.0.7_next@9.4.4+typescript@3.9.7
   '@rush-temp/app': 'file:projects/app.tgz'
   '@rush-temp/store': 'file:projects/store.tgz_jimp@0.14.0'
   '@types/next': 9.0.0_6dd8278bb032c4be75e807326b6e3994
@@ -21,6 +20,7 @@ dependencies:
   imagemin-optipng: 8.0.0
   imagemin-svgo: 8.0.0
   jimp: 0.14.0
+  lodash: 4.17.19
   lqip-loader: 2.2.0
   next: 9.4.4_6dd8278bb032c4be75e807326b6e3994
   next-compose-plugins: 2.2.0
@@ -10404,17 +10404,19 @@ packages:
     dev: false
     name: '@rush-temp/app'
     resolution:
-      integrity: sha512-Fqbi0XRCJfCiTPPNCverDjT4xerSF8fRIbkPv8b5p1engENQV+K6C1y6T0RNvfRTPUXlWN7vSMc17rTOnE00kQ==
+      integrity: sha512-S1AIDq5NzmcW3XR6mdlPl7TZzi+qz7w28BOH3tLHGQqTBCy8agXSYAKGJ8ZUmkavkELe/6+d34rD+a8ye20dfg==
       tarball: 'file:projects/app.tgz'
     version: 0.0.0
   'file:projects/store.tgz_jimp@0.14.0':
     dependencies:
+      '@capacitor/core': 2.3.0
       '@types/next': 9.0.0_6dd8278bb032c4be75e807326b6e3994
       '@types/node': 14.0.23
       '@types/react': 16.9.43
       '@types/react-dom': 16.9.8
       debug: 4.1.1
       local-storage: 2.0.0
+      lodash: 4.17.19
       next: 9.4.4_6dd8278bb032c4be75e807326b6e3994
       react: 16.13.1
       react-cookie: 4.0.3_react@16.13.1
@@ -10430,7 +10432,7 @@ packages:
     peerDependencies:
       jimp: '*'
     resolution:
-      integrity: sha512-c78vZ5uPjQsH/cFTxrJPllJnsfgKfcV5nzf5yotrNv0+XDGoMI9aLsXDfbXHQVk7QqM3r1VrPzO7M/wVLiesww==
+      integrity: sha512-5JK/F1kgef5QHfYoSRnx23Uld4kADkobqDXdzfF6GPpOugVtu2HWJ/xe8qpPtHwMHsSYmd6uQPlq5jnJ6t1XzQ==
       tarball: 'file:projects/store.tgz'
     version: 0.0.0
 registry: ''
@@ -10440,7 +10442,6 @@ specifiers:
   '@capacitor/core': ^2.3.0
   '@capacitor/ios': ^2.3.0
   '@deepcase/android-lodash-fix': ~0.0.6
-  '@deepcase/store': ^0.0.7
   '@rush-temp/app': 'file:./projects/app.tgz'
   '@rush-temp/store': 'file:./projects/store.tgz'
   '@types/next': ^9.0.0
@@ -10457,6 +10458,7 @@ specifiers:
   imagemin-optipng: ^8.0.0
   imagemin-svgo: ^8.0.0
   jimp: ^0.14.0
+  lodash: ^4.17.19
   lqip-loader: ^2.2.0
   next: ^9.4.4
   next-compose-plugins: ^2.2.0

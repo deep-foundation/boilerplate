@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import React, { Context, ReactNode, useState, useEffect, createContext } from 'react';
 import Debug from 'debug';
 
-import { IStoreContext, defaultContext, useStore } from './use-store';
+import { IStoreContext, defaultContext, useStore } from './store';
 
 const debug = Debug('deepcase:store:use-store-query');
 
