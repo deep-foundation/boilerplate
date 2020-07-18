@@ -1,6 +1,6 @@
 {
   "name": "@deepcase/app",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "license": "ISC",
   "author": "Ivan S Glazunov <ivansglazunov@gmail.com>",
   "repository": {
@@ -10,15 +10,33 @@
   },
   "description": "",
   "dependencies": {
+    "@capacitor/android": "^2.3.0",
     "@capacitor/cli": "^2.3.0",
     "@capacitor/core": "^2.3.0",
-    "@deepcase/store": "^0.0.4",
+    "@capacitor/ios": "^2.3.0",
+    "@deepcase/store": "~0.0.7",
+    "@zeit/next-css": "^1.0.1",
+    "dotenv": "^8.2.0",
+    "dotenv-webpack": "^2.0.0",
+    "image-trace-loader": "^1.0.2",
+    "imagemin-gifsicle": "^7.0.0",
+    "imagemin-mozjpeg": "^9.0.0",
+    "imagemin-optipng": "^8.0.0",
+    "imagemin-svgo": "^8.0.0",
+    "jimp": "^0.14.0",
+    "lqip-loader": "^2.2.0",
     "next": "^9.4.4",
+    "next-compose-plugins": "^2.2.0",
+    "next-optimized-images": "^2.6.1",
+    "next-transpile-modules": "^3.3.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "responsive-loader": "^1.2.0",
+    "svg-sprite-loader": "^5.0.0",
     "tslint": "^6.1.2",
     "tslint-config-airbnb": "^5.11.2",
-    "tslint-eslint-rules": "^5.4.0"
+    "tslint-eslint-rules": "^5.4.0",
+    "webp-loader": "^0.6.0"
   },
   "scripts": {
     "dev": "next",
