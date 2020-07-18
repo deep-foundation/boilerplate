@@ -38,3 +38,17 @@ sync cap with xcode
 ```sh
 npx cap sync
 ```
+
+### web
+
+serve
+
+```sh
+npx cap serve
+```
+
+### capacitor
+
+```sh
+ASSET_PREFIX='.' npm run build && ASSET_PREFIX='.' npm run export && npx cap copy electron && npx cap open electron
+```

@@ -112,3 +112,6 @@ local.properties
 
 # CocoaPods
 /ios/Pods/
+
+# Electron
+projects/app/electron/app
