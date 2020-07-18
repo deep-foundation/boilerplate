@@ -1,0 +1,20 @@
+{
+  "name": "@deepcase/types-json",
+  "version": "0.0.1",
+  "license": "ISC",
+  "author": "Ivan S Glazunov <ivansglazunov@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/deepcase/boilerplate.git",
+    "directory": "packages/types-json"
+  },
+  "description": "",
+  "scripts": {},
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "bin": "./index.js",
+  "devDependencies": {
+    "typescript": "^3.9.7"
+  }
+}
