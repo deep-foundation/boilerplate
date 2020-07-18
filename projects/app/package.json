@@ -13,6 +13,7 @@
     "@capacitor/android": "^2.3.0",
     "@capacitor/cli": "^2.3.0",
     "@capacitor/core": "^2.3.0",
+    "@capacitor/ios": "^2.3.0",
     "@deepcase/store": "^0.0.7",
     "next": "^9.4.4",
     "react": "^16.13.1",

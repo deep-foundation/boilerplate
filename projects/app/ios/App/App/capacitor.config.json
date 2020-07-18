@@ -1,0 +1,24 @@
+{
+  "appId": "deepcase.app",
+  "appName": "deepcase-app",
+  "bundledWebRuntime": true,
+  "npmClient": "npm",
+  "webDir": ".export",
+  "linuxAndroidStudioPath": "./.next/android-studio/bin/studio.sh",
+  "cordova": {},
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1000,
+      "launchAutoHide": true,
+      "backgroundColor": "#ffffffff",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP"
+    },
+    "PushNotifications": {
+      "presentationOptions": ["badge", "alert"]
+    },
+    "Keyboard": {
+      "resize": "body"
+    }
+  }
+}
