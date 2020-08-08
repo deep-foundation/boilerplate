@@ -44,7 +44,7 @@ exports.LocalStoreProvider = ({ context = exports.LocalContext, children, }) => 
                 }
                 const fn = (value) => {
                     if (typeof (item) === 'undefined' || lodash_1.isNull(item))
-                        _setValue(defaultValue);
+                        _setValue(JSON.stringify(defaultValue));
                     else
                         _setValue(value);
                 };
