@@ -43,16 +43,17 @@ export const CookiesStoreProviderCore = ({
     return function useStore<T>(
       key: string,
       defaultValue: T,
-    ): [T, (value: T) => any] {
-      const [cookie, setCookie] = useCookies([key]);
+    ): [T, (value: T) => any, () => any] {
+      const [cookie, setCookie, removeCookie] = useCookies([key]);
       const [setValue] = useState(() => value => setCookie(key, { value }, options));
+      const [unsetValue] = useState(() => () => removeCookie(key, options));
       let defaultCookie;
       try {
         defaultCookie = defaultCookies && defaultCookies[key] && typeof(defaultCookies[key]) === 'string' ? JSON.parse(defaultCookies[key]).value : defaultCookies[key];
       } catch (error) {
         debug('setStore:error', { error, key, defaultValue, defaultCookie: defaultCookies[key] });
       }
-      return [(cookie[key] && cookie[key].value) || (defaultCookies && defaultCookie) || defaultValue, setValue];
+      return [(cookie[key] && cookie[key].value) || (defaultCookies && defaultCookie) || defaultValue, setValue, unsetValue];
     };
   });
   return <context.Provider value={{ useStore }}>

@@ -1,6 +1,6 @@
 import React, { Context, ReactNode, useState, useEffect, useRef, createContext } from 'react';
 import { EventEmitter } from 'events';
-import { isEqual } from 'lodash';
+import { isEqual, isNull } from 'lodash';
 import { Storage } from '@capacitor/core';
 import Debug from 'debug';
 
@@ -25,31 +25,44 @@ export const CapacitorStoreProvider = ({
     return function useStore<T extends any>(
       key: string,
       defaultValue: T,
-    ): [T, (value: T) => any] {
+    ): [T, (value: T) => any, () => any] {
       const getStateRef = useRef<any>();
       const intervalRef = useRef<any>();
       const [state, setState] = useState<T>(defaultValue);
       const [setValue] = useState(() => (value) => {
+        debug('setValue', { key, defaultValue, value });
         Storage.set({ key, value: JSON.stringify(value) }).then(() => setState(value));
         capacitorStorageEvent.emit(key, JSON.stringify(value));
       });
+      const [unsetValue] = useState(() => () => {
+        debug('unsetValue', { key, defaultValue });
+        Storage.remove({ key }).then(() => setState(defaultValue));
+        capacitorStorageEvent.emit(key, defaultValue);
+      });
       getStateRef.current = () => Storage.get({ key }).then(({ value }) => {
-        let valueParsed: any;
-        try {
-          valueParsed = JSON.parse(value);
-        } catch (error) {
-          debug('setStore:error', { error, key, defaultValue, value });
-        }
-        if (!isEqual(valueParsed, state)) {
-          setState(valueParsed);
+        if (typeof(value) === 'undefined' || isNull(value)) setState(defaultValue);
+        else {
+          let valueParsed: any;
+          try {
+            valueParsed = JSON.parse(value);
+          } catch (error) {
+            debug('setStore:error', { error, key, defaultValue, value });
+          }
+          debug('getStore', { key, defaultValue, valueParsed, value });
+          if (!isEqual(valueParsed, state)) {
+            if (typeof(valueParsed) === 'undefined' || isNull(value)) setState(defaultValue);
+            else setState(valueParsed);
+          }
         }
       });
       useEffect(
         () => {
-          Storage.get({ key }).then(({ value }: any) => {
-            if (typeof(value) != 'undefined') setState(value);
-          })
-          const fn = (value) => setState(value);
+          debug('init', { key, defaultValue });
+          getStateRef.current();
+          const fn = (value) => {
+            if (typeof(value) === 'undefined' || isNull(value)) setState(defaultValue);
+            else setState(value);
+          }
           intervalRef.current = setInterval(() => getStateRef.current(), fetchInterval);
           capacitorStorageEvent.on(key, fn);
           return () => {
@@ -59,7 +72,7 @@ export const CapacitorStoreProvider = ({
         },
         [],
       );
-      return [state, setValue];
+      return [state, setValue, unsetValue];
     };
   });
 

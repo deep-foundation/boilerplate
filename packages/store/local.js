@@ -25,6 +25,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.useLocalStore = exports.LocalStoreProvider = exports.LocalContext = void 0;
 const react_1 = __importStar(require("react"));
 const events_1 = require("events");
+const lodash_1 = require("lodash");
 const debug_1 = __importDefault(require("debug"));
 const store_1 = require("./store");
 const debug = debug_1.default('deepcase:use-store:local');
@@ -35,12 +36,18 @@ exports.LocalStoreProvider = ({ context = exports.LocalContext, children, }) => 
         return function useStore(key, defaultValue) {
             const [value, _setValue] = react_1.useState(typeof (localStorage) === 'undefined' ? JSON.stringify(defaultValue) : localStorage.getItem(key));
             react_1.useEffect(() => {
-                if (typeof (localStorage.getItem(key)) === 'undefined') {
+                const item = localStorage.getItem(key);
+                if (typeof (item) === 'undefined' || lodash_1.isNull(item)) {
                     const json = JSON.stringify(defaultValue);
                     localStorage.setItem(key, json);
                     _setValue(json);
                 }
-                const fn = (value) => _setValue(value);
+                const fn = (value) => {
+                    if (typeof (item) === 'undefined' || lodash_1.isNull(item))
+                        _setValue(defaultValue);
+                    else
+                        _setValue(value);
+                };
                 localStorageEvent.on(key, fn);
                 return () => {
                     localStorageEvent.off(key, fn);
@@ -52,7 +59,11 @@ exports.LocalStoreProvider = ({ context = exports.LocalContext, children, }) => 
                 _setValue(json);
                 localStorageEvent.emit(key, json);
             });
-            return [JSON.parse(value), setValue];
+            const [unsetValue] = react_1.useState(() => () => {
+                localStorage.removeItem(key);
+                localStorageEvent.emit(key, defaultValue);
+            });
+            return [JSON.parse(value), setValue, unsetValue];
         };
     });
     return react_1.default.createElement(context.Provider, { value: { useStore } }, children);

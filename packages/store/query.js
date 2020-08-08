@@ -46,6 +46,19 @@ exports.QueryStoreProvider = ({ context = exports.QueryStoreContext, children, }
                     debug('setStore:error', { error, key, defaultValue, value });
                 }
             });
+            const [unsetValue] = react_1.useState(() => () => {
+                try {
+                    if (query[key])
+                        delete query[key];
+                    push({
+                        pathname,
+                        query,
+                    });
+                }
+                catch (error) {
+                    debug('unsetStore:error', { error, key });
+                }
+            });
             let value;
             try {
                 value = query && query[key] && JSON.parse(query[key]);
@@ -53,7 +66,7 @@ exports.QueryStoreProvider = ({ context = exports.QueryStoreContext, children, }
             catch (error) {
                 debug('value:error', { error, key, defaultValue, query });
             }
-            return [value || defaultValue, setValue];
+            return [value || defaultValue, setValue, unsetValue];
         };
     });
     return react_1.default.createElement(context.Provider, { value: { useStore } }, children);

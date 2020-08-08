@@ -38,8 +38,9 @@ exports.CookiesStoreProvider = ({ context = exports.CookiesStoreContext, childre
 exports.CookiesStoreProviderCore = ({ context = exports.CookiesStoreContext, children, defaultCookies = {}, options = {}, }) => {
     const [useStore] = react_1.useState(() => {
         return function useStore(key, defaultValue) {
-            const [cookie, setCookie] = react_cookie_1.useCookies([key]);
+            const [cookie, setCookie, removeCookie] = react_cookie_1.useCookies([key]);
             const [setValue] = react_1.useState(() => value => setCookie(key, { value }, options));
+            const [unsetValue] = react_1.useState(() => () => removeCookie(key, options));
             let defaultCookie;
             try {
                 defaultCookie = defaultCookies && defaultCookies[key] && typeof (defaultCookies[key]) === 'string' ? JSON.parse(defaultCookies[key]).value : defaultCookies[key];
@@ -47,7 +48,7 @@ exports.CookiesStoreProviderCore = ({ context = exports.CookiesStoreContext, chi
             catch (error) {
                 debug('setStore:error', { error, key, defaultValue, defaultCookie: defaultCookies[key] });
             }
-            return [(cookie[key] && cookie[key].value) || (defaultCookies && defaultCookie) || defaultValue, setValue];
+            return [(cookie[key] && cookie[key].value) || (defaultCookies && defaultCookie) || defaultValue, setValue, unsetValue];
         };
     });
     return react_1.default.createElement(context.Provider, { value: { useStore } }, children);

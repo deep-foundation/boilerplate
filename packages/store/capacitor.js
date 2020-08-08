@@ -39,27 +39,44 @@ exports.CapacitorStoreProvider = ({ context = exports.CapacitorStoreContext, chi
             const intervalRef = react_1.useRef();
             const [state, setState] = react_1.useState(defaultValue);
             const [setValue] = react_1.useState(() => (value) => {
+                debug('setValue', { key, defaultValue, value });
                 core_1.Storage.set({ key, value: JSON.stringify(value) }).then(() => setState(value));
                 capacitorStorageEvent.emit(key, JSON.stringify(value));
             });
+            const [unsetValue] = react_1.useState(() => () => {
+                debug('unsetValue', { key, defaultValue });
+                core_1.Storage.remove({ key }).then(() => setState(defaultValue));
+                capacitorStorageEvent.emit(key, defaultValue);
+            });
             getStateRef.current = () => core_1.Storage.get({ key }).then(({ value }) => {
-                let valueParsed;
-                try {
-                    valueParsed = JSON.parse(value);
-                }
-                catch (error) {
-                    debug('setStore:error', { error, key, defaultValue, value });
-                }
-                if (!lodash_1.isEqual(valueParsed, state)) {
-                    setState(valueParsed);
+                if (typeof (value) === 'undefined' || lodash_1.isNull(value))
+                    setState(defaultValue);
+                else {
+                    let valueParsed;
+                    try {
+                        valueParsed = JSON.parse(value);
+                    }
+                    catch (error) {
+                        debug('setStore:error', { error, key, defaultValue, value });
+                    }
+                    debug('getStore', { key, defaultValue, valueParsed, value });
+                    if (!lodash_1.isEqual(valueParsed, state)) {
+                        if (typeof (valueParsed) === 'undefined' || lodash_1.isNull(value))
+                            setState(defaultValue);
+                        else
+                            setState(valueParsed);
+                    }
                 }
             });
             react_1.useEffect(() => {
-                core_1.Storage.get({ key }).then(({ value }) => {
-                    if (typeof (value) != 'undefined')
+                debug('init', { key, defaultValue });
+                getStateRef.current();
+                const fn = (value) => {
+                    if (typeof (value) === 'undefined' || lodash_1.isNull(value))
+                        setState(defaultValue);
+                    else
                         setState(value);
-                });
-                const fn = (value) => setState(value);
+                };
                 intervalRef.current = setInterval(() => getStateRef.current(), fetchInterval);
                 capacitorStorageEvent.on(key, fn);
                 return () => {
@@ -67,7 +84,7 @@ exports.CapacitorStoreProvider = ({ context = exports.CapacitorStoreContext, chi
                     capacitorStorageEvent.off(key, fn);
                 };
             }, []);
-            return [state, setValue];
+            return [state, setValue, unsetValue];
         };
     });
     return react_1.default.createElement(context.Provider, { value: { useStore } }, children);

@@ -21,7 +21,7 @@ export const QueryStoreProvider = ({
     return function useStore<T extends any>(
       key: string,
       defaultValue: T,
-    ): [T, (value: T) => any] {
+    ): [T, (value: T) => any, () => any] {
       const router = useRouter();
       const { query, pathname, push } = router || fakeRouter;
 
@@ -39,13 +39,25 @@ export const QueryStoreProvider = ({
         }
       });
 
+      const [unsetValue] = useState(() => () => {
+        try {
+          if (query[key]) delete query[key];
+          push({
+            pathname,
+            query,
+          });
+        } catch (error) {
+          debug('unsetStore:error', { error, key });
+        }
+      });
+
       let value: any;
       try {
         value = query && query[key] && JSON.parse(query[key]);
       } catch (error) {
         debug('value:error', { error, key, defaultValue, query });
       }
-      return [value || defaultValue, setValue];
+      return [value || defaultValue, setValue, unsetValue];
     };
   });
 
