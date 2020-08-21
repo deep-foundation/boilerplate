@@ -4,6 +4,7 @@ import { CookiesStoreProvider, useCookiesStore } from '@deepcase/store/cookies';
 import { LocalStoreProvider, useLocalStore } from '@deepcase/store/local';
 import { CapacitorStoreProvider, useCapacitorStore } from '@deepcase/store/capacitor';
 import { wrap } from '../imports/wrap';
+import { useAuth } from '@deepcase/auth';
 
 export function ContentQuery() {
   const [value, setValue, unsetValue] = useQueryStore('demo', 5);
@@ -13,7 +14,7 @@ export function ContentQuery() {
     <button onClick={() => setValue(value - 1)}>-</button>
     <button onClick={() => setValue(value + 1)}>+</button>
     <button onClick={() => unsetValue()}>x</button>
-  </>
+  </>;
 }
 
 export function ContentQueryListener() {
@@ -21,7 +22,7 @@ export function ContentQueryListener() {
   return <>
     <div>const [value] = useQueryStore('demo', 5);</div>
     <div>value == {value}</div>
-  </>
+  </>;
 }
 
 export function ContentCookies() {
@@ -32,7 +33,7 @@ export function ContentCookies() {
     <button onClick={() => setValue(value - 1)}>-</button>
     <button onClick={() => setValue(value + 1)}>+</button>
     <button onClick={() => unsetValue()}>x</button>
-  </>
+  </>;
 }
 
 export function ContentCookiesListener() {
@@ -40,7 +41,7 @@ export function ContentCookiesListener() {
   return <>
     <div>const [value] = useCookiesStore('demo', 5);</div>
     <div>value == {value}</div>
-  </>
+  </>;
 }
 
 export function ContentLocal() {
@@ -51,7 +52,7 @@ export function ContentLocal() {
     <button onClick={() => setValue(value - 1)}>-</button>
     <button onClick={() => setValue(value + 1)}>+</button>
     <button onClick={() => unsetValue()}>x</button>
-  </>
+  </>;
 }
 
 export function ContentLocalListener() {
@@ -59,7 +60,7 @@ export function ContentLocalListener() {
   return <>
     <div>const [value] = useLocalStore('demo', 5);</div>
     <div>value == {value}</div>
-  </>
+  </>;
 }
 
 export function ContentCapacitor() {
@@ -70,7 +71,7 @@ export function ContentCapacitor() {
     <button onClick={() => setValue(value - 1)}>-</button>
     <button onClick={() => setValue(value + 1)}>+</button>
     <button onClick={() => unsetValue()}>x</button>
-  </>
+  </>;
 }
 
 export function ContentCapacitorListener() {
@@ -78,7 +79,21 @@ export function ContentCapacitorListener() {
   return <>
     <div>const [value] = useCapacitorStore('demo', 5);</div>
     <div>value == {value}</div>
-  </>
+  </>;
+}
+
+export function Auth() {
+  const identity = useAuth();
+  return <>
+    <div>auth</div>
+    <div><a href="/api/auth/logout">logout</a></div>
+    <div><a href="/api/auth/github">github</a></div>
+    <div>
+      <pre><code>
+        {JSON.stringify(identity)}
+      </code></pre>
+    </div>
+  </>;
 }
 
 let rerendered = 0;
@@ -100,6 +115,7 @@ export function Content() {
     <ContentCapacitor/>
     <ContentCapacitorListener/>
     <hr/>
+    <Auth/>
   </>;
 }
 

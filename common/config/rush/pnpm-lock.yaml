@@ -4,8 +4,11 @@ dependencies:
   '@capacitor/core': 2.3.0
   '@capacitor/ios': 2.3.0_@capacitor+core@2.3.0
   '@deepcase/android-lodash-fix': 0.0.6
+  '@deepcase/auth': 0.0.8_e3d1ab7a82f54489402ce26857899300
   '@rush-temp/app': 'file:projects/app.tgz'
   '@rush-temp/store': 'file:projects/store.tgz_jimp@0.14.0'
+  '@types/cookie-session': 2.0.41
+  '@types/debug': 4.1.5
   '@types/next': 9.0.0_6dd8278bb032c4be75e807326b6e3994
   '@types/node': 14.0.23
   '@types/react': 16.9.43
@@ -1145,6 +1148,27 @@ packages:
     resolution:
       integrity: sha512-j0cgqkYtlLfCgwbKgsmr7Tc7h4R3S0Nlr316pzmy5bQo8xfdrl7LY/a167vCVzX/hllgK29yPdxJK+1C9kEbdQ==
       tarball: download/@deepcase/android-lodash-fix/0.0.6/4acbab6b8b0488c04874e19b02d6cea42fb067f98f6fa3975808eb166bef8a52
+  /@deepcase/auth/0.0.8_e3d1ab7a82f54489402ce26857899300:
+    dependencies:
+      cookie-session: 1.4.0
+      debug: 4.1.1
+      micro-redirect: 1.0.2
+      next: 9.4.4_6dd8278bb032c4be75e807326b6e3994
+      next-cookies: 2.0.3
+      node: 14.7.0
+      passport: 0.4.1
+      passport-github: 1.1.0
+      react: 16.13.1
+      react-dom: 16.13.1_react@16.13.1
+      url: 0.11.0
+    dev: false
+    peerDependencies:
+      next: ^9.4.4
+      react: ^16.13.1
+      react-dom: ^16.13.1
+    resolution:
+      integrity: sha512-5YIuLrTxmPGaNaA3O8IcBmqY8orq9Y/7bicegAOiGxbA9DAq0V9cziqYzzu7kU266lrgP1WFRgUDFpKAdYqYDw==
+      tarball: download/@deepcase/auth/0.0.8/e2417ed31837946a7f27c7ef48f6226a51a8486179c3a5388ec1e0a9f0adc79d
   /@deepcase/store/0.0.7_next@9.4.4+typescript@3.9.7:
     dependencies:
       '@types/react-dom': 16.9.8
@@ -2164,14 +2188,55 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==
+  /@types/body-parser/1.19.0:
+    dependencies:
+      '@types/connect': 3.4.33
+      '@types/node': 14.0.23
+    dev: false
+    resolution:
+      integrity: sha512-W98JrE0j2K78swW4ukqMleo8R7h/pFETjM2DQ90MF6XK2i4LO4W3gQ71Lt4w3bfm2EvVSyWHplECvB5sK22yFQ==
   /@types/color-name/1.1.1:
     dev: false
     resolution:
       integrity: sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
+  /@types/connect/3.4.33:
+    dependencies:
+      '@types/node': 14.0.23
+    dev: false
+    resolution:
+      integrity: sha512-2+FrkXY4zllzTNfJth7jOqEHC+enpLeGslEhpnTAkg21GkRrWV4SsAtqchtT4YS9/nODBU2/ZfsBY2X4J/dX7A==
+  /@types/cookie-session/2.0.41:
+    dependencies:
+      '@types/express': 4.17.7
+      '@types/keygrip': 1.0.2
+    dev: false
+    resolution:
+      integrity: sha512-Ytd7zWY3WvC7TP9rKVjlnYHus8Hq+lJuioHOtKJ7dXg2Nt+O+9UpelygYy5Eb67QQN92HPO5qEG0vnmAlqRLLw==
   /@types/cookie/0.3.3:
     dev: false
     resolution:
       integrity: sha512-LKVP3cgXBT9RYj+t+9FDKwS5tdI+rPBXaNSkma7hvqy35lc7mAokC2zsqWJH0LaqIt3B962nuYI77hsJoT1gow==
+  /@types/debug/4.1.5:
+    dev: false
+    resolution:
+      integrity: sha512-Q1y515GcOdTHgagaVFhHnIFQ38ygs/kmxdNpvpou+raI9UO3YZcHDngBSYKQklcKlvA7iuQlmIKbzvmxcOE9CQ==
+  /@types/express-serve-static-core/4.17.9:
+    dependencies:
+      '@types/node': 14.0.23
+      '@types/qs': 6.9.4
+      '@types/range-parser': 1.2.3
+    dev: false
+    resolution:
+      integrity: sha512-DG0BYg6yO+ePW+XoDENYz8zhNGC3jDDEpComMYn7WJc4mY1Us8Rw9ax2YhJXxpyk2SF47PQAoQ0YyVT1a0bEkA==
+  /@types/express/4.17.7:
+    dependencies:
+      '@types/body-parser': 1.19.0
+      '@types/express-serve-static-core': 4.17.9
+      '@types/qs': 6.9.4
+      '@types/serve-static': 1.13.5
+    dev: false
+    resolution:
+      integrity: sha512-dCOT5lcmV/uC2J9k0rPafATeeyz+99xTt54ReX11/LObZgfzJqZNcW27zGhYyX+9iSEGXGt5qLPwRSvBZcLvtQ==
   /@types/glob/7.1.3:
     dependencies:
       '@types/minimatch': 3.0.3
@@ -2186,10 +2251,18 @@ packages:
     dev: false
     resolution:
       integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==
+  /@types/keygrip/1.0.2:
+    dev: false
+    resolution:
+      integrity: sha512-GJhpTepz2udxGexqos8wgaBx4I/zWIDPh/KOGEwAqtuGDkOUJu5eFvwmdBX4AmB8Odsr+9pHCQqiAqDL/yKMKw==
   /@types/lodash/4.14.157:
     dev: false
     resolution:
       integrity: sha512-Ft5BNFmv2pHDgxV5JDsndOWTRJ+56zte0ZpYLowp03tW+K+t8u8YMOzAnpuqPgzX6WO1XpDIUm7u04M8vdDiVQ==
+  /@types/mime/2.0.3:
+    dev: false
+    resolution:
+      integrity: sha512-Jus9s4CDbqwocc5pOAnh8ShfrnMcPHuJYzVcSUU7lrh8Ni5HuIqX3oilL86p3dlTrk0LzHRCgA/GQ7uNCw6l2Q==
   /@types/minimatch/3.0.3:
     dev: false
     resolution:
@@ -2214,10 +2287,38 @@ packages:
     dev: false
     resolution:
       integrity: sha512-Z4U8yDAl5TFkmYsZdFPdjeMa57NOvnaf1tljHzhouaPEp7LCj2JKkejpI1ODviIAQuW4CcQmxkQ77rnLsOOoKw==
+  /@types/oauth/0.9.1:
+    dependencies:
+      '@types/node': 14.0.23
+    dev: false
+    resolution:
+      integrity: sha512-a1iY62/a3yhZ7qH7cNUsxoI3U/0Fe9+RnuFrpTKr+0WVOzbKlSLojShCKe20aOD1Sppv+i8Zlq0pLDuTJnwS4A==
   /@types/object-assign/4.0.30:
     dev: false
     resolution:
       integrity: sha1-iUk3HVqZ9Dge4PHfCpt6GH4H5lI=
+  /@types/passport-github/1.1.5:
+    dependencies:
+      '@types/express': 4.17.7
+      '@types/passport': 1.0.4
+      '@types/passport-oauth2': 1.4.9
+    dev: false
+    resolution:
+      integrity: sha512-BeWDdLRWfPpJcmT1XofY5r1Av//TcxBEgllY4LnArcYdGqbIIVLyHwR+8bIG+ZC4PwJ6W1trnVEG3EQ+5J+Jmw==
+  /@types/passport-oauth2/1.4.9:
+    dependencies:
+      '@types/express': 4.17.7
+      '@types/oauth': 0.9.1
+      '@types/passport': 1.0.4
+    dev: false
+    resolution:
+      integrity: sha512-QP0q+NVQOaIu2r0e10QWkiUA0Ya5mOBHRJN0UrI+LolMLOP1/VN4EVIpJ3xVwFo+xqNFRoFvFwJhBvKnk7kpUA==
+  /@types/passport/1.0.4:
+    dependencies:
+      '@types/express': 4.17.7
+    dev: false
+    resolution:
+      integrity: sha512-h5OfAbfBBYSzjeU0GTuuqYEk9McTgWeGQql9g3gUw2/NNCfD7VgExVRYJVVeU13Twn202Mvk9BT0bUrl30sEgA==
   /@types/prop-types/15.7.3:
     dev: false
     resolution:
@@ -2226,6 +2327,14 @@ packages:
     dev: false
     resolution:
       integrity: sha512-1HcDas8SEj4z1Wc696tH56G8OlRaH/sqZOynNNB+HF0WOeXPaxTtbYzJY2oEfiUxjSKjhCKr+MvR7dCHcEelug==
+  /@types/qs/6.9.4:
+    dev: false
+    resolution:
+      integrity: sha512-+wYo+L6ZF6BMoEjtf8zB2esQsqdV6WsjRK/GP9WOgLPrq87PbNWgIxS76dS5uvl/QXtHGakZmwTznIfcPXcKlQ==
+  /@types/range-parser/1.2.3:
+    dev: false
+    resolution:
+      integrity: sha512-ewFXqrQHlFsgc09MK5jP5iR7vumV/BYayNC6PgJO2LPe8vrnNFyjQjSppfEngITi0qvfKtzFvgKymGheFM9UOA==
   /@types/react-dom/16.9.8:
     dependencies:
       '@types/react': 16.9.43
@@ -2239,6 +2348,13 @@ packages:
     dev: false
     resolution:
       integrity: sha512-PxshAFcnJqIWYpJbLPriClH53Z2WlJcVZE+NP2etUtWQs2s7yIMj3/LDKZT/5CHJ/F62iyjVCDu2H3jHEXIxSg==
+  /@types/serve-static/1.13.5:
+    dependencies:
+      '@types/express-serve-static-core': 4.17.9
+      '@types/mime': 2.0.3
+    dev: false
+    resolution:
+      integrity: sha512-6M64P58N+OXjU432WoLLBQxbA0LRGBCRm7aAGQJ+SMC1IMl0dgRVi9EFfoDcS2a7Xogygk/eGN94CfwU9UF7UQ==
   /@webassemblyjs/ast/1.9.0:
     dependencies:
       '@webassemblyjs/helper-module-context': 1.9.0
@@ -2721,6 +2837,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-mLQ4i2QO1ytvGWFWmcngKO//JXAQueZvwEKtjgQFM4jIK0kU+ytMfplL8j+n5mspOfjHwoAg+9yhb7BwAHm36g==
+  /base64url/3.0.1:
+    dev: false
+    engines:
+      node: '>=6.0.0'
+    resolution:
+      integrity: sha512-ir1UPr3dkwexU7FdV8qBBbNDRUhMmIekYMFZfi+C/sLNnRESKPl23nB9b2pltqfOQNnGzsDdId90AEtG5tCx4A==
   /bcrypt-pbkdf/1.0.2:
     dependencies:
       tweetnacl: 0.14.5
@@ -3487,12 +3609,29 @@ packages:
     dev: false
     resolution:
       integrity: sha512-4FJkXzKXEDB1snCFZlLP4gpC3JILicCpGbzG9f9G7tGqGCzETQ2hWPrcinA9oU4wtf2biUaEH5065UnMeR33oA==
+  /cookie-session/1.4.0:
+    dependencies:
+      cookies: 0.8.0
+      debug: 2.6.9
+      on-headers: 1.0.2
+    dev: false
+    resolution:
+      integrity: sha512-0hhwD+BUIwMXQraiZP/J7VP2YFzqo6g4WqZlWHtEHQ22t0MeZZrNBSCxC1zcaLAs8ApT3BzAKizx9gW/AP9vNA==
   /cookie/0.4.1:
     dev: false
     engines:
       node: '>= 0.6'
     resolution:
       integrity: sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==
+  /cookies/0.8.0:
+    dependencies:
+      depd: 2.0.0
+      keygrip: 1.1.0
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-8aPsApQfebXnuI+537McwYsDtjVxGm8gTIzQI3FDW6t5t/DAhERxtnbEPN/8RX+uZthoz4eCOgloXaE5cYyNow==
   /copy-concurrently/1.0.5:
     dependencies:
       aproba: 1.2.0
@@ -4020,6 +4159,12 @@ packages:
       node: '>=0.4.0'
     resolution:
       integrity: sha1-3zrhmayt+31ECqrgsp4icrJOxhk=
+  /depd/2.0.0:
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==
   /des.js/1.0.1:
     dependencies:
       inherits: 2.0.4
@@ -6174,6 +6319,14 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-pBxcB3LFc8QVgdggvZWyeys+hnrNWg4OcZIU/1X59k5jQdLBlCsYGRQaz234SqoRLTCgMH00fY0xRJH+F9METQ==
+  /keygrip/1.1.0:
+    dependencies:
+      tsscmp: 1.0.6
+    dev: false
+    engines:
+      node: '>= 0.6'
+    resolution:
+      integrity: sha512-iYSchDJ+liQ8iwbSI2QqsQOvqv58eJCEanyJPJi+Khyu8smkcKSFUCbPwzFcL7YVtZ6eONjqRX/38caJ7QjRAQ==
   /keyv/3.0.0:
     dependencies:
       json-buffer: 3.0.0
@@ -6551,6 +6704,10 @@ packages:
       node: '>= 8'
     resolution:
       integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==
+  /micro-redirect/1.0.2:
+    dev: false
+    resolution:
+      integrity: sha512-lRx+OBr+5WFEoQ/f1R6FgPIprVGwf0HBda1DXvRUPtjGqzxAgTf243MfPFF6xQJ7G9YQR+C3QlZrCsRI9IkJVw==
   /microevent.ts/0.1.1:
     dev: false
     resolution:
@@ -6869,6 +7026,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-ChUlpT9tWfJ7YxqGw/WQ2T1gf8EeX93n1XqeQw0lkvGa7seszahvF4eOZUJoq7Hetsbzg4UHVnPoCXfXTyQR3g==
+  /next-cookies/2.0.3:
+    dependencies:
+      universal-cookie: 4.0.3
+    dev: false
+    resolution:
+      integrity: sha512-YVCQzwZx+sz+KqLO4y9niHH9jjz6jajlEQbAKfsYVT6DOfngb/0k5l6vFK4rmpExVug96pGag8OBsdSRL9FZhQ==
   /next-optimized-images/2.6.1:
     dependencies:
       chalk: 2.4.2
@@ -6970,6 +7133,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-rmTZ9kz+f3rCvK2TD1Ue/oZlns7OGoIWP4fc3llxxRXlOkHKoWPPWJOfFYpITabSow43QJbRIoHQXtt10VldyQ==
+  /node-bin-setup/1.0.6:
+    dev: false
+    resolution:
+      integrity: sha512-uPIxXNis1CRbv1DwqAxkgBk5NFV3s7cMN/Gf556jSw6jBvV7ca4F9lRL/8cALcZecRibeqU+5dFYqFFmzv5a0Q==
   /node-fetch/2.6.0:
     dev: false
     engines:
@@ -7020,6 +7187,16 @@ packages:
     dev: false
     resolution:
       integrity: sha512-Gk+iyBzPSN1SF5qL818QaBtuA38206Z8iPNa0PcLUPyIbZL4+i14VmYxkGCL0n/5Q1721CRSktqtACgkx7Qodg==
+  /node/14.7.0:
+    dependencies:
+      node-bin-setup: 1.0.6
+    dev: false
+    engines:
+      npm: '>=5.0.0'
+    hasBin: true
+    requiresBuild: true
+    resolution:
+      integrity: sha512-Ko01eI4OMJO9sgQqHxqXDX8ESoBhYYjH3nlvvtkYx9FAFxzeWv6mKYl/U5I13PHC/IHyVraoPw/cgBLWWbISXg==
   /normalize-html-whitespace/1.0.0:
     dev: false
     engines:
@@ -7111,6 +7288,10 @@ packages:
     dev: false
     resolution:
       integrity: sha512-fexhUFFPTGV8ybAtSIGbV6gOkSv8UtRbDBnAyLQw4QPKkgNlsH2ByPGtMUqdWkos6YCRmAqViwgZrJc/mRDzZQ==
+  /oauth/0.9.15:
+    dev: false
+    resolution:
+      integrity: sha1-vR/vr2hslrdUda7VGWQS/2DPucE=
   /object-assign/4.1.1:
     dev: false
     engines:
@@ -7194,6 +7375,12 @@ packages:
     dev: false
     resolution:
       integrity: sha512-LMJTtvgc/nugXj0Vcrrs68Mn2D1r0zf630VNtqtpI1FEO7e+O9FP4gqs9AcnBaSEeoHIPm28u6qgPR0oyEpGSw==
+  /on-headers/1.0.2:
+    dev: false
+    engines:
+      node: '>= 0.8'
+    resolution:
+      integrity: sha512-pZAE+FJLoyITytdqK0U5s+FIpjN0JP3OzFi/u8Rx+EV5/W+JTWGXG8xFzevE7AjBfDqHv/8vL8qQsIhHnqRkrA==
   /once/1.4.0:
     dependencies:
       wrappy: 1.0.2
@@ -7478,6 +7665,41 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-s2PlXoAGym/iF4TS2yK9FdeRfxQ=
+  /passport-github/1.1.0:
+    dependencies:
+      passport-oauth2: 1.5.0
+    dev: false
+    engines:
+      node: '>= 0.4.0'
+    resolution:
+      integrity: sha1-jOHj/NYa11eOsd9ZWDnkrqEjVdQ=
+  /passport-oauth2/1.5.0:
+    dependencies:
+      base64url: 3.0.1
+      oauth: 0.9.15
+      passport-strategy: 1.0.0
+      uid2: 0.0.3
+      utils-merge: 1.0.1
+    dev: false
+    engines:
+      node: '>= 0.4.0'
+    resolution:
+      integrity: sha512-kqBt6vR/5VlCK8iCx1/KpY42kQ+NEHZwsSyt4Y6STiNjU+wWICG1i8ucc1FapXDGO15C5O5VZz7+7vRzrDPXXQ==
+  /passport-strategy/1.0.0:
+    dev: false
+    engines:
+      node: '>= 0.4.0'
+    resolution:
+      integrity: sha1-tVOaqPwiWj0a0XlHbd8ja0QPUuQ=
+  /passport/0.4.1:
+    dependencies:
+      passport-strategy: 1.0.0
+      pause: 0.0.1
+    dev: false
+    engines:
+      node: '>= 0.4.0'
+    resolution:
+      integrity: sha512-IxXgZZs8d7uFSt3eqNjM9NQ3g3uQCW5avD8mRNoXV99Yig50vjuaez6dQK2qC0kVWPRTujxY0dWgGfT09adjYg==
   /path-browserify/0.0.1:
     dev: false
     resolution:
@@ -7552,6 +7774,10 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==
+  /pause/0.0.1:
+    dev: false
+    resolution:
+      integrity: sha1-HUCLP9t2kjuVQ9lvtMnf1TXZy10=
   /pbkdf2/3.1.1:
     dependencies:
       create-hash: 1.2.0
@@ -9789,6 +10015,12 @@ packages:
       typescript: '>=2.3.0-dev || >=2.4.0-dev || >=2.5.0-dev || >=2.6.0-dev || >=2.7.0-dev || >=2.8.0-dev || >=2.9.0-dev || >=3.0.0-dev || >= 3.1.0-dev || >= 3.2.0-dev'
     resolution:
       integrity: sha512-UyNrLdK3E0fQG/xWNqAFAC5ugtFyPO4JJR1KyyfQAyzR8W0fTRrC91A8Wej4BntFzcvETdCSDa/4PnNYJQLYiA==
+  /tsscmp/1.0.6:
+    dev: false
+    engines:
+      node: '>=0.6.x'
+    resolution:
+      integrity: sha512-LxhtAkPDTkVCMQjt2h6eBVY28KCjikZqZfMcC15YBeNjkgUpdCfBu5HoiOTDu86v6smE8yOjyEktJ8hlbANHQA==
   /tsutils/2.28.0_typescript@3.9.7:
     dependencies:
       tslib: 1.13.0
@@ -9867,6 +10099,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-Y2VsbPVs0FIshJztycsO2SfPk7/KAF/T72qzv9u5EpQ4kB2hQoHlhNQTsNyy6ul7lQtqJN/AoWeS23OzEiEFxw==
+  /uid2/0.0.3:
+    dev: false
+    resolution:
+      integrity: sha1-SDEm4Rd03y9xuLY53NeZw3YWK4I=
   /unbzip2-stream/1.4.3:
     dependencies:
       buffer: 5.6.0
@@ -10099,6 +10335,12 @@ packages:
     dev: false
     resolution:
       integrity: sha1-ihagXURWV6Oupe7MWxKk+lN5dyw=
+  /utils-merge/1.0.1:
+    dev: false
+    engines:
+      node: '>= 0.4.0'
+    resolution:
+      integrity: sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
   /uuid/3.4.0:
     dev: false
     hasBin: true
@@ -10375,8 +10617,13 @@ packages:
       '@capacitor/core': 2.3.0
       '@capacitor/ios': 2.3.0_@capacitor+core@2.3.0
       '@deepcase/android-lodash-fix': 0.0.6
+      '@deepcase/auth': 0.0.8_e3d1ab7a82f54489402ce26857899300
       '@deepcase/store': 0.0.7_next@9.4.4+typescript@3.9.7
+      '@types/cookie-session': 2.0.41
+      '@types/debug': 4.1.5
       '@types/node': 14.0.23
+      '@types/passport': 1.0.4
+      '@types/passport-github': 1.1.5
       '@types/react': 16.9.43
       '@zeit/next-css': 1.0.1
       dotenv: 8.2.0
@@ -10404,7 +10651,7 @@ packages:
     dev: false
     name: '@rush-temp/app'
     resolution:
-      integrity: sha512-S1AIDq5NzmcW3XR6mdlPl7TZzi+qz7w28BOH3tLHGQqTBCy8agXSYAKGJ8ZUmkavkELe/6+d34rD+a8ye20dfg==
+      integrity: sha512-qV4xGY6aTAZeGq5tT9EplwZy4aoPlxjM+CMzaO3JuJ0Dp1GJsiuRHpiJ+RcMv07Q5zMk6TG2jfmybtPIQFh8WA==
       tarball: 'file:projects/app.tgz'
     version: 0.0.0
   'file:projects/store.tgz_jimp@0.14.0':
@@ -10442,8 +10689,11 @@ specifiers:
   '@capacitor/core': ^2.3.0
   '@capacitor/ios': ^2.3.0
   '@deepcase/android-lodash-fix': ~0.0.6
+  '@deepcase/auth': ~0.0.8
   '@rush-temp/app': 'file:./projects/app.tgz'
   '@rush-temp/store': 'file:./projects/store.tgz'
+  '@types/cookie-session': ^2.0.41
+  '@types/debug': ^4.1.5
   '@types/next': ^9.0.0
   '@types/node': ^14.0.23
   '@types/react': ^16.9.43

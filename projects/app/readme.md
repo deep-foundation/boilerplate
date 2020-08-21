@@ -2,6 +2,22 @@
 
 ## install
 
+- Before all create `.end` file.
+  ```sh
+  HASURA_PATH='?'
+  HASURA_SSL=1
+  HASURA_SECRET='?'
+  HASURA_CLIENT='?'
+  POSTGRES='postgres://?:?@?:5432/?'
+
+  HOST_URL='http://localhost:3010'
+
+  AUTH_LOGIN='/'
+  GITHUB_CLIENTID='?'
+  GITHUB_CLIENTSECRET='?'
+
+  APP_NAME='deepcase'
+  ```
 - Before capacitor build.
   ```sh
   mkdir -p ./.next && ln -s ~/android-studio/ ./.next/android-studio
