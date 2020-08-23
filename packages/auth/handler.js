@@ -21,6 +21,7 @@ exports.Handler = (options) => (req, res) => {
         debug('authenticate');
         if (options)
             return true;
+        res === null || res === void 0 ? void 0 : res.redirect('/');
     });
 };
 //# sourceMappingURL=handler.js.map

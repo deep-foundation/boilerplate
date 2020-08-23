@@ -5,7 +5,6 @@ import url from 'url';
 import memoize from 'lodash/memoize';
 // @ts-ignore
 import redirect from 'micro-redirect';
-import { Profile } from 'passport-github';
 export { passport };
 
 import { IAuth } from '../index';

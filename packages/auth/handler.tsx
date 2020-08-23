@@ -19,5 +19,6 @@ export const Handler = (options?: any) => (req: NextApiRequest, res: NextApiResp
   passport.authenticate(provider, options)(req, res, () => {
     debug('authenticate');
     if (options) return true;
+    res?.redirect('/');
   });
 };
