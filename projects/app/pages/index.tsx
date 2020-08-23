@@ -88,7 +88,8 @@ export function Auth() {
     <div>auth</div>
     <div><a href="/api/auth/logout">logout</a></div>
     <div><a href="/api/auth/github">github</a></div>
-    <div><a href="/api/auth/local?username=abc&password=abc">abc</a></div>
+    <div><a href="/api/auth/local?username=abc&password=abc">local abc:abc</a></div>
+    <div><a href="/api/auth/local?username=qwe&password=qwe">local qwe:qwe</a></div>
     <div>
       <pre><code>
         {JSON.stringify(identity)}
