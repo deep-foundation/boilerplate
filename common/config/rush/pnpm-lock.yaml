@@ -4,7 +4,7 @@ dependencies:
   '@capacitor/core': 2.3.0
   '@capacitor/ios': 2.3.0_@capacitor+core@2.3.0
   '@deepcase/android-lodash-fix': 0.0.6
-  '@deepcase/auth': 0.0.8_e3d1ab7a82f54489402ce26857899300
+  '@deepcase/auth': 0.0.12_e3d1ab7a82f54489402ce26857899300
   '@rush-temp/app': 'file:projects/app.tgz'
   '@rush-temp/store': 'file:projects/store.tgz_jimp@0.14.0'
   '@types/cookie-session': 2.0.41
@@ -1148,7 +1148,7 @@ packages:
     resolution:
       integrity: sha512-j0cgqkYtlLfCgwbKgsmr7Tc7h4R3S0Nlr316pzmy5bQo8xfdrl7LY/a167vCVzX/hllgK29yPdxJK+1C9kEbdQ==
       tarball: download/@deepcase/android-lodash-fix/0.0.6/4acbab6b8b0488c04874e19b02d6cea42fb067f98f6fa3975808eb166bef8a52
-  /@deepcase/auth/0.0.8_e3d1ab7a82f54489402ce26857899300:
+  /@deepcase/auth/0.0.12_e3d1ab7a82f54489402ce26857899300:
     dependencies:
       cookie-session: 1.4.0
       debug: 4.1.1
@@ -1167,8 +1167,8 @@ packages:
       react: ^16.13.1
       react-dom: ^16.13.1
     resolution:
-      integrity: sha512-5YIuLrTxmPGaNaA3O8IcBmqY8orq9Y/7bicegAOiGxbA9DAq0V9cziqYzzu7kU266lrgP1WFRgUDFpKAdYqYDw==
-      tarball: download/@deepcase/auth/0.0.8/e2417ed31837946a7f27c7ef48f6226a51a8486179c3a5388ec1e0a9f0adc79d
+      integrity: sha512-l/N1fx0T6TW7N4zRB6J6gU+po5WRRFZogbp0VOysTRf8zTx0krNDvsAR4AsLKh3dNISmPBBxODNZ8j3CdVXOFA==
+      tarball: download/@deepcase/auth/0.0.12/cb0831b0209f27f8f7881574c7b54431d6d2dc5ae3ca528b0eb79067f181b760
   /@deepcase/store/0.0.7_next@9.4.4+typescript@3.9.7:
     dependencies:
       '@types/react-dom': 16.9.8
@@ -10617,7 +10617,7 @@ packages:
       '@capacitor/core': 2.3.0
       '@capacitor/ios': 2.3.0_@capacitor+core@2.3.0
       '@deepcase/android-lodash-fix': 0.0.6
-      '@deepcase/auth': 0.0.8_e3d1ab7a82f54489402ce26857899300
+      '@deepcase/auth': 0.0.12_e3d1ab7a82f54489402ce26857899300
       '@deepcase/store': 0.0.7_next@9.4.4+typescript@3.9.7
       '@types/cookie-session': 2.0.41
       '@types/debug': 4.1.5
@@ -10651,7 +10651,7 @@ packages:
     dev: false
     name: '@rush-temp/app'
     resolution:
-      integrity: sha512-qV4xGY6aTAZeGq5tT9EplwZy4aoPlxjM+CMzaO3JuJ0Dp1GJsiuRHpiJ+RcMv07Q5zMk6TG2jfmybtPIQFh8WA==
+      integrity: sha512-w8hzmrobK6HhDmrSUMnN+q74KjSUp+A7gAoGdXbxsxEAXU9nCVrarkDGtWEhcGaHe/b/s5H8karSLVWUKASiew==
       tarball: 'file:projects/app.tgz'
     version: 0.0.0
   'file:projects/store.tgz_jimp@0.14.0':
@@ -10689,7 +10689,7 @@ specifiers:
   '@capacitor/core': ^2.3.0
   '@capacitor/ios': ^2.3.0
   '@deepcase/android-lodash-fix': ~0.0.6
-  '@deepcase/auth': ~0.0.8
+  '@deepcase/auth': ~0.0.12
   '@rush-temp/app': 'file:./projects/app.tgz'
   '@rush-temp/store': 'file:./projects/store.tgz'
   '@types/cookie-session': ^2.0.41

@@ -6,8 +6,6 @@ import { NextPageContext } from 'next';
 
 export interface IAuth {
   id: number;
-  name: string;
-  email: string;
 }
 type IdentityProviderProps = Readonly<AppInitialProps> & {
   session: IAuth;
@@ -46,7 +44,6 @@ const withAuth = (App: NextApp | any) => {
       }
 
       const { passportSession } = nextCookie(ctx.ctx);
-      console.log({ passportSession });
 
       // Redirect to login if page is protected but no session exists
       if (!passportSession) {

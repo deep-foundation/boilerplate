@@ -69,7 +69,6 @@ const withAuth = (App) => {
                         appProps = { pageProps: {} };
                     }
                     const { passportSession } = next_cookies_1.default(ctx.ctx);
-                    console.log({ passportSession });
                     if (!passportSession) {
                         exports.redirectToLogin(ctx.ctx);
                         return Promise.resolve({
