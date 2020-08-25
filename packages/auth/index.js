@@ -42,22 +42,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useAuth = exports.redirectToLogin = void 0;
+exports.useAuth = exports.defaultConfig = exports.redirectToLogin = void 0;
 const react_1 = __importStar(require("react"));
 const next_cookies_1 = __importDefault(require("next-cookies"));
 const redirect_1 = __importDefault(require("./redirect"));
 const app_1 = __importDefault(require("next/app"));
 const AuthContext = react_1.default.createContext(null);
-const loginPage = process.env.AUTH_LOGIN;
-exports.redirectToLogin = (ctx) => {
+exports.redirectToLogin = (ctx, loginPage = process.env.AUTH_LOGIN) => {
     if ((ctx && ctx.pathname === loginPage) ||
         (typeof window !== 'undefined' && window.location.pathname === loginPage)) {
         return;
     }
     redirect_1.default(ctx, loginPage);
 };
-const withAuth = (App) => {
+exports.defaultConfig = {
+    handleUser: (user, ctx) => {
+        if (!user)
+            exports.redirectToLogin(ctx.ctx);
+    },
+    handleSession: (session, ctx) => {
+        if (!session) {
+            exports.redirectToLogin(ctx.ctx);
+            return Promise.resolve({
+                pageProps: null,
+                session: null,
+            });
+        }
+    },
+};
+const withAuth = (App, config = exports.defaultConfig) => {
     var _a;
+    const _config = Object.assign(Object.assign({}, exports.defaultConfig), config);
     return _a = class IdentityProvider extends react_1.default.Component {
             static getInitialProps(ctx) {
                 return __awaiter(this, void 0, void 0, function* () {
@@ -69,18 +84,12 @@ const withAuth = (App) => {
                         appProps = { pageProps: {} };
                     }
                     const { passportSession } = next_cookies_1.default(ctx.ctx);
-                    if (!passportSession) {
-                        exports.redirectToLogin(ctx.ctx);
-                        return Promise.resolve({
-                            pageProps: null,
-                            session: null,
-                        });
-                    }
+                    const handledSession = _config.handleSession(passportSession, ctx);
+                    if (handledSession)
+                        return handledSession;
                     const serializedCookie = Buffer.from(passportSession, 'base64').toString();
                     const { passport: { user }, } = JSON.parse(serializedCookie);
-                    if (!user) {
-                        exports.redirectToLogin(ctx.ctx);
-                    }
+                    _config.handleUser(user, ctx);
                     const session = user;
                     return Object.assign(Object.assign({}, appProps), { session });
                 });

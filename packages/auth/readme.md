@@ -40,7 +40,7 @@ App session context wrapper.
 // pages/_app.tsx
 import App from 'next/app';
 import React from 'react';
-import withAuth from '@deepcase/auth';
+import withAuth, { IAuth } from '@deepcase/auth';
 
 class MyApp extends App {
   render() {
@@ -49,7 +49,24 @@ class MyApp extends App {
   }
 }
 
-export default withAuth(MyApp);
+export default withAuth(MyApp, {
+  // optional handlers (default already defined)
+
+  // redirect if no user
+  handleUser: (user: IAuth, ctx) => {
+    if (!user) redirectToLogin(ctx.ctx, process.env.AUTH_LOGIN);
+  },
+  // redirect if no session
+  handleSession: (session: any, ctx) => {
+    if (!session) {
+      redirectToLogin(ctx.ctx);
+      return Promise.resolve({
+        pageProps: null,
+        session: (null as unknown) as IAuth,
+      });
+    }
+  },
+});
 ```
 
 Request route.

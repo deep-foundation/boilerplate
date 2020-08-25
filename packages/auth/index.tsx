@@ -15,9 +15,7 @@ const AuthContext = React.createContext<IAuth>(
   (null as unknown) as IAuth,
 );
 
-const loginPage = process.env.AUTH_LOGIN;
-
-export const redirectToLogin = (ctx: NextPageContext) => {
+export const redirectToLogin = (ctx: NextPageContext, loginPage: string = process.env.AUTH_LOGIN) => {
   if (
     (ctx && ctx.pathname === loginPage) ||
     (typeof window !== 'undefined' && window.location.pathname === loginPage)
@@ -28,8 +26,27 @@ export const redirectToLogin = (ctx: NextPageContext) => {
   redirect(ctx, loginPage);
 };
 
+export const defaultConfig = {
+  handleUser: (user: IAuth, ctx) => {
+    if (!user) redirectToLogin(ctx.ctx);
+  },
+  handleSession: (session: any, ctx) => {
+    if (!session) {
+      redirectToLogin(ctx.ctx);
+      return Promise.resolve({
+        pageProps: null,
+        session: (null as unknown) as IAuth,
+      });
+    }
+  },
+};
+
 // any is needed to use as JSX element
-const withAuth = (App: NextApp | any) => {
+const withAuth = (App: NextApp | any, config: {
+  handleUser: (user: IAuth, ctx) => any;
+  handleSession: (session: any, ctx) => any;
+} = defaultConfig) => {
+  const _config = { ...defaultConfig, ...config };
   return class IdentityProvider extends React.Component<IdentityProviderProps> {
     static displayName = process.env.APP_NAME;
     static async getInitialProps(
@@ -45,14 +62,8 @@ const withAuth = (App: NextApp | any) => {
 
       const { passportSession } = nextCookie(ctx.ctx);
 
-      // Redirect to login if page is protected but no session exists
-      if (!passportSession) {
-        redirectToLogin(ctx.ctx);
-        return Promise.resolve({
-          pageProps: null,
-          session: (null as unknown) as IAuth,
-        });
-      }
+      const handledSession = _config.handleSession(passportSession, ctx);
+      if (handledSession) return handledSession;
 
       const serializedCookie = Buffer.from(passportSession, 'base64').toString();
 
@@ -62,10 +73,7 @@ const withAuth = (App: NextApp | any) => {
         passport: { user: IAuth },
       } = JSON.parse(serializedCookie);
 
-      // redirect to login if cookie exists but is empty
-      if (!user) {
-        redirectToLogin(ctx.ctx);
-      }
+      _config.handleUser(user, ctx);
 
       const session: IAuth = user;
 
