@@ -2,7 +2,7 @@
 
 ## install
 
-- Before all create `.end` file.
+- Before all create `.env` file.
   ```sh
   HASURA_PATH='?'
   HASURA_SSL=1
