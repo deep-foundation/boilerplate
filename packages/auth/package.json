@@ -1,0 +1,47 @@
+{
+  "name": "@deepcase/auth",
+  "version": "0.0.14",
+  "license": "ISC",
+  "author": "Ivan S Glazunov <ivansglazunov@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/deepcase/boilerplate.git",
+    "directory": "packages/auth"
+  },
+  "description": "",
+  "scripts": {
+    "build": "npx tsc --project tsconfig.json",
+    "lint": "npx tslint -c tslint.json --project tsconfig.json"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "bin": "./index.js",
+  "dependencies": {
+    "cookie-session": "^1.4.0",
+    "debug": "^4.1.1",
+    "micro-redirect": "^1.0.2",
+    "next-cookies": "^2.0.3",
+    "node": "^14.7.0",
+    "passport": "^0.4.1",
+    "passport-github": "^1.1.0",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "@types/next": "^9.0.0",
+    "@types/node": "^14.0.27",
+    "@types/react": "^16.9.44",
+    "@types/react-dom": "^16.9.8",
+    "tslint": "^6.1.2",
+    "tslint-config-airbnb": "^5.11.2",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.9.7",
+    "@types/passport": "^1.0.4",
+    "@types/passport-github": "^1.1.5"
+  },
+  "peerDependencies": {
+    "next": "^9.4.4",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}

@@ -11,8 +11,6 @@ const withTM = require('next-transpile-modules');
 
 var ASSET_PREFIX = process.env.ASSET_PREFIX || '';
 
-console.log({ASSET_PREFIX});
-
 module.exports = withPlugins(
   [
     [

@@ -32,7 +32,7 @@ export const LocalStoreProvider = ({
           _setValue(json);
         }
         const fn = (value) => {
-          if (typeof(item) === 'undefined' || isNull(item)) _setValue(defaultValue)
+          if (typeof(item) === 'undefined' || isNull(item)) _setValue(JSON.stringify(defaultValue));
           else _setValue(value);
         };
         localStorageEvent.on(key, fn);
