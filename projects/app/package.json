@@ -14,7 +14,7 @@
     "@capacitor/cli": "^2.3.0",
     "@capacitor/core": "^2.3.0",
     "@capacitor/ios": "^2.3.0",
-    "@deepcase/auth": "~0.0.13",
+    "@deepcase/auth": "~0.0.14",
     "@deepcase/store": "~0.0.12",
     "@zeit/next-css": "^1.0.1",
     "dotenv": "^8.2.0",
