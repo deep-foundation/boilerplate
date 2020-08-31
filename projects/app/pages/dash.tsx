@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import Rete from 'rete';
 import ReactRenderPlugin from 'rete-react-render-plugin';
-import { createEditor } from '../imports/rete';
+import { createEditor } from '../imports/dash/rete';
 
-class MyReactControl extends React.Component {
+class MyReactControl extends React.Component<any> {
 
   componentDidMount() {
       // this.props.getData
@@ -12,12 +12,15 @@ class MyReactControl extends React.Component {
 
   render() {
     return (
-        <div>Hello ${this.props.name}!</div>
-    )
+      <div>Hello ${this.props.name}!</div>
+    );
   }
 }
 
 class MyControl extends Rete.Control {
+  render: string;
+  component: any;
+  props: any;
   constructor(emitter, key, name) {
     super(key);
     this.render = 'react';
@@ -28,6 +31,6 @@ class MyControl extends Rete.Control {
 
 export default function Page() {
   return <div style={{ position: 'fixed', left: 0, top: 0, width: '100%', height: '100%' }}>
-    <div ref={(ref) => ref && createEditor(ref)}/>
+    <div ref={ref => ref && createEditor(ref)}/>
   </div>;
 }
