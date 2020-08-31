@@ -45,6 +45,11 @@ module.exports = withPlugins(
           test: /\.mjs$/,
           use: [],
         },
+        {
+          test: /\.(graphql|gql)$/,
+          exclude: /node_modules/,
+          loader: 'graphql-tag/loader'
+        },
       );
       
       config.plugins = config.plugins || []

@@ -16,11 +16,11 @@ export const initPassport = () => applyPassport((passport) => {
 
   passport.serializeUser((user, done) => {
     debug('serializeUser', user);
-    done(null, { id: user.id });
+    done(null, { id: user.id, token: user.id });
   });
 
   passport.deserializeUser((id, done) => {
     debug('deserializeUser', id);
-    done(null, { id });
+    done(null, { id, token: id });
   });
 });
