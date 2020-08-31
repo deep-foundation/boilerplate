@@ -27,11 +27,7 @@ class MyControl extends Rete.Control {
 }
 
 export default function Page() {
-  return <>
-  123
-    <div
-      style={{ position: 'fixed', left: 0, top: 0, width: '100%', height: '100%' }}
-      ref={(ref) => ref && createEditor(ref)}
-    />
-  </>;
+  return <div style={{ position: 'fixed', left: 0, top: 0, width: '100%', height: '100%' }}>
+    <div ref={(ref) => ref && createEditor(ref)}/>
+  </div>;
 }

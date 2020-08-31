@@ -10,7 +10,7 @@ import CleanCSS from 'clean-css';
 import autoprefixer from "autoprefixer";
 import postcss from 'postcss';
 
-import { defaultTheme } from '../imports/project/themes/default';
+import { theme } from '../imports/theme';
 
 export default class MyDocument extends Document {
   render() {
@@ -27,7 +27,7 @@ export default class MyDocument extends Document {
           {/* PWA primary color */}
           <meta
             name="theme-color"
-            content={defaultTheme.palette.primary.main}
+            content={theme.palette.primary.main}
           />
         </Head>
         <body>
