@@ -42,10 +42,6 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "responsive-loader": "^1.2.0",
-    "rete": "^1.4.4",
-    "rete-area-plugin": "^0.2.1",
-    "rete-connection-plugin": "^0.9.0",
-    "rete-react-render-plugin": "^0.2.1",
     "svg-sprite-loader": "^5.0.0",
     "webp-loader": "^0.6.0"
   },
@@ -60,7 +56,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "devDependencies": {
-    "@deepcase/android-lodash-fix": "~0.0.6",
+    "@deepcase/android-lodash-fix": "0.0.7",
     "@types/cookie-session": "^2.0.41",
     "@types/debug": "^4.1.5",
     "@types/node": "^14.0.23",
