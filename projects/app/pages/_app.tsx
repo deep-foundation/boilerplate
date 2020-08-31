@@ -18,12 +18,12 @@ export default withAuth(MyApp, {
   },
   // redirect if no session
   handleSession: (session: any, ctx) => {
-    // if (!session) {
-    //   redirectToLogin(ctx.ctx);
-    //   return Promise.resolve({
-    //     pageProps: null,
-    //     session: (null as unknown) as IAuth,
-    //   });
-    // }
+    if (!session) {
+      // redirectToLogin(ctx.ctx);
+      return Promise.resolve({
+        pageProps: null,
+        session: (null as unknown) as IAuth,
+      });
+    }
   },
 });

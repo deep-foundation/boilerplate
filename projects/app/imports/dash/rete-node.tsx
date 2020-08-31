@@ -2,14 +2,16 @@ import React from 'react';
 import { Node, Socket, Control } from 'rete-react-render-plugin';
 
 export class MyNode extends Node {
+  props: any;
+  state: any;
   render() {
     const { node, bindSocket, bindControl } = this.props;
     const { outputs, controls, inputs, selected } = this.state;
 
     return (
-      <div className={`node ${selected}`} style={{ background: "grey" }}>
+      <div className={`node ${selected}`} style={{ background: 'grey' }}>
         <div className="title">
-          {"<<"} {node.name} {">>"}
+          {'<<'} {node.name} {'>>'}
         </div>
         {/* Outputs */}
         {outputs.map(output => (

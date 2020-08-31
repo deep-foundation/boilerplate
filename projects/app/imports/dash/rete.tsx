@@ -12,13 +12,17 @@ class NumControl extends Rete.Control {
     <input
       type="number"
       value={value}
-      ref={ref => {
+      ref={(ref) => {
         ref && ref.addEventListener('pointerdown', e => e.stopPropagation());
       }}
       onChange={e => onChange(+e.target.value)}
     />
-  );
+  )
 
+  emitter: any;
+  key: any;
+  component: any;
+  props: any;
   constructor(emitter, key, node, readonly = false) {
     super(key);
     this.emitter = emitter;
@@ -31,16 +35,17 @@ class NumControl extends Rete.Control {
     this.props = {
       readonly,
       value: initial,
-      onChange: v => {
+      onChange: (v) => {
         this.setValue(v);
         this.emitter.trigger('process');
-      }
+      },
     };
   }
 
   setValue(val) {
     this.props.value = val;
     this.putData(this.key, val);
+    // @ts-ignore
     this.update();
   }
 }
@@ -51,8 +56,8 @@ class NumComponent extends Rete.Component {
   }
 
   builder(node) {
-    let out1 = new Rete.Output('num', 'Number', numSocket);
-    let ctrl = new NumControl(this.editor, 'num', node);
+    const out1 = new Rete.Output('num', 'Number', numSocket);
+    const ctrl = new NumControl(this.editor, 'num', node);
 
     return node.addControl(ctrl).addOutput(out1);
   }
@@ -65,13 +70,14 @@ class NumComponent extends Rete.Component {
 class AddComponent extends Rete.Component {
   constructor() {
     super('Add');
+    // @ts-ignore
     this.data.component = MyNode; // optional
   }
 
   builder(node) {
-    let inp1 = new Rete.Input('num1', 'Number', numSocket);
-    let inp2 = new Rete.Input('num2', 'Number2', numSocket);
-    let out = new Rete.Output('num', 'Number', numSocket);
+    const inp1 = new Rete.Input('num1', 'Number', numSocket);
+    const inp2 = new Rete.Input('num2', 'Number2', numSocket);
+    const out = new Rete.Output('num', 'Number', numSocket);
 
     inp1.addControl(new NumControl(this.editor, 'num1', node));
     inp2.addControl(new NumControl(this.editor, 'num2', node));
@@ -84,35 +90,36 @@ class AddComponent extends Rete.Component {
   }
 
   worker(node, inputs, outputs) {
-    let n1 = inputs['num1'].length ? inputs['num1'][0] : node.data.num1;
-    let n2 = inputs['num2'].length ? inputs['num2'][0] : node.data.num2;
-    let sum = n1 + n2;
+    const n1 = inputs['num1'].length ? inputs['num1'][0] : node.data.num1;
+    const n2 = inputs['num2'].length ? inputs['num2'][0] : node.data.num2;
+    const sum = n1 + n2;
 
     this.editor.nodes
-      .find(n => n.id == node.id)
+      .find(n => n.id === node.id)
       .controls.get('preview')
+      // @ts-ignore
       .setValue(sum);
     outputs['num'] = sum;
   }
 }
 
 export async function createEditor(container) {
-  let components = [new NumComponent(), new AddComponent()];
+  const components = [new NumComponent(), new AddComponent()];
 
-  let editor = new Rete.NodeEditor('demo@0.1.0', container);
+  const editor = new Rete.NodeEditor('demo@0.1.0', container);
   editor.use(ConnectionPlugin);
   editor.use(ReactRenderPlugin);
 
-  let engine = new Rete.Engine('demo@0.1.0');
+  const engine = new Rete.Engine('demo@0.1.0');
 
-  components.map(c => {
+  components.map((c) => {
     editor.register(c);
     engine.register(c);
   });
 
-  let n1 = await components[0].createNode({ num: 2 });
-  let n2 = await components[0].createNode({ num: 3 });
-  let add = await components[1].createNode();
+  const n1 = await components[0].createNode({ num: 2 });
+  const n2 = await components[0].createNode({ num: 3 });
+  const add = await components[1].createNode();
 
   n1.position = [80, 200];
   n2.position = [80, 400];
@@ -126,12 +133,13 @@ export async function createEditor(container) {
   editor.connect(n2.outputs.get('num'), add.inputs.get('num2'));
 
   editor.on(
+    // @ts-ignore
     'process nodecreated noderemoved connectioncreated connectionremoved',
     async () => {
       console.log('process');
       await engine.abort();
       await engine.process(editor.toJSON());
-    }
+    },
   );
 
   editor.view.resize();
