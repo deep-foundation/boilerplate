@@ -17,7 +17,7 @@
     "@capacitor/core": "^2.3.0",
     "@capacitor/ios": "^2.3.0",
     "@deepcase/auth": "~0.0.15",
-    "@deepcase/store": "~0.0.12",
+    "@deepcase/store": "~0.0.15",
     "@material-ui/core": "^4.11.0",
     "@material-ui/styles": "^4.10.0",
     "@zeit/next-css": "^1.0.1",

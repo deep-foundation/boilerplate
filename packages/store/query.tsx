@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { Context, ReactNode, useState, useEffect, createContext } from 'react';
+import React, { Context, ReactNode, useState, createContext } from 'react';
 import Debug from 'debug';
 
 import { IStoreContext, defaultContext, useStore } from './store';
@@ -25,7 +25,7 @@ export const QueryStoreProvider = ({
       const router = useRouter();
       const { query, pathname, push } = router || fakeRouter;
 
-      const [setValue] = useState(() => (value) => {
+      const setValue = (value) => {
         try {
           push({
             pathname,
@@ -37,7 +37,7 @@ export const QueryStoreProvider = ({
         } catch (error) {
           debug('setStore:error', { error, key, defaultValue, value });
         }
-      });
+      };
 
       const [unsetValue] = useState(() => () => {
         try {

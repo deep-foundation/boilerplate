@@ -49,8 +49,9 @@ exports.CapacitorStoreProvider = ({ context = exports.CapacitorStoreContext, chi
                 capacitorStorageEvent.emit(key, defaultValue);
             });
             getStateRef.current = () => core_1.Storage.get({ key }).then(({ value }) => {
-                if (typeof (value) === 'undefined' || lodash_1.isNull(value))
+                if (typeof (value) === 'undefined' || lodash_1.isNull(value)) {
                     setState(defaultValue);
+                }
                 else {
                     let valueParsed;
                     try {
