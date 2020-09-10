@@ -5,6 +5,8 @@ import { LocalStoreProvider, useLocalStore } from '@deepcase/store/local';
 import { CapacitorStoreProvider, useCapacitorStore } from '@deepcase/store/capacitor';
 import { wrap } from '../imports/wrap';
 import { useAuth } from '@deepcase/auth';
+import { useQuery } from '@apollo/react-hooks';
+import USERS from '../imports/gql/USERS.gql';
 
 export function ContentQuery() {
   const [value, setValue, unsetValue] = useQueryStore('demo', 5);
@@ -83,7 +85,7 @@ export function ContentCapacitorListener() {
 }
 
 export function Auth() {
-  const identity = useAuth();
+  const auth = useAuth();
   return <>
     <div>auth</div>
     <div><a href="/api/auth/logout">logout</a></div>
@@ -92,7 +94,19 @@ export function Auth() {
     <div><a href="/api/auth/local?username=qwe&password=qwe">local qwe:qwe</a></div>
     <div>
       <pre><code>
-        {JSON.stringify(identity)}
+        {JSON.stringify(auth)}
+      </code></pre>
+    </div>
+  </>;
+}
+
+export function Query() {
+  const q = useQuery(USERS);
+  return <>
+    <div>
+      <pre><code>
+        {JSON.stringify(q.error)}
+        {JSON.stringify(q.data)}
       </code></pre>
     </div>
   </>;
@@ -118,6 +132,8 @@ export function Content() {
     <ContentCapacitorListener/>
     <hr/>
     <Auth/>
+    <hr/>
+    <Query/>
   </>;
 }
 

@@ -5,9 +5,10 @@ import NextApp, { AppInitialProps, AppContext } from 'next/app';
 import { NextPageContext } from 'next';
 
 export interface IAuth {
-  id: number;
+  id: string;
+  [key: string]: any;
 }
-type IdentityProviderProps = Readonly<AppInitialProps> & {
+type AuthProviderProps<IAuth> = Readonly<AppInitialProps> & {
   session: IAuth;
 };
 
@@ -47,11 +48,11 @@ const withAuth = (App: NextApp | any, config: {
   handleSession: (session: any, ctx) => any;
 } = defaultConfig) => {
   const _config = { ...defaultConfig, ...config };
-  return class IdentityProvider extends React.Component<IdentityProviderProps> {
+  return class AuthProvider extends React.Component<AuthProviderProps<IAuth>> {
     static displayName = process.env.APP_NAME;
     static async getInitialProps(
       ctx: AppContext,
-    ): Promise<IdentityProviderProps> {
+    ): Promise<AuthProviderProps<IAuth>> {
       // Get inner app's props
       let appProps: AppInitialProps;
       if (NextApp.getInitialProps) {

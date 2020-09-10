@@ -2,15 +2,12 @@
 
 ## install
 
-- Before all create `.end` file.
+- Before all create `.env` file.
   ```sh
   HASURA_PATH='?'
   HASURA_SSL=1
-  HASURA_SECRET='?'
-  HASURA_CLIENT='?'
-  POSTGRES='postgres://?:?@?:5432/?'
 
-  HOST_URL='http://localhost:3010'
+  HOST_URL='http://localhost:4000'
 
   AUTH_LOGIN='/'
   GITHUB_CLIENTID='?'
@@ -24,6 +21,12 @@
   ```
 
 ## workflow
+
+### develop
+
+```sh
+npm run dev 4000
+```
 
 ### android
 

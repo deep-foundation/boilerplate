@@ -40,8 +40,9 @@ export const CapacitorStoreProvider = ({
         capacitorStorageEvent.emit(key, defaultValue);
       });
       getStateRef.current = () => Storage.get({ key }).then(({ value }) => {
-        if (typeof(value) === 'undefined' || isNull(value)) setState(defaultValue);
-        else {
+        if (typeof(value) === 'undefined' || isNull(value)) {
+          setState(defaultValue);
+        } else {
           let valueParsed: any;
           try {
             valueParsed = JSON.parse(value);
@@ -62,13 +63,13 @@ export const CapacitorStoreProvider = ({
           const fn = (value) => {
             if (typeof(value) === 'undefined' || isNull(value)) setState(defaultValue);
             else setState(value);
-          }
+          };
           intervalRef.current = setInterval(() => getStateRef.current(), fetchInterval);
           capacitorStorageEvent.on(key, fn);
           return () => {
             clearInterval(intervalRef.current);
             capacitorStorageEvent.off(key, fn);
-          }
+          };
         },
         [],
       );

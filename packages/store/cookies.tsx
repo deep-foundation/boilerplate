@@ -1,9 +1,9 @@
 import React, { Context, ReactNode, useState, createContext } from 'react';
-import { useCookies, CookiesProvider, ReactCookieProps } from 'react-cookie';
+import { useCookies, CookiesProvider } from 'react-cookie';
 import Cookies, { Cookie, CookieSetOptions } from 'universal-cookie';
 import Debug from 'debug';
 
-import { StoreContext, IStoreContext, defaultContext, useStore } from './store';
+import { IStoreContext, defaultContext, useStore } from './store';
 
 const debug = Debug('deepcase:use-store:cookie');
 

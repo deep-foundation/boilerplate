@@ -1,6 +1,6 @@
 {
   "name": "@deepcase/store",
-  "version": "0.0.13",
+  "version": "0.0.15",
   "license": "ISC",
   "author": "Ivan S Glazunov <ivansglazunov@gmail.com>",
   "repository": {
@@ -8,15 +8,15 @@
     "url": "ssh://git@github.com/deepcase/boilerplate.git",
     "directory": "packages/store"
   },
+  "pre-commit": [
+    "lint",
+    "build"
+  ],
   "description": "",
   "dependencies": {
-    "@types/react-dom": "^16.9.8",
     "debug": "^4.1.1",
     "lodash": "^4.17.19",
     "react-cookie": "^4.0.3",
-    "tslint": "^6.1.2",
-    "tslint-config-airbnb": "^5.11.2",
-    "tslint-eslint-rules": "^5.4.0",
     "universal-cookie": "^4.0.3"
   },
   "scripts": {
@@ -27,12 +27,17 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "devDependencies": {
+    "@capacitor/core": "^2.3.0",
     "@types/next": "^9.0.0",
     "@types/node": "^14.0.23",
     "@types/react": "^16.9.43",
-    "typescript": "^3.9.7",
-    "@capacitor/core": "^2.3.0",
-    "next": "^9.4.4"
+    "@types/react-dom": "^16.9.8",
+    "next": "^9.4.4",
+    "pre-commit": "^1.2.2",
+    "tslint": "^6.1.2",
+    "tslint-config-airbnb": "^5.11.2",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.9.7"
   },
   "peerDependencies": {
     "next": "^9.4.4",

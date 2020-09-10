@@ -101,7 +101,7 @@ import React from 'react';
 import { useAuth } from '@deepcase/auth';
 
 export default function Page() {
-  const identity = useAuth();
+  const auth = useAuth();
   return <>
     <div>auth</div>
     <div><a href="/api/auth/logout">logout</a></div>
@@ -110,7 +110,7 @@ export default function Page() {
     <div><a href="/api/auth/local?username=qwe&password=qwe">local qwe:qwe</a></div>
     <div>
       <pre><code>
-        {JSON.stringify(identity)}
+        {JSON.stringify(auth)}
       </code></pre>
     </div>
   </>;

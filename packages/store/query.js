@@ -35,7 +35,7 @@ exports.QueryStoreProvider = ({ context = exports.QueryStoreContext, children, }
         return function useStore(key, defaultValue) {
             const router = router_1.useRouter();
             const { query, pathname, push } = router || exports.fakeRouter;
-            const [setValue] = react_1.useState(() => (value) => {
+            const setValue = (value) => {
                 try {
                     push({
                         pathname,
@@ -45,7 +45,7 @@ exports.QueryStoreProvider = ({ context = exports.QueryStoreContext, children, }
                 catch (error) {
                     debug('setStore:error', { error, key, defaultValue, value });
                 }
-            });
+            };
             const [unsetValue] = react_1.useState(() => () => {
                 try {
                     if (query[key])

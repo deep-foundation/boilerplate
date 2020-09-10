@@ -1,11 +1,8 @@
 import React, { Context, ReactNode, useState, createContext, useEffect } from 'react';
 import { EventEmitter } from 'events';
 import { isNull } from 'lodash';
-import Debug from 'debug';
 
-import { StoreContext, IStoreContext, defaultContext, useStore } from './store';
-
-const debug = Debug('deepcase:use-store:local');
+import { IStoreContext, defaultContext, useStore } from './store';
 
 const localStorageEvent = new EventEmitter();
 
@@ -24,23 +21,26 @@ export const LocalStoreProvider = ({
       defaultValue: T,
     ): [T, (value: T) => any, () => any] {
       const [value, _setValue] = useState<string>(typeof(localStorage) === 'undefined' ? JSON.stringify(defaultValue) : localStorage.getItem(key));
-      useEffect(() => {
-        const item = localStorage.getItem(key);
-        if (typeof(item) === 'undefined' || isNull(item)) {
-          const json = JSON.stringify(defaultValue);
-          localStorage.setItem(key, json);
-          _setValue(json);
-        }
-        const fn = (value) => {
-          if (typeof(item) === 'undefined' || isNull(item)) _setValue(JSON.stringify(defaultValue));
-          else _setValue(value);
-        };
-        localStorageEvent.on(key, fn);
-        return () => {
-          localStorageEvent.off(key, fn);
-        };
-      }, []);
-      const [setValue] = useState(() => value => {
+      useEffect(
+        () => {
+          const item = localStorage.getItem(key);
+          if (typeof(item) === 'undefined' || isNull(item)) {
+            const json = JSON.stringify(defaultValue);
+            localStorage.setItem(key, json);
+            _setValue(json);
+          }
+          const fn = (value) => {
+            if (typeof(item) === 'undefined' || isNull(item)) _setValue(JSON.stringify(defaultValue));
+            else _setValue(value);
+          };
+          localStorageEvent.on(key, fn);
+          return () => {
+            localStorageEvent.off(key, fn);
+          };
+        },
+        [],
+      );
+      const [setValue] = useState(() => (value) => {
         const json = JSON.stringify(value);
         localStorage.setItem(key, json);
         _setValue(json);
@@ -51,7 +51,7 @@ export const LocalStoreProvider = ({
         localStorageEvent.emit(key, defaultValue);
       });
       return [JSON.parse(value), setValue, unsetValue];
-    }
+    };
   });
 
   return <context.Provider value={{ useStore }}>

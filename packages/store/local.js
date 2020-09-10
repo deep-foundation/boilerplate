@@ -18,17 +18,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useLocalStore = exports.LocalStoreProvider = exports.LocalContext = void 0;
 const react_1 = __importStar(require("react"));
 const events_1 = require("events");
 const lodash_1 = require("lodash");
-const debug_1 = __importDefault(require("debug"));
 const store_1 = require("./store");
-const debug = debug_1.default('deepcase:use-store:local');
 const localStorageEvent = new events_1.EventEmitter();
 exports.LocalContext = react_1.createContext(store_1.defaultContext);
 exports.LocalStoreProvider = ({ context = exports.LocalContext, children, }) => {
@@ -53,7 +48,7 @@ exports.LocalStoreProvider = ({ context = exports.LocalContext, children, }) => 
                     localStorageEvent.off(key, fn);
                 };
             }, []);
-            const [setValue] = react_1.useState(() => value => {
+            const [setValue] = react_1.useState(() => (value) => {
                 const json = JSON.stringify(value);
                 localStorage.setItem(key, json);
                 _setValue(json);
