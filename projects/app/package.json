@@ -60,9 +60,6 @@
     "start": "next start -p $PORT",
     "lint": "npx tslint -c tslint.json --project tsconfig.json"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "devDependencies": {
     "@deepcase/android-lodash-fix": "0.0.7",
     "@types/cookie-session": "^2.0.41",
