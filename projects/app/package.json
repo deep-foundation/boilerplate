@@ -47,6 +47,7 @@
     "passport-local": "^1.0.0",
     "postcss": "^7.0.32",
     "react": "^16.13.1",
+    "react-d3-tree": "^1.16.1",
     "react-dom": "^16.13.1",
     "responsive-loader": "^1.2.0",
     "subscriptions-transport-ws": "^0.9.18",
