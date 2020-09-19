@@ -13,9 +13,6 @@
     "build": "npx tsc --project tsconfig.json",
     "lint": "npx tslint -c tslint.json --project tsconfig.json"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "bin": "./index.js",
   "dependencies": {
     "cookie-session": "^1.4.0",

@@ -1,5 +1,9 @@
 # deepcase boilerplate
 
+![https://www.npmjs.com/settings/deepcase/packages](https://img.shields.io/badge/deepcase-npm%20corp-red)
+
+---
+
 ## requirements
 
 - node.js v8.6 or later
@@ -8,12 +12,6 @@
 ## install
 
 - Global
-  - Create `~/.npmrc`.
-  ```sh
-  //npm.pkg.github.com/:_authToken=<GITHUB_TOKEN>
-  registry=https://registry.npmjs.org
-  @deepcase:registry=https://npm.pkg.github.com
-  ```
   - Install `rush`: `npm install -g @microsoft/rush`
 - Local
   - Clone this repo and `cd` into it.

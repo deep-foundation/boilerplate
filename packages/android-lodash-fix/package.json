@@ -10,9 +10,6 @@
   },
   "description": "",
   "scripts": {},
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
-  },
   "bin": "./index.js",
   "dependencies": {
     "debug": "^4.1.1",
