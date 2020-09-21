@@ -26,61 +26,36 @@ export function ReteNodeReact({
 }) {
   const { outputs, controls, inputs, selected } = ReteState;
 
-  // const q = useSubscription(NODE, { variables: { nodeId } });
-  // const node = q?.data?.nodes?.[0];
-  // const nodeRef = useRef<any | void>();
-  // useEffect(() => {
-  //   if (node && !nodeRef) {
-  //     nodeRef.current = node;
-  //     const inp2 = new Rete.Input("num2", "Number2", new Rete.Socket("Number value"));
-  //   // const inp1 = new Rete.Input("num1", "Number", numSocket);
-  //   // const out = new Rete.Output("num", "Number", numSocket);
-  //   // inp1.addControl(new NumControl(this.editor, "num1", node));
-  //   // inp2.addControl(new NumControl(this.editor, "num2", node));
-
-  //     ReteProps.node.addInput(inp2);
-  //     ReteProps.node.update();
-  //   //   .addInput(inp1)
-  //   //   .addControl(new NumControl(this.editor, "preview", node, true))
-  //   //   .addOutput(out);
-  //     update();
-  //   }
-  // }, [node]);
-
-  console.log({ ReteProps, ReteState });
-
   return <Paper>
     <ListItem divider >
-      <ListItemText primary={ReteProps?.node?.name}/>
+      <ListItemText primary={ReteProps?.node?.id} secondary={ReteProps?.node?.name}/>
     </ListItem>
-
-    <Divider/>
 
     {true && <>
 
     {/* Outputs */}
-    {outputs.map((output) => (<>
-      <Socket Component={() => <CustomDot/>} type="output" socket={output.socket} io={output} innerRef={ReteProps.bindSocket} rootProps={{ style: { float: 'right', height: 40 }}}/>
-      <ListItem divider key={output.key}>
-        <ListItemText primary={output.name} secondary={output.key}/>
-      </ListItem>
-    </>))}
-
-    <Divider/>
+    {outputs.map((output) => {
+      const input = inputs.find(input => input.key === output.key);
+      return <>
+        {!!input && <Socket Component={() => <CustomDot/>} type="input" socket={input.socket} io={input} innerRef={ReteProps.bindSocket} rootProps={{ style: { float: 'left', height: 40 }}}/>}
+        <Socket Component={() => <CustomDot/>} type="output" socket={output.socket} io={output} innerRef={ReteProps.bindSocket} rootProps={{ style: { float: 'right', height: 40 }}}/>
+        <ListItem divider key={output.key}>
+          <ListItemText primary={output.name} secondary={output.key}/>
+        </ListItem>
+      </>;
+    })}
 
     {/* Controls */}
-    {controls.map((control) => (<>
+    {/* {controls.map((control) => (<>
       <ListItem divider key={control.key}>
         <ListItemText primary={<>
           <Control className="control" key={control.key} control={control} innerRef={ReteProps.bindControl} />
         </>} secondary={control.key}/>
       </ListItem>
-    </>))}
-
-    <Divider/>
+    </>))} */}
 
     {/* Inputs */}
-    {inputs.map(input => (<>
+    {inputs.filter(input => !outputs.find(output => input.key === output.key)).map(input => (<>
       <Socket Component={() => <CustomDot/>} type="input" socket={input.socket} io={input} innerRef={ReteProps.bindSocket} rootProps={{ style: { float: 'left', height: 40 }}}/>
       <ListItem divider key={input.key}>
         <ListItemText primary={<>

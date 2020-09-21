@@ -10,13 +10,16 @@ import ReactRenderPlugin, { Node, Control } from 'rete-react-render-plugin';
 
 import { Fab, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, Paper, Typography } from '@material-ui/core';
 
+import { useQueryStore } from '@deepcase/store/query';
+
 import { Socket } from '../imports/rete/socket';
 import { useApolloClient, useSubscription } from '@apollo/react-hooks';
 import { wrap } from '../imports/wrap';
 import { ReteDocument } from '../imports/rete/document';
 import { ReteNodeReact } from '../imports/rete/node';
+import NODES from '../imports/gql/NODES.gql';
 
-const numSocket = new Rete.Socket("Number value");
+const RefSocket = new Rete.Socket('String');
 
 class NumControl extends Rete.Control {
   static component = ({ value, onChange }) => (
@@ -52,7 +55,7 @@ class NumControl extends Rete.Control {
   setValue(val) {
     this.props.value = val;
     this.putData(this.key, val);
-    // this.update();
+    this.update();
   }
 }
 
@@ -60,88 +63,41 @@ class ReteNode extends Rete.Component {
   data = { component: ReteDocument };
 
   constructor() {
-    super("Node");
+    super("node");
   }
 
   builder(node) {
-    const inp2 = new Rete.Input("num2", "Number2", numSocket);
-    const inp1 = new Rete.Input("num1", "Number", numSocket);
-    const out = new Rete.Output("num", "Number", numSocket);
-    inp1.addControl(new NumControl(this.editor, "num1", node));
-    inp2.addControl(new NumControl(this.editor, "num2", node));
+    const id = new Rete.Input('id', 'id', RefSocket);
+
+    const outI = new Rete.Input('out', 'out', RefSocket);
+    const inI = new Rete.Input('in', 'in', RefSocket);
+    const outO = new Rete.Output('out', 'out', RefSocket);
+    const inO = new Rete.Output('in', 'in', RefSocket);
+
+    const fromI = new Rete.Input('from', 'from', RefSocket);
+    const fromO = new Rete.Output('from', 'from', RefSocket);
+    const toI = new Rete.Input('to', 'to', RefSocket);
+    const toO = new Rete.Output('to', 'to', RefSocket);
 
     return node
-      .addInput(inp1)
-      .addInput(inp2)
-      .addControl(new NumControl(this.editor, "preview", node, true))
-      .addOutput(out);
+      .addInput(id)
+
+      .addInput(inI)
+      .addOutput(inO)
+
+      .addInput(outI)
+      .addOutput(outO)
+
+      .addInput(fromI)
+      .addOutput(fromO)
+
+      .addInput(toI)
+      .addOutput(toO)
+    ;
   }
 
   worker(node, inputs, outputs) {
-    console.log({ node, inputs, outputs });
-    const n1 = inputs["num1"].length ? inputs["num1"][0] : node.data.num1;
-    const n2 = inputs["num2"].length ? inputs["num2"][0] : node.data.num2;
-    const sum = n1 + n2;
-
-    this.editor.nodes
-      .find(n => n.id == node.id)
-      .controls.get("preview")
-      .setValue(sum);
-    outputs["num"] = sum;
   }
-}
-
-// export function NodeLoader({
-//   nodeId,
-//   reteComponent,
-//   editorRef,
-// }: {
-//   nodeId: string;
-//   reteComponent: any;
-//   editorRef: any;
-// }) {
-//   const q = useSubscription(NODE, { variables: { nodeId } });
-//   const existsRef = useRef(false);
-//   console.log(0, q);
-//   useEffect(() => {
-//     console.log(1, q);
-//     (async () => {
-//       if (q?.data?.nodes?.[0] && !existsRef.current) {
-//         console.log(2, q);
-//         existsRef.current = await reteComponent.createNode({ abc: 'def', qwe: 'xyz' });
-//         editorRef.current.addNode(existsRef.current);
-//       }
-//     })();
-//     return () => {
-//       console.log(3, q);
-//       existsRef.current && editorRef.current.deleteNode(existsRef.current);
-//     };
-//   }, [q]);
-
-//   return <></>;
-// }
-
-export function NodeLoader({
-  nodeId,
-  reteComponent,
-  editorRef,
-}: {
-  nodeId: string;
-  reteComponent: any;
-  editorRef: any;
-}) {
-  useEffect(() => {
-    let reteNode;
-    (async () => {
-      reteNode = await reteComponent.createNode({ nodeId });
-      editorRef.current.addNode(reteNode);
-    })();
-    return () => {
-      reteNode && editorRef.current.deleteNode(reteNode);
-    };
-  }, []);
-
-  return <></>;
 }
 
 export function ReteNodes() {
@@ -150,14 +106,20 @@ export function ReteNodes() {
   const engineRef = useRef<any>();
   const componentsRef = useRef<{ [key: string]: any }>({});
   const [mounted, setMounted] = useState(false);
-  const update = useCallback(async () => {
+
+  const [nodeIds, setNodeIds] = useQueryStore<any>('nodeIds', ['ikazjkd9xkpfc']);
+
+  const update = useCallback(async (inJson) => {
     await engineRef.current.abort();
-    await engineRef.current.process(editorRef.current.toJSON());
-    !_.isEmpty(editorRef.current.toJSON()?.nodes) && editorRef.current.trigger('arrange');
+    const json = inJson?.id ? inJson : editorRef.current.toJSON();
+    if (inJson) await editorRef.current.fromJSON(json);
+    if (!inJson) await engineRef.current.process();
+    !_.isEmpty(json?.nodes) && editorRef.current.trigger('arrange');
   }, []);
+
   useEffect(() => {
     (async () => {
-      componentsRef.current.add = new ReteNode();
+      componentsRef.current.node = new ReteNode();
 
       editorRef.current = new Rete.NodeEditor("demo@0.1.0", elementRef.current);
       editorRef.current.use(ConnectionPlugin);
@@ -184,21 +146,47 @@ export function ReteNodes() {
     })();
   }, []);
 
+  const q = useSubscription(NODES, { variables: { nodeIds }});
+  const nodes = q?.data?.nodes || [];
+  useEffect(() => {
+    if (nodes.length) {
+      (async () => {
+        const jsonNodes = {};
+        for (let n = 0; n < nodes.length; n++) {
+          jsonNodes[nodes[n].id] = {
+            id: nodes[n].id,
+            data: {},
+            inputs: {
+              id: { connections: [] },
+              from: { connections: [] },
+              to: { connections: [] },
+              out: { connections: [] },
+              in: { connections: [] },
+            },
+            outputs: {
+              from: { connections: [] },
+              to: { connections: [] },
+              out: { connections: [] },
+              in: { connections: [] },
+            },
+            position: [0, 0],
+            name: 'node',
+          };
+        }
+        // await editorRef.current.fromJSON({
+        //   id: 'demo@0.1.0',
+        //   nodes: jsonNodes,
+        // });
+        console.log(nodes, jsonNodes);
+        await update({
+          id: 'demo@0.1.0',
+          nodes: jsonNodes,
+        });
+      })();
+    }
+  }, [nodes]);
+
   return <>
-    {/* {mounted && <>
-      <NodeLoader
-        nodeId={'a'}
-        reteComponent={componentsRef.current.add}
-        editorRef={editorRef}
-        update={update}
-      />
-      <NodeLoader
-        nodeId={'b'}
-        reteComponent={componentsRef.current.add}
-        editorRef={editorRef}
-        update={update}
-      />
-    </>} */}
     <div style={{ position: 'absolute', width: '100%', height: '100%', left: 0, top: 0, background: '#5E5E5E' }}>
       <div id="rete" style={{ width: '100%', height: '100%' }} ref={elementRef}/>
     </div>
