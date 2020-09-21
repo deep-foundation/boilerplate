@@ -1,0 +1,19 @@
+subscription NODE($nodeId: String) {
+  nodes(where: {id: {_eq: $nodeId}}) {
+    id type key string number
+    out: nodes_by_source(distinct_on: [type, key]) {
+      id type key string number
+    }
+    in: nodes_by_target(distinct_on: [type, key]) {
+      id type key string number
+    }
+    to_id: target_id
+    to: target {
+      id type key string number
+    }
+    from_id: source_id
+    from: source {
+      id type key string number
+    }
+  }
+}

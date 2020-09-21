@@ -50,6 +50,11 @@
     "react-d3-tree": "^1.16.1",
     "react-dom": "^16.13.1",
     "responsive-loader": "^1.2.0",
+    "rete": "^1.4.4",
+    "rete-area-plugin": "^0.2.1",
+    "rete-auto-arrange-plugin": "^0.4.0",
+    "rete-connection-plugin": "^0.9.0",
+    "rete-react-render-plugin": "^0.2.1",
     "subscriptions-transport-ws": "^0.9.18",
     "svg-sprite-loader": "^5.0.0",
     "webp-loader": "^0.6.0"
