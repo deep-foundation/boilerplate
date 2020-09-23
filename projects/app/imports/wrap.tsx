@@ -9,7 +9,7 @@ export interface IWrapOptions {
 }
 
 export function wrap(options: IWrapOptions) {
-  return () => {
+  return (props) => {
     const auth = useAuth();
     const [client, setClient] = useState<ApolloClient<any> | void>(generateApolloClient({
       initialStore: {},
@@ -39,7 +39,7 @@ export function wrap(options: IWrapOptions) {
     );
 
     return <ApolloProvider client={client}>
-      <options.Component/>
+      <options.Component {...props}/>
     </ApolloProvider>;
   };
 }
