@@ -1,22 +1,21 @@
 import React, { createContext, useCallback, useContext } from 'react';
 import _ from 'lodash';
 import { Node } from './node';
+import { Nodes } from './nodes';
 
 export type DashStage = { type: string; id: string; }[][];
-export type DashPositions = { [key: string]: [number, number] };
+export type Item = { type: string; [id: string]: any; };
 
 export const DashContext = createContext<{
   stage: any;
   setStage: (stage: any) => any;
-  select: (path, id) => any;
+  select: (path, item: Item) => any;
   unselect: (path) => any;
-  positions: DashPositions;
 }>({
   stage: null,
   setStage: () => {},
-  select: (path, id) => {},
+  select: (path, item) => {},
   unselect: (path) => {},
-  positions: {},
 });
 
 export function Dash({
@@ -25,12 +24,12 @@ export function Dash({
   stage: DashStage;
   setStage: (stage: DashStage) => any;
 }) {
-  const select = useCallback((path, id) => {
-    const newDash = _.cloneDeep(stage);
-    _.set(newDash, [...path, 'selected'], { type: 'node', id });
+  const select = useCallback((path, item: Item) => {
+    const newDash: any = _.cloneDeep(stage);
+    _.set(newDash, [...path, 'selected'], item);
     newDash[path[0] + 1] = newDash[path[0] + 1] || [];
-    if (newDash[path[0] + 1].find(item => item?.id === id && item?.type === 'node')) return;
-    newDash[path[0] + 1].push({ type: 'node', id });
+    if (newDash[path[0] + 1].find(eItem => _.isEqual(item, eItem))) return;
+    newDash[path[0] + 1].push(item);
     setStage(newDash);
   }, [stage]);
 
@@ -83,14 +82,19 @@ function Auto({
   item,
   path,
 }: {
-  item: any;
+  item: Item | any[];
   path: any[];
 }) {
   if (_.isArray(item)) {
     return <Array path={path} item={item}/>;
   }
-  if (_.isObject(item) && item?.type === 'node') {
-    return <Node path={path} item={item}/>;
+  if (_.isObject(item)) {
+    if (item?.type === 'node') {
+      return <Node path={path} item={item}/>;
+    } else if (item?.type === 'nodes') {
+      return <Nodes path={path} item={item}/>;
+    }
+    return null;
   }
   return null;
 };

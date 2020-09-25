@@ -1,5 +1,5 @@
-subscription NODES($nodeIds: [String!]) {
-  nodes(where: {id: {_in: $nodeIds}}) {
+subscription NODES($where: nodes_bool_exp, $limit: Int) {
+  nodes(where: $where, limit: $limit) {
     id type key string number
     out: nodes_by_source(distinct_on: [type, key]) {
       id type key string number to_id: target_id

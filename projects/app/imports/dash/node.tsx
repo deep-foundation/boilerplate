@@ -8,9 +8,11 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
 import { useSubscription } from '@apollo/react-hooks';
 
-import NODE from '../gql/NODE.gql';
+import NODES from '../gql/NODES.gql';
 import { GqlLinearProgress } from '../hasura/progress';
 import { DashContext } from './dash';
+
+export type NodeItem = { type: 'node', id: string; };
 
 export function Node({
   item,
@@ -19,8 +21,8 @@ export function Node({
   item: any;
   path: any[];
 }) {
-  const { stage, select, unselect, positions } = useContext(DashContext);
-  const q = useSubscription(NODE, { variables: { nodeId: item.id } });
+  const { stage, select, unselect } = useContext(DashContext);
+  const q = useSubscription(NODES, { variables: { where: { id: { _eq: item.id } }, limit: 1 } });
   const node = q?.data?.nodes[0];
 
   const selected: { [key: string]: number } = {};
@@ -54,10 +56,16 @@ export function Node({
         return <>
           <ListItem divider key={link.id} button selected={typeof selected[link.id] === 'number'}
             onClick={() => {
-              select(path, link.id);
+              select(path, {
+                type: 'nodes', id: `${item.id}-${link.type || ''}-${link.key || ''}`,
+                query: { where: {
+                  type: { _eq: link.type }, key: { _eq: link.key },
+                  source_id: { _eq: node?.id },
+                } },
+              });
             }}
           >
-            <ListItemText primary={<>"{link.id}"</>} secondary={<>
+            <ListItemText primary={<>
               <>type: "{link.type}";</> <>key: "{link.key}";</>
             </>}/>
             <ListItemSecondaryAction>
@@ -74,10 +82,16 @@ export function Node({
         return <>
           <ListItem divider key={link.id} button selected={typeof selected[link.id] === 'number'}
             onClick={() => {
-              select(path, link.id);
+              select(path, {
+                type: 'nodes', id: `${item.id}-${link.type || ''}-${link.key || ''}`,
+                query: { where: {
+                  type: { _eq: link.type }, key: { _eq: link.key },
+                  target_id: { _eq: node?.id },
+                } },
+              });
             }}
           >
-            <ListItemText primary={<>"{link.id}"</>} secondary={<>
+            <ListItemText primary={<>
               <>type: "{link.type}";</> <>key: "{link.key}";</>
             </>}/>
             <ListItemSecondaryAction>
@@ -92,7 +106,7 @@ export function Node({
       <Divider/>
       {!!node?.from && <ListItem divider key={node?.from?.id} button selected={typeof selected[node?.from?.id] === 'number'}
         onClick={() => {
-          select(path, node?.from?.id);
+          select(path, { type: 'node', id: node?.from?.id });
         }}
       >
         <ListItemText primary={<>"{node?.from?.id}"</>} secondary={<>
@@ -108,7 +122,7 @@ export function Node({
       <Divider/>
       {!!node?.to && <ListItem divider key={node?.to?.id} button selected={typeof selected[node?.to?.id] === 'number'}
         onClick={() => {
-          select(path, node?.to?.id);
+          select(path, { type: 'node', id: node?.to?.id });
         }}
       >
         <ListItemText primary={<>"{node?.to?.id}"</>} secondary={<>
