@@ -1,0 +1,107 @@
+{
+  "version": 2,
+  "tables": [
+    {
+      "table": {
+        "schema": "public",
+        "name": "nodes"
+      },
+      "object_relationships": [
+        {
+          "name": "from",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "nodes"
+              },
+              "column_mapping": {
+                "from_id": "id"
+              }
+            }
+          }
+        },
+        {
+          "name": "to",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "nodes"
+              },
+              "column_mapping": {
+                "to_id": "id"
+              }
+            }
+          }
+        },
+        {
+          "name": "type",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "types"
+              },
+              "column_mapping": {
+                "type_id": "id"
+              }
+            }
+          }
+        }
+      ],
+      "array_relationships": [
+        {
+          "name": "in",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "nodes"
+              },
+              "column_mapping": {
+                "id": "to_id"
+              }
+            }
+          }
+        },
+        {
+          "name": "out",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "nodes"
+              },
+              "column_mapping": {
+                "id": "from_id"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "table": {
+        "schema": "public",
+        "name": "types"
+      },
+      "array_relationships": [
+        {
+          "name": "nodes",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "nodes"
+              },
+              "column_mapping": {
+                "id": "type_id"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
