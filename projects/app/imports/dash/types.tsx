@@ -5,8 +5,6 @@ import TYPES from '../gql/TYPES.gql';
 import { Rows } from './components/rows';
 import { Button, ButtonGroup, Divider,  } from '@material-ui/core';
 
-export type NodeItem = { type: 'nodes', id: string; query: any; };
-
 export const Types = Rows({
   QUERY: TYPES,
   parse: (q: any) => q?.data?.results,

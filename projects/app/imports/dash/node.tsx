@@ -13,8 +13,6 @@ import { GqlLinearProgress } from '../hasura/progress';
 import { DashContext } from './components/dash';
 import { Visibility, VisibilityContext } from './components/visibility';
 
-export type NodeItem = { type: 'node', id: string; };
-
 export const Node = React.memo(({
   item,
   path,

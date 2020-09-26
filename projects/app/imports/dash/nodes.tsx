@@ -4,8 +4,6 @@ import _ from 'lodash';
 import NODES from '../gql/NODES.gql';
 import { Rows } from './components/rows';
 
-export type NodeItem = { type: 'nodes', id: string; query: any; };
-
 export const Nodes = Rows({
   QUERY: NODES,
   parse: (q: any) => q?.data?.results,

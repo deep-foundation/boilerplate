@@ -14,8 +14,6 @@ import { GqlLinearProgress } from '../../hasura/progress';
 import { DashContext } from './dash';
 import { Visibility, VisibilityContext } from './visibility';
 
-export type NodeItem = { type: 'nodes', id: string; query: any; };
-
 export const Rows = ({
   QUERY,
   parse,
