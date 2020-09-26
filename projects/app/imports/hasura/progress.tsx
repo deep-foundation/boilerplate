@@ -12,5 +12,6 @@ export function GqlLinearProgress({
   return <LinearProgress
     variant={result.loading ? 'indeterminate' : 'determinate'}
     color={result.error ? 'secondary' : 'primary'}
+    onClick={() => console.log(result)}
   />
 }

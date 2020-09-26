@@ -1,7 +1,10 @@
 import React, { createContext, useCallback, useContext } from 'react';
 import _ from 'lodash';
-import { Node } from './node';
-import { Nodes } from './nodes';
+import { Node } from '../node';
+import { Nodes } from '../nodes';
+import { VisibilityProvider } from './visibility';
+import { Main } from '../main';
+import { Types } from '../types';
 
 export type DashStage = { type: string; id: string; }[][];
 export type Item = { type: string; [id: string]: any; };
@@ -11,19 +14,22 @@ export const DashContext = createContext<{
   setStage: (stage: any) => any;
   select: (path, item: Item) => any;
   unselect: (path) => any;
+  types: { [name: string]: (props: { item: Item; path: any[]; }) => any; };
 }>({
   stage: null,
   setStage: () => {},
   select: (path, item) => {},
   unselect: (path) => {},
+  types: {},
 });
 
-export function Dash({
-  stage, setStage,
+export const Dash = React.memo(({
+  stage, setStage, types,
 }: {
   stage: DashStage;
   setStage: (stage: DashStage) => any;
-}) {
+  types: { [name: string]: (props: { item: Item; path: any[]; }) => any; };
+}) => {
   const select = useCallback((path, item: Item) => {
     const newDash: any = _.cloneDeep(stage);
     _.set(newDash, [...path, 'selected'], item);
@@ -49,63 +55,63 @@ export function Dash({
     setStage(newDash);
   }, [stage]);
 
-  return <div className="linecontainer" style={{ width: '100%', height: '100%', position: 'absolute', left: 0, top: 0, overflowX: 'scroll' }}>
-    <table style={{ maxWidth: '100%', height: '100%' }}><tr>
-      <DashContext.Provider value={{ stage, setStage, select, unselect }}>
-        {stage.map((item, path) => {
-          return <td key={path} style={{ borderLeft: '1px solid lightgrey' }}>
-            <div style={{ height: '100%', overflowY: 'scroll' }} onScroll={() => {
-              console.log(123);
-            }}>
-              <Nest path={[path]} item={item}/>
-            </div>
-          </td>;
-        })}
-      </DashContext.Provider>
-    </tr></table>
-  </div>;
-};
+  return <VisibilityProvider>
+    <div className="linecontainer" style={{ width: '100%', height: '100%', position: 'absolute', left: 0, top: 0, overflowX: 'scroll' }}>
+      <table style={{ maxWidth: '100%', height: '100%' }}><tr>
+        <DashContext.Provider value={{ stage, setStage, select, unselect, types }}>
+          {stage.map((item, path) => {
+            return <td key={path} style={{ borderLeft: '1px solid lightgrey' }}>
+              <div style={{ height: '100%', overflowY: 'scroll' }} onScroll={() => {
+              }}>
+                <Nest path={[path]} item={item}/>
+              </div>
+            </td>;
+          })}
+        </DashContext.Provider>
+      </tr></table>
+    </div>
+  </VisibilityProvider>;
+});
 
-function Nest({
+export const Nest = React.memo(({
   item,
   path,
 }: {
   item: any;
   path: any[];
-}) {
+}) => {
   return <>
     <Auto path={path} item={item}/>
   </>;
-};
+});
 
-function Auto({
+export const Auto = React.memo(({
   item,
   path,
 }: {
   item: Item | any[];
   path: any[];
-}) {
+}) => {
+  const { types } = useContext(DashContext);
+
   if (_.isArray(item)) {
     return <Array path={path} item={item}/>;
   }
   if (_.isObject(item)) {
-    if (item?.type === 'node') {
-      return <Node path={path} item={item}/>;
-    } else if (item?.type === 'nodes') {
-      return <Nodes path={path} item={item}/>;
-    }
+    const Component = types?.[item?.type];
+    if (Component) return <Component path={path} item={item}/>;
     return null;
   }
   return null;
-};
+});
 
-function Array({
+export const Array = React.memo(({
   item,
   path,
 }: {
   item: any;
   path: any[];
-}) {
+}) => {
   return <div style={{
     padding: '6px 12px 0px 12px',
     minHeight: 16, minWidth: 16,
@@ -114,4 +120,4 @@ function Array({
       return <Auto key={item.id || index} path={[...path, index]} item={item}/>;
     })}
   </div>;
-};
+});
