@@ -19,11 +19,13 @@ export const Rows = ({
   parse,
   generateItem,
   bottomElement = null,
+  BottomComponent = null,
 }:{
   QUERY: any;
   parse: (q: any) => { id: any; [key: string]: any; }[];
   generateItem: (result) => any;
   bottomElement?: any;
+  BottomComponent?: (props: { item: any; path: any[] }) => any;
 }) => React.memo(({
   item,
   path,
@@ -85,6 +87,7 @@ export const Rows = ({
           </>}
         </List>
         {bottomElement}
+        {!!BottomComponent && <BottomComponent item={item} path={path}/>}
       </Paper>
     </Visibility>
   </>;
