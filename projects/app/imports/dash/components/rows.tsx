@@ -18,12 +18,14 @@ export const Rows = ({
   QUERY,
   parse,
   generateItem,
+  ResultComponent,
   bottomElement = null,
-  BottomComponent = null,
+  BottomComponent,
 }:{
   QUERY: any;
   parse: (q: any) => { id: any; [key: string]: any; }[];
   generateItem: (result) => any;
+  ResultComponent?: (props: { item: any; path: any[]; result: any; results: any[]; q: any; index: number; generateItem: (result) => any; }) => any;
   bottomElement?: any;
   BottomComponent?: (props: { item: any; path: any[], q: any }) => any;
 }) => React.memo(({
@@ -60,7 +62,13 @@ export const Rows = ({
           <Divider/>
         </List>
         <List disablePadding dense style={{ maxHeight: 300, overflowY: 'scroll' }}>
-          {(results || []).map((result) => {
+          {(results || []).map((result, index) => {
+            if (ResultComponent) {
+              return <ResultComponent
+                key={result.id}
+                item={item} path={path} result={result} results={results} q={q} index={index} generateItem={generateItem}
+              />;
+            }
             return <>
               <ListItem divider key={result.id} button selected={typeof visible[result.id] === 'boolean'}
                 style={{ boxShadow: visible?.[result.id]?.value ? 'inset 0 0 0 1000px rgba(0,0,0,0.21)' : 'none' }}
