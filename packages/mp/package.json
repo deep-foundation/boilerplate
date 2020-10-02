@@ -11,7 +11,8 @@
   "description": "",
   "scripts": {
     "build": "npx tsc --project tsconfig.json",
-    "lint": "npx tslint -c tslint.json --project tsconfig.json"
+    "lint": "npx tslint -c tslint.json --project tsconfig.json",
+    "test": "DEBUG='*' npx jest"
   },
   "bin": "./index.js",
   "dependencies": {
