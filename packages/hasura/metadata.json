@@ -34,23 +34,51 @@
               }
             }
           }
-        },
+        }
+      ],
+      "array_relationships": [
         {
-          "name": "type",
+          "name": "_by_item",
           "using": {
             "manual_configuration": {
               "remote_table": {
                 "schema": "public",
-                "name": "types"
+                "name": "nodes__mp"
               },
               "column_mapping": {
-                "type_id": "id"
+                "id": "item_id"
               }
             }
           }
-        }
-      ],
-      "array_relationships": [
+        },
+        {
+          "name": "_by_path_item",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "nodes__mp"
+              },
+              "column_mapping": {
+                "id": "path_item_id"
+              }
+            }
+          }
+        },
+        {
+          "name": "_by_root",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "nodes__mp"
+              },
+              "column_mapping": {
+                "id": "root_id"
+              }
+            }
+          }
+        },
         {
           "name": "in",
           "using": {
@@ -84,11 +112,11 @@
     {
       "table": {
         "schema": "public",
-        "name": "types"
+        "name": "nodes__mp"
       },
-      "array_relationships": [
+      "object_relationships": [
         {
-          "name": "nodes",
+          "name": "item",
           "using": {
             "manual_configuration": {
               "remote_table": {
@@ -96,7 +124,93 @@
                 "name": "nodes"
               },
               "column_mapping": {
-                "id": "type_id"
+                "item_id": "id"
+              }
+            }
+          }
+        },
+        {
+          "name": "path_item",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "nodes"
+              },
+              "column_mapping": {
+                "path_item_id": "id"
+              }
+            }
+          }
+        },
+        {
+          "name": "root",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "nodes"
+              },
+              "column_mapping": {
+                "root_id": "id"
+              }
+            }
+          }
+        }
+      ],
+      "array_relationships": [
+        {
+          "name": "by_item",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "nodes__mp"
+              },
+              "column_mapping": {
+                "item_id": "item_id"
+              }
+            }
+          }
+        },
+        {
+          "name": "by_path_item",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "nodes__mp"
+              },
+              "column_mapping": {
+                "path_item_id": "path_item_id"
+              }
+            }
+          }
+        },
+        {
+          "name": "by_position",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "nodes__mp"
+              },
+              "column_mapping": {
+                "position_id": "position_id"
+              }
+            }
+          }
+        },
+        {
+          "name": "by_root",
+          "using": {
+            "manual_configuration": {
+              "remote_table": {
+                "schema": "public",
+                "name": "nodes__mp"
+              },
+              "column_mapping": {
+                "root_id": "root_id"
               }
             }
           }
