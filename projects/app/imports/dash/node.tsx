@@ -34,8 +34,8 @@ export const Node = React.memo(({
       }}>
         <List disablePadding dense>
           <ListItem divider>
-            <ListItemText primary={<>"{item.id}"</>} secondary={<>
-              <>type: "{node?.type}";</>  {!!node && <>{node?.from_id || node?.to_id ? 'link' : 'node'};</>}
+            <ListItemText primary={<>{item.id}</>} secondary={<>
+              <>type: "{node?.type_id}";</>  {!!node && <>{node?.from_id || node?.to_id ? 'link' : 'node'};</>}
             </>}/>
             <ListItemSecondaryAction>
               <Tooltip title="close">
@@ -57,8 +57,8 @@ export const Node = React.memo(({
                   select(path, {
                     type: 'nodes', id,
                     query: { where: {
-                      type: { _eq: link.type },
-                      source_id: { _eq: node?.id },
+                      type_id: { _eq: link.type_id },
+                      from_id: { _eq: node?.id },
                     } },
                   });
                   focus(id);

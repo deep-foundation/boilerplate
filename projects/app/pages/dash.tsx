@@ -8,13 +8,11 @@ import { wrap } from '../imports/wrap';
 import { Dash, DashStage } from '../imports/dash/components/dash';
 import { Node } from '../imports/dash/node';
 import { Nodes } from '../imports/dash/nodes';
-import { Types } from '../imports/dash/types';
 import { Main } from '../imports/dash/main';
 
 const types = {
   node: Node,
   nodes: Nodes,
-  types: Types,
   main: Main,
 };
 

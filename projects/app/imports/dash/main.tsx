@@ -43,20 +43,6 @@ export const Main = React.memo(({
               </Tooltip>
             </ListItemSecondaryAction>
           </ListItem>
-          <ListItem divider button selected={typeof visible['types'] === 'boolean'}
-            style={{ boxShadow: visible?.['types'] ? 'inset 0 0 0 1000px rgba(0,0,0,0.21)' : 'none' }}
-            onClick={() => {
-              select(path, { type: 'types', id: 'types' });
-              focus('types');
-            }}
-          >
-            <ListItemText primary={<>"{'types'}"</>}/>
-            <ListItemSecondaryAction>
-              <IconButton disabled>
-                <ChevronRightIcon/>
-              </IconButton>
-            </ListItemSecondaryAction>
-          </ListItem>
           <ListItem divider button selected={typeof visible['nodes'] === 'boolean'}
             style={{ boxShadow: visible?.['nodes'] ? 'inset 0 0 0 1000px rgba(0,0,0,0.21)' : 'none' }}
             onClick={() => {

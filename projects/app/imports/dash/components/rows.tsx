@@ -77,7 +77,7 @@ export const Rows = ({
                   focus(result.id);
                 }}
               >
-                <ListItemText primary={<>"{result.id}"</>} secondary={<>
+                <ListItemText primary={<>{result.id}</>} secondary={<>
                   <>type: "{result.type}";</>
                 </>}/>
                 <ListItemSecondaryAction>

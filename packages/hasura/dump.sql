@@ -7,7 +7,7 @@ CREATE TABLE public."nodes" (
     id integer NOT NULL,
     from_id integer,
     to_id integer,
-    type integer
+    type_id integer
 );
 
 alter table public."nodes" add constraint "nodes_pkey" primary key ("id");

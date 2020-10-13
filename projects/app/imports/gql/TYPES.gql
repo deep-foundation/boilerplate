@@ -1,5 +1,0 @@
-query TYPES($where: types_bool_exp, $limit: Int) {
-  results: types(where: $where, limit: $limit) {
-    id key
-  }
-}
