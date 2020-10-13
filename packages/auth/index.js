@@ -42,12 +42,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.useAuth = exports.defaultConfig = exports.redirectToLogin = void 0;
+exports.useAuth = exports.defaultConfig = exports.redirectToLogin = exports.AuthContext = void 0;
 const react_1 = __importStar(require("react"));
 const next_cookies_1 = __importDefault(require("next-cookies"));
 const redirect_1 = __importDefault(require("./redirect"));
 const app_1 = __importDefault(require("next/app"));
-const AuthContext = react_1.default.createContext(null);
+exports.AuthContext = react_1.default.createContext(null);
 exports.redirectToLogin = (ctx, loginPage = process.env.AUTH_LOGIN) => {
     if ((ctx && ctx.pathname === loginPage) ||
         (typeof window !== 'undefined' && window.location.pathname === loginPage)) {
@@ -73,7 +73,7 @@ exports.defaultConfig = {
 const withAuth = (App, config = exports.defaultConfig) => {
     var _a;
     const _config = Object.assign(Object.assign({}, exports.defaultConfig), config);
-    return _a = class IdentityProvider extends react_1.default.Component {
+    return _a = class AuthProvider extends react_1.default.Component {
             static getInitialProps(ctx) {
                 return __awaiter(this, void 0, void 0, function* () {
                     let appProps;
@@ -96,7 +96,7 @@ const withAuth = (App, config = exports.defaultConfig) => {
             }
             render() {
                 const _a = this.props, { session } = _a, appProps = __rest(_a, ["session"]);
-                return (react_1.default.createElement(AuthContext.Provider, { value: session },
+                return (react_1.default.createElement(exports.AuthContext.Provider, { value: session },
                     react_1.default.createElement(App, Object.assign({}, appProps))));
             }
         },
@@ -104,5 +104,5 @@ const withAuth = (App, config = exports.defaultConfig) => {
         _a;
 };
 exports.default = withAuth;
-exports.useAuth = () => react_1.useContext(AuthContext);
+exports.useAuth = () => react_1.useContext(exports.AuthContext);
 //# sourceMappingURL=index.js.map

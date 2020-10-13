@@ -1,8 +1,6 @@
-import { NextApiResponse, NextApiRequest } from 'next';
-import passport, { Strategy } from 'passport';
+import passport from 'passport';
 import cookieSession from 'cookie-session';
 import url from 'url';
-import memoize from 'lodash/memoize';
 // @ts-ignore
 import redirect from 'micro-redirect';
 export { passport };
