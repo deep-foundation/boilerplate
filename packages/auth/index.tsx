@@ -8,11 +8,11 @@ export interface IAuth {
   id: string;
   [key: string]: any;
 }
-type AuthProviderProps<IAuth> = Readonly<AppInitialProps> & {
+export type AuthProviderProps<IAuth> = Readonly<AppInitialProps> & {
   session: IAuth;
 };
 
-const AuthContext = React.createContext<IAuth>(
+export const AuthContext = React.createContext<IAuth>(
   (null as unknown) as IAuth,
 );
 
