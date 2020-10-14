@@ -17,6 +17,7 @@ export const QueryStoreProvider = ({
   context?: Context<IStoreContext>;
   children?: ReactNode;
 }) => {
+  const _renderingRef = useRef({});
   const [useStore] = useState(() => {
     return function useStore<T extends any>(
       key: string,
@@ -25,7 +26,6 @@ export const QueryStoreProvider = ({
       const router = useRouter();
       const { query, pathname, push } = router || fakeRouter;
 
-      const _renderingRef = useRef({});
       useEffect(() => {
         _renderingRef.current = {};
       }, [router.query]);
@@ -56,6 +56,7 @@ export const QueryStoreProvider = ({
               ..._renderingRef.current,
             }
           });
+          _renderingRef.current[key] = undefined;
         } catch (error) {
           debug('unsetStore:error', { error, key });
         }

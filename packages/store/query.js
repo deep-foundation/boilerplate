@@ -31,11 +31,11 @@ const debug = debug_1.default('deepcase:store:use-store-query');
 exports.QueryStoreContext = react_1.createContext(store_1.defaultContext);
 exports.fakeRouter = {};
 exports.QueryStoreProvider = ({ context = exports.QueryStoreContext, children, }) => {
+    const _renderingRef = react_1.useRef({});
     const [useStore] = react_1.useState(() => {
         return function useStore(key, defaultValue) {
             const router = router_1.useRouter();
             const { query, pathname, push } = router || exports.fakeRouter;
-            const _renderingRef = react_1.useRef({});
             react_1.useEffect(() => {
                 _renderingRef.current = {};
             }, [router.query]);
@@ -59,6 +59,7 @@ exports.QueryStoreProvider = ({ context = exports.QueryStoreContext, children, }
                         pathname,
                         query: Object.assign(Object.assign({}, query), _renderingRef.current)
                     });
+                    _renderingRef.current[key] = undefined;
                 }
                 catch (error) {
                     debug('unsetStore:error', { error, key });
