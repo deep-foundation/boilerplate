@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { Context, ReactNode, useState, createContext } from 'react';
+import React, { Context, ReactNode, useState, createContext, useRef, useEffect } from 'react';
 import Debug from 'debug';
 
 import { IStoreContext, defaultContext, useStore } from './store';
@@ -25,15 +25,22 @@ export const QueryStoreProvider = ({
       const router = useRouter();
       const { query, pathname, push } = router || fakeRouter;
 
+      const _renderingRef = useRef({});
+      useEffect(() => {
+        _renderingRef.current = {};
+      }, [router.query]);
+
       const setValue = (value) => {
         try {
           push({
             pathname,
             query: {
               ...query,
+              ..._renderingRef.current,
               [key]: JSON.stringify(value),
             },
           });
+          _renderingRef.current[key] = JSON.stringify(value);
         } catch (error) {
           debug('setStore:error', { error, key, defaultValue, value });
         }
@@ -44,7 +51,10 @@ export const QueryStoreProvider = ({
           if (query[key]) delete query[key];
           push({
             pathname,
-            query,
+            query: {
+              ...query,
+              ..._renderingRef.current,
+            }
           });
         } catch (error) {
           debug('unsetStore:error', { error, key });

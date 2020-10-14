@@ -35,12 +35,17 @@ exports.QueryStoreProvider = ({ context = exports.QueryStoreContext, children, }
         return function useStore(key, defaultValue) {
             const router = router_1.useRouter();
             const { query, pathname, push } = router || exports.fakeRouter;
+            const _renderingRef = react_1.useRef({});
+            react_1.useEffect(() => {
+                _renderingRef.current = {};
+            }, [router.query]);
             const setValue = (value) => {
                 try {
                     push({
                         pathname,
-                        query: Object.assign(Object.assign({}, query), { [key]: JSON.stringify(value) }),
+                        query: Object.assign(Object.assign(Object.assign({}, query), _renderingRef.current), { [key]: JSON.stringify(value) }),
                     });
+                    _renderingRef.current[key] = JSON.stringify(value);
                 }
                 catch (error) {
                     debug('setStore:error', { error, key, defaultValue, value });
@@ -52,7 +57,7 @@ exports.QueryStoreProvider = ({ context = exports.QueryStoreContext, children, }
                         delete query[key];
                     push({
                         pathname,
-                        query,
+                        query: Object.assign(Object.assign({}, query), _renderingRef.current)
                     });
                 }
                 catch (error) {
