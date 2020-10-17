@@ -28,7 +28,7 @@ export const QueryStoreProvider = ({
 
       useEffect(() => {
         _renderingRef.current = {};
-      }, [router.query]);
+      }, [router?.query]);
 
       const setValue = (value) => {
         try {

@@ -38,7 +38,7 @@ exports.QueryStoreProvider = ({ context = exports.QueryStoreContext, children, }
             const { query, pathname, push } = router || exports.fakeRouter;
             react_1.useEffect(() => {
                 _renderingRef.current = {};
-            }, [router.query]);
+            }, [router === null || router === void 0 ? void 0 : router.query]);
             const setValue = (value) => {
                 try {
                     push({
