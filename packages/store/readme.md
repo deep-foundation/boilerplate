@@ -2,6 +2,15 @@
 
 ## usage
 
+> To use any hook, be sure to use the appropriate provider higher in the react tree.
+
+```tsx
+import { QueryStoreProvider, useQueryStore } from '@deepcase/store/query';
+import { CookiesStoreProvider, useCookiesStore } from '@deepcase/store/cookies';
+import { LocalStoreProvider, useLocalStore } from '@deepcase/store/local';
+import { CapacitorStoreProvider, useCapacitorStore } from '@deepcase/store/capacitor';
+```
+
 ```tsx
 <QueryStoreProvider>
   <CookiesStoreProvider>
