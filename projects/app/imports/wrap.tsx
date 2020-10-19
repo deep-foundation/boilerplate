@@ -38,8 +38,11 @@ export function wrap(options: IWrapOptions) {
       [auth],
     );
 
-    return <ApolloProvider client={client}>
-      <options.Component {...props}/>
-    </ApolloProvider>;
+    return <>
+      {/* @ts-ignore */}
+      <ApolloProvider client={client}>
+        <options.Component {...props}/>
+      </ApolloProvider>
+    </>;
   };
 }

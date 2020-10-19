@@ -10,6 +10,7 @@ interface IOptions {
   token?: string;
   ssl: Boolean;
   path: string;
+  headers?: any;
 }
 
 export function generateHeaders(options: IOptions) {
