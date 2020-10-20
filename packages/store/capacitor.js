@@ -73,10 +73,17 @@ exports.CapacitorStoreProvider = ({ context = exports.CapacitorStoreContext, chi
                 debug('init', { key, defaultValue });
                 getStateRef.current();
                 const fn = (value) => {
-                    if (typeof (value) === 'undefined' || lodash_1.isNull(value))
+                    let valueParsed;
+                    try {
+                        valueParsed = JSON.parse(value);
+                    }
+                    catch (error) {
+                        debug('fn:error', { error, key, defaultValue, value });
+                    }
+                    if (typeof (valueParsed) === 'undefined' || lodash_1.isNull(valueParsed))
                         setState(defaultValue);
                     else
-                        setState(value);
+                        setState(valueParsed);
                 };
                 intervalRef.current = setInterval(() => getStateRef.current(), fetchInterval);
                 capacitorStorageEvent.on(key, fn);
