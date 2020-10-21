@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var fs = require('fs');
 var replace = require('replace-in-file');
 var Debug = require('debug');
