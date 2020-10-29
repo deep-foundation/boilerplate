@@ -115,3 +115,6 @@ local.properties
 
 # Electron
 projects/app/electron/app
+
+# migrations
+.migrate

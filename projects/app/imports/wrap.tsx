@@ -15,7 +15,7 @@ export function wrap(options: IWrapOptions) {
       initialStore: {},
       token: auth?.token,
       ssl: !!(+process.env.HASURA_SSL),
-      path: process.env.HASURA_PATH,
+      path: `${process.env.HASURA_PATH}/v1/graphql`,
     }));
     const [lastToken, setLastToken] = useState(auth?.token);
 
@@ -24,7 +24,7 @@ export function wrap(options: IWrapOptions) {
         initialStore: {},
         token: auth?.token,
         ssl: !!(+process.env.HASURA_SSL),
-        path: process.env.HASURA_PATH,
+        path: `${process.env.HASURA_PATH}/v1/graphql`,
       }));
     };
 

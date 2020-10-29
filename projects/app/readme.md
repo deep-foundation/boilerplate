@@ -13,7 +13,7 @@
   GITHUB_CLIENTID='?'
   GITHUB_CLIENTSECRET='?'
 
-  APP_NAME='deepcase'
+  APP_NAME='@deepcase/app'
   ```
 - Before capacitor build.
   ```sh

@@ -1,0 +1,36 @@
+{
+  "name": "@deepcase/migrations",
+  "version": "0.0.0",
+  "license": "ISC",
+  "author": "Ivan S Glazunov <ivansglazunov@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@github.com/deepcase/boilerplate.git",
+    "directory": "packages/migrations"
+  },
+  "description": "",
+  "scripts": {
+    "build": "npx tsc --project tsconfig.json",
+    "lint": "npx tslint -c tslint.json --project tsconfig.json",
+    "up": "npx migrate up $NAME --compiler='ts:./compiler.js'",
+    "down": "npx migrate down $NAME --compiler='ts:./compiler.js'",
+    "create": "npx migrate create $NAME"
+  },
+  "bin": "./index.js",
+  "dependencies": {
+    "axios": "^0.21.0",
+    "babel-register": "^6.26.0",
+    "dotenv": "^8.2.0",
+    "migrate": "^1.7.0",
+    "ts-node": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^14.0.27",
+    "@types/passport": "^1.0.4",
+    "@types/passport-github": "^1.1.5",
+    "tslint": "^6.1.2",
+    "tslint-config-airbnb": "^5.11.2",
+    "tslint-eslint-rules": "^5.4.0",
+    "typescript": "^3.9.7"
+  }
+}
