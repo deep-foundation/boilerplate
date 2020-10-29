@@ -4,8 +4,8 @@
 
 - Before all create `.env` file.
   ```sh
-  HASURA_PATH='?'
-  HASURA_SSL=1
+  HASURA_PATH='localhost:8080'
+  HASURA_SSL=0
 
   HOST_URL='http://localhost:4000'
 

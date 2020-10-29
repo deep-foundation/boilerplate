@@ -1,20 +1,22 @@
+require('dotenv').config();
+
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import fetch from 'node-fetch';
 
-const HASURA_URL = process.env.HASURA_URL || 'localhost:8080/v1/graphql';
+const HASURA_PATH = process.env.HASURA_PATH;
 const HASURA_SSL = +process.env.HASURA_SSL;
+const APP_NAME = process.env.APP_NAME || '@deepcase/mp';
 
 const cache = new InMemoryCache();
 const link = createHttpLink({
-  uri: `http${HASURA_SSL ? 's' : ''}://${HASURA_URL || ''}`, fetch,
+  uri: `http${HASURA_SSL ? 's' : ''}://${HASURA_PATH || ''}/v1/graphql`, fetch,
 });
-
 
 export const client = new ApolloClient({
   link,
   cache,
 
-  name: 'deepcase-mp',
+  name: APP_NAME,
   version: '0.0.0',
 
   defaultOptions: {

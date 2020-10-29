@@ -1,9 +1,22 @@
+require('dotenv').config();
+
 import { client } from './client';
 import Debug from 'debug';
 import { gql } from 'apollo-boost';
 import { check } from './check';
 
 const debug = Debug('deepcase-mp:test');
+
+const DELAY = +process.env.DELAY || 0;
+const delay = time => new Promise(res => setTimeout(res, time));
+
+const itDelay = () => {
+  if (DELAY) {
+    it('delay', async () => {
+      await delay(DELAY);
+    });
+  }
+};
 
 const insertNode = async () => {
   const result = await client.mutate({ mutation: gql`mutation InsertNode {
@@ -37,12 +50,17 @@ const deleteNode = async (id: number) => {
   return result?.data?.delete_nodes?.returning?.[0]?.id;
 };
 
+beforeAll(async () => {
+  jest.setTimeout(100000);
+});
+
 it('+1', async () => {
   await clear();
   const a = await insertNode();
   const b = await insertNode();
   await check({ a, b });
 });
+itDelay();
 it('-1', async () => {
   await clear();
   const a = await insertNode();
@@ -50,6 +68,7 @@ it('-1', async () => {
   await deleteNode(a);
   await check({ a, b });
 });
+itDelay();
 it('+2', async () => {
   await clear();
   const a = await insertNode();
@@ -57,6 +76,7 @@ it('+2', async () => {
   const c = await insertLink(a, b);
   await check({ a, b, c });
 });
+itDelay();
 it('-2', async () => {
   await clear();
   const a = await insertNode();
@@ -65,6 +85,7 @@ it('-2', async () => {
   await deleteNode(c);
   await check({ a, b, c });
 });
+itDelay();
 it('+3', async () => {
   await clear();
   const a = await insertNode();
@@ -74,6 +95,7 @@ it('+3', async () => {
   const e = await insertLink(b, d);
   await check({ a, b, c, d, e });
 });
+itDelay();
 it('-3', async () => {
   await clear();
   const a = await insertNode();
@@ -84,6 +106,7 @@ it('-3', async () => {
   await deleteNode(e);
   await check({ a, b, c, d, e });
 });
+itDelay();
 it('+4', async () => {
   await clear();
   const a = await insertNode();
@@ -95,6 +118,7 @@ it('+4', async () => {
   const y = await insertLink(x, a);
   await check({ a, b, c, d, e, x, y });
 });
+itDelay();
 it('-4', async () => {
   await clear();
   const a = await insertNode();
@@ -107,6 +131,7 @@ it('-4', async () => {
   await deleteNode(y);
   await check({ a, b, c, d, e, x, y });
 });
+itDelay();
 it('+5', async () => {
   await clear();
   const a = await insertNode();
@@ -118,6 +143,7 @@ it('+5', async () => {
   const y = await insertLink(x, b);
   await check({ a, b, c, d, e, x, y });
 });
+itDelay();
 it('-5', async () => {
   await clear();
   const a = await insertNode();
@@ -130,6 +156,7 @@ it('-5', async () => {
   await deleteNode(y);
   await check({ a, b, c, d, e, x, y });
 });
+itDelay();
 it('+7', async () => {
   await clear();
   const a = await insertNode();
@@ -140,6 +167,7 @@ it('+7', async () => {
   const y = await insertLink(a, d);
   await check({ a, b, c, d, e, y });
 });
+itDelay();
 it('-7', async () => {
   await clear();
   const a = await insertNode();
