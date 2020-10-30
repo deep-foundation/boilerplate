@@ -18,10 +18,10 @@
   "dependencies": {
     "@apollo/client": "^3.2.2",
     "apollo-boost": "^0.4.9",
+    "chance": "^1.1.7",
     "debug": "^4.2.0",
     "dotenv": "^8.2.0",
     "graphql": "^15.3.0",
-    "lodash": "^4.17.20",
     "node-fetch": "^2.6.1",
     "react": "^16.13.1"
   },
