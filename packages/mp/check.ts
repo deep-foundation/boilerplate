@@ -6,12 +6,20 @@ import forEach from 'lodash/forEach';
 const debug = Debug('deepcase-mp:check');
 
 export const fetch = async () => {
-  const result = await client.query({ query: gql`query MyQuery {
+  const result = await client.query({ query: gql`query FETCH {
     mp: nodes__mp { id item_id path_item_depth path_item_id root_id position_id by_position(order_by: { path_item_depth: asc }) { id item_id path_item_depth path_item_id root_id position_id } }
     nodes { from_id id to_id type_id in { from_id id to_id type_id } out { from_id id to_id type_id } }
   }
   ` });
   return { nodes: result?.data?.nodes || [], mp: result?.data?.mp || [] };
+};
+
+export const findNoParent = async (notId: number) => {
+  const result = await client.query({ query: gql`query FIND_NO_PARENT($notId: Int) {
+    nodes(where: { _not: { _by_path_item: { item_id: {_eq: $notId} } } }) { id }
+  }`, variables: { notId } });
+  debug(`findNoParent notId #${notId} (${(result?.data?.nodes || []).length})`);
+  return { nodes: result?.data?.nodes || [] };
 };
 
 interface Node {
@@ -29,6 +37,7 @@ export const check = async (hash: { [name:string]: number }) => {
   forEach(hash, (value, key) => { n[value] = key });
 
   const { nodes, mp } = await fetch();
+
   debug('checking');
   let valid = true;
   const invalid = (...args) => {

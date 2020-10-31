@@ -105,35 +105,35 @@ export const down = async () => {
     type: 'drop_relationship',
     args: {
       table: ntn,
-      name: 'from',
+      relationship: 'from',
     },
   });
   await hasura.post({
     type: 'drop_relationship',
     args: {
       table: ntn,
-      name: 'to',
+      relationship: 'to',
     },
   });
   await hasura.post({
     type: 'drop_relationship',
     args: {
       table: ntn,
-      name: 'type',
+      relationship: 'type',
     },
   });
   await hasura.post({
     type: 'drop_relationship',
     args: {
       table: ntn,
-      name: 'in',
+      relationship: 'in',
     },
   });
   await hasura.post({
     type: 'drop_relationship',
     args: {
       table: ntn,
-      name: 'out',
+      relationship: 'out',
     },
   });
 };

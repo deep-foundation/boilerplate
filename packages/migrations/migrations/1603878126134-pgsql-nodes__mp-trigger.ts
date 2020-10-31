@@ -1,5 +1,8 @@
 import hasura, { sql } from '../imports/hasura';
 
+const ntn = process.env.NODES__TABLE_NAME || 'nodes';
+const nsn = process.env.NODES__SCHEMA_NAME || 'public';
+
 const nmpsn = process.env.NODES_MP__SCHEMA_NAME || 'public';
 const nmptn = process.env.NODES_MP__TABLE_NAME || 'nodes__mp';
 
@@ -332,6 +335,12 @@ BEGIN
 END;
 $trigger$ LANGUAGE plpgsql;`;
 
+const UP_TRIGGERS = `CREATE TRIGGER ${nmptn}__delete_node__trigger AFTER DELETE ON "${ntn}" FOR EACH ROW EXECUTE PROCEDURE ${nmptn}__delete_node__function();
+
+CREATE TRIGGER ${nmptn}__insert_node__trigger AFTER INSERT ON "${ntn}" FOR EACH ROW EXECUTE PROCEDURE ${nmptn}__insert_node__function();`;
+
+const DOWN_TRIGGERS = `DROP TRIGGER IF EXISTS ${nmptn}__delete_node__trigger ON ${ntn};
+DROP TRIGGER IF EXISTS ${nmptn}__insert_node__trigger ON ${ntn}`;
 const DOWN_IS_ROOT = `DROP FUNCTION IF EXISTS ${nmptn}__is_root;`;
 const DOWN_INSERT = `DROP FUNCTION IF EXISTS ${nmptn}__insert_node__function`;
 const DOWN_WILL_ROOT = `DROP FUNCTION IF EXISTS ${nmptn}__will_root;`;
@@ -342,9 +351,11 @@ export const up = async () => {
   await hasura.sql(UP_INSERT);
   await hasura.sql(UP_WILL_ROOT);
   await hasura.sql(UP_DELETE);
+  await hasura.sql(UP_TRIGGERS);
 };
 
 export const down = async () => {
+  await hasura.sql(DOWN_TRIGGERS);
   await hasura.sql(DOWN_IS_ROOT);
   await hasura.sql(DOWN_INSERT);
   await hasura.sql(DOWN_WILL_ROOT);

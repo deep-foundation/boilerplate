@@ -4,7 +4,7 @@ const nmpsn = process.env.NODES_MP__SCHEMA_NAME || 'public';
 const nmptn = process.env.NODES_MP__TABLE_NAME || 'nodes__mp';
 
 const UP = `CREATE TABLE ${nmpsn}."${nmptn}" (
-  id serial primary key,
+  id serial,
   item_id integer NOT NULL,
   path_item_id integer NOT NULL,
   path_item_depth integer NOT NULL,
