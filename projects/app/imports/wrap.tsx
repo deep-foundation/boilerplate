@@ -14,8 +14,6 @@ export function wrap(options: IWrapOptions) {
     const [client, setClient] = useState<ApolloClient<any> | void>(generateApolloClient({
       initialStore: {},
       token: auth?.token,
-      ssl: !!(+process.env.HASURA_SSL),
-      path: `${process.env.HASURA_PATH}/v1/graphql`,
     }));
     const [lastToken, setLastToken] = useState(auth?.token);
 
@@ -23,8 +21,6 @@ export function wrap(options: IWrapOptions) {
       setClient(generateApolloClient({
         initialStore: {},
         token: auth?.token,
-        ssl: !!(+process.env.HASURA_SSL),
-        path: `${process.env.HASURA_PATH}/v1/graphql`,
       }));
     };
 

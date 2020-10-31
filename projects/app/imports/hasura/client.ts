@@ -8,8 +8,8 @@ import fetch from 'node-fetch';
 interface IOptions {
   initialStore?: any;
   token?: string;
-  ssl: Boolean;
-  path: string;
+  ssl?: Boolean;
+  path?: string;
   headers?: any;
 }
 
@@ -29,9 +29,11 @@ export function generateApolloClient(
   options: IOptions,
 ): ApolloClient<any> {
   const headers = generateHeaders(options);
+  const ssl = typeof(options.ssl) === 'boolean' || !!(+process.env.HASURA_SSL);
+  const path = typeof(options.path) === 'string' || `${process.env.HASURA_PATH}/v1/graphql`;
 
   const httpLink = new HttpLink({
-    uri: `http${options.ssl ? 's' : ''}://${options.path || ''}`,
+    uri: `http${ssl ? 's' : ''}://${path || ''}`,
     // @ts-ignore
     fetch,
   });
@@ -40,7 +42,7 @@ export function generateApolloClient(
   const wsLink = !process.browser
     ? null
     : new WebSocketLink({
-      uri: `ws${options.ssl ? 's' : ''}://${options.path || ''}`,
+      uri: `ws${ssl ? 's' : ''}://${path || ''}`,
       options: {
         lazy: true,
         reconnect: true,

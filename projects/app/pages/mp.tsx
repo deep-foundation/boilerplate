@@ -17,7 +17,7 @@ import { Switch } from '@material-ui/core';
 const Tree = dynamic(() => import('react-d3-tree'), { ssr: false });
 
 const FETCH = gql`subscription FETCH {
-  nodes {
+  nodes(limit: 1000) {
     from_id id to_id type_id in { from_id id to_id type_id } out { from_id id to_id type_id }
   }
 }`;
@@ -64,7 +64,6 @@ function TreePage() {
     for (let i = 0; i < nodes.length; i++) {
       hash[nodes[i].id].tree.children.push(...nodes[i]?.out?.map((l) => hash[l.id].tree));
     }
-    console.log(q, hash, roots);
     return roots.map(r => hash[r].tree);
   }, [q]);
   return <div style={{ width: '100vw', height: '100vh' }} >
@@ -80,7 +79,6 @@ function GraphPage() {
   const [limited, setLimited] = useState(false);
 
   const q = useSubscription(limited ? FETCH_LIMITED : FETCH);
-  console.log(q);
   const [grant] = useMutation(GRANT);
   const [ungrant] = useMutation(UNGRANT);
 

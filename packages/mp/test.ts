@@ -3,7 +3,7 @@ require('dotenv').config();
 import Debug from 'debug';
 import { gql } from 'apollo-boost';
 import Chance from 'chance';
-import { check, findNoParent } from './check';
+import { check } from './check';
 import { client } from './client';
 
 const chance = new Chance();
@@ -20,10 +20,10 @@ const itDelay = () => {
   }
 };
 
-const insertNode = async () => {
-  const result = await client.mutate({ mutation: gql`mutation InsertNode {
-    insert_nodes(objects: {}) { returning { id } }
-  }` });
+const insertNode = async (type_id: number) => {
+  const result = await client.mutate({ mutation: gql`mutation InsertNode($type_id: Int) {
+    insert_nodes(objects: { type_id: $type_id }) { returning { id } }
+  }`, variables: { type_id } });
   const id = result?.data?.insert_nodes?.returning?.[0]?.id;
   debug(`insert node #${id}`);
   return id;
@@ -37,20 +37,19 @@ const insertNodes = async (nodes) => {
   debug(`insert nodes ${ids.length}`);
   return ids;
 };
-const insertLink = async (fromId: number, toId: number) => {
-  const result = await client.mutate({ mutation: gql`mutation InsertLink($fromId: Int, $toId: Int) {
-    insert_nodes(objects: { from_id: $fromId, to_id: $toId }) { returning { id } }
-  }`, variables: { fromId, toId } });
+const insertLink = async (fromId: number, toId: number, type_id: number) => {
+  const result = await client.mutate({ mutation: gql`mutation InsertLink($fromId: Int, $toId: Int, $type_id: Int) {
+    insert_nodes(objects: { from_id: $fromId, to_id: $toId, type_id: $type_id }) { returning { id } }
+  }`, variables: { fromId, toId, type_id } });
   const id = result?.data?.insert_nodes?.returning?.[0]?.id;
   debug(`insert link #${id} (#${fromId} -> #${toId})`);
   return id;
 };
-const clear = async () => {
-  await client.mutate({ mutation: gql`mutation Clear {
-    delete_nodes(where: {}) { affected_rows }
-    delete_nodes__mp(where: {}) { affected_rows }
-  }
-  ` });
+const clear = async (type_id: number) => {
+  const c = await client.mutate({ mutation: gql`mutation Clear($type_id: Int) {
+    delete_nodes__mp(where: { item: { type_id: { _eq: $type_id } } }) { affected_rows }
+    delete_nodes(where: { type_id: { _eq: $type_id } }) { affected_rows }
+  }`, variables: { type_id } });
   debug(`clear`);
 };
 const deleteNode = async (id: number) => {
@@ -81,6 +80,18 @@ const generateTree = (initialId, count = 1000) => {
   return { array, paths };
 };
 
+const findNoParent = async (notId: number, type_id: number) => {
+  const result = await client.query({ query: gql`query FIND_NO_PARENT($notId: Int, $type_id: Int) {
+    nodes(where: {
+      from_id: { _is_null: true },
+      to_id: { _is_null: true },
+      _not: { _by_path_item: { item_id: {_eq: $notId} } }
+    }) { id }
+  }`, variables: { notId, type_id } });
+  debug(`findNoParent notId #${notId} (${(result?.data?.nodes || []).length})`);
+  return { nodes: result?.data?.nodes || [] };
+};
+
 const generateMultiparentalTree = async (array, nodesHash, count = 100) => {
   const nodes = array.filter(a => !a.from_id && !a.to_id);
   let founded = 0;
@@ -88,13 +99,13 @@ const generateMultiparentalTree = async (array, nodesHash, count = 100) => {
   for (let i = 0; i < count; i++) {
     const s = chance.integer({ min: 0, max: nodes.length - 1 });
     const sn = nodes[s];
-    const { nodes: possibles } = await findNoParent(sn.id);
+    const { nodes: possibles } = await findNoParent(sn.id, type_id);
     if (possibles.length) {
       const t = chance.integer({ min: 0, max: possibles.length - 1 });
       const tn = possibles[t];
       debug(`possible ${sn.id} => ${tn.id}`);
       if (sn && tn) {
-        const id = await insertLink(sn.id, tn.id);
+        const id = await insertLink(sn.id, tn.id, type_id);
         nodesHash[id] = id;
         founded++;
       }
@@ -106,153 +117,161 @@ const generateMultiparentalTree = async (array, nodesHash, count = 100) => {
   debug(`multiparental tree founded: ${founded}, skipped: ${skipped}`);
 };
 
+let type_id;
+
 beforeAll(async () => {
   jest.setTimeout(1000000);
+  const ids = await insertNodes({});
+  type_id = ids[0];
+});
+afterAll(async () => {
+  await clear(type_id);
+  await deleteNode(type_id);
 });
 
 it('+1', async () => {
-  await clear();
-  const a = await insertNode();
-  const b = await insertNode();
-  await check({ a, b });
+  await clear(type_id);
+  const a = await insertNode(type_id);
+  const b = await insertNode(type_id);
+  await check({ a, b }, type_id);
 });
 itDelay();
 it('-1', async () => {
-  await clear();
-  const a = await insertNode();
-  const b = await insertNode();
+  await clear(type_id);
+  const a = await insertNode(type_id);
+  const b = await insertNode(type_id);
   await deleteNode(a);
-  await check({ a, b });
+  await check({ a, b }, type_id);
 });
 itDelay();
 it('+2', async () => {
-  await clear();
-  const a = await insertNode();
-  const b = await insertNode();
-  const c = await insertLink(a, b);
-  await check({ a, b, c });
+  await clear(type_id);
+  const a = await insertNode(type_id);
+  const b = await insertNode(type_id);
+  const c = await insertLink(a, b, type_id);
+  await check({ a, b, c }, type_id);
 });
 itDelay();
 it('-2', async () => {
-  await clear();
-  const a = await insertNode();
-  const b = await insertNode();
-  const c = await insertLink(a, b);
+  await clear(type_id);
+  const a = await insertNode(type_id);
+  const b = await insertNode(type_id);
+  const c = await insertLink(a, b, type_id);
   await deleteNode(c);
-  await check({ a, b, c });
+  await check({ a, b, c }, type_id);
 });
 itDelay();
 it('+3', async () => {
-  await clear();
-  const a = await insertNode();
-  const b = await insertNode();
-  const c = await insertLink(a, b);
-  const d = await insertNode();
-  const e = await insertLink(b, d);
-  await check({ a, b, c, d, e });
+  await clear(type_id);
+  const a = await insertNode(type_id);
+  const b = await insertNode(type_id);
+  const c = await insertLink(a, b, type_id);
+  const d = await insertNode(type_id);
+  const e = await insertLink(b, d, type_id);
+  await check({ a, b, c, d, e }, type_id);
 });
 itDelay();
 it('-3', async () => {
-  await clear();
-  const a = await insertNode();
-  const b = await insertNode();
-  const c = await insertLink(a, b);
-  const d = await insertNode();
-  const e = await insertLink(b, d);
+  await clear(type_id);
+  const a = await insertNode(type_id);
+  const b = await insertNode(type_id);
+  const c = await insertLink(a, b, type_id);
+  const d = await insertNode(type_id);
+  const e = await insertLink(b, d, type_id);
   await deleteNode(e);
-  await check({ a, b, c, d, e });
+  await check({ a, b, c, d, e }, type_id);
 });
 itDelay();
 it('+4', async () => {
-  await clear();
-  const a = await insertNode();
-  const b = await insertNode();
-  const c = await insertLink(a, b);
-  const d = await insertNode();
-  const e = await insertLink(b, d);
-  const x = await insertNode();
-  const y = await insertLink(x, a);
-  await check({ a, b, c, d, e, x, y });
+  await clear(type_id);
+  const a = await insertNode(type_id);
+  const b = await insertNode(type_id);
+  const c = await insertLink(a, b, type_id);
+  const d = await insertNode(type_id);
+  const e = await insertLink(b, d, type_id);
+  const x = await insertNode(type_id);
+  const y = await insertLink(x, a, type_id);
+  await check({ a, b, c, d, e, x, y }, type_id);
 });
 itDelay();
 it('-4', async () => {
-  await clear();
-  const a = await insertNode();
-  const b = await insertNode();
-  const c = await insertLink(a, b);
-  const d = await insertNode();
-  const e = await insertLink(b, d);
-  const x = await insertNode();
-  const y = await insertLink(x, a);
+  await clear(type_id);
+  const a = await insertNode(type_id);
+  const b = await insertNode(type_id);
+  const c = await insertLink(a, b, type_id);
+  const d = await insertNode(type_id);
+  const e = await insertLink(b, d, type_id);
+  const x = await insertNode(type_id);
+  const y = await insertLink(x, a, type_id);
   await deleteNode(y);
-  await check({ a, b, c, d, e, x, y });
+  await check({ a, b, c, d, e, x, y }, type_id);
 });
 itDelay();
 it('+5', async () => {
-  await clear();
-  const a = await insertNode();
-  const b = await insertNode();
-  const c = await insertLink(a, b);
-  const d = await insertNode();
-  const e = await insertLink(b, d);
-  const x = await insertNode();
-  const y = await insertLink(x, b);
-  await check({ a, b, c, d, e, x, y });
+  await clear(type_id);
+  const a = await insertNode(type_id);
+  const b = await insertNode(type_id);
+  const c = await insertLink(a, b, type_id);
+  const d = await insertNode(type_id);
+  const e = await insertLink(b, d, type_id);
+  const x = await insertNode(type_id);
+  const y = await insertLink(x, b, type_id);
+  await check({ a, b, c, d, e, x, y }, type_id);
 });
 itDelay();
 it('-5', async () => {
-  await clear();
-  const a = await insertNode();
-  const b = await insertNode();
-  const c = await insertLink(a, b);
-  const d = await insertNode();
-  const e = await insertLink(b, d);
-  const x = await insertNode();
-  const y = await insertLink(x, b);
+  await clear(type_id);
+  const a = await insertNode(type_id);
+  const b = await insertNode(type_id);
+  const c = await insertLink(a, b, type_id);
+  const d = await insertNode(type_id);
+  const e = await insertLink(b, d, type_id);
+  const x = await insertNode(type_id);
+  const y = await insertLink(x, b, type_id);
   await deleteNode(y);
-  await check({ a, b, c, d, e, x, y });
+  await check({ a, b, c, d, e, x, y }, type_id);
 });
 itDelay();
 it('+7', async () => {
-  await clear();
-  const a = await insertNode();
-  const b = await insertNode();
-  const c = await insertLink(a, b);
-  const d = await insertNode();
-  const e = await insertLink(b, d);
-  const y = await insertLink(a, d);
-  await check({ a, b, c, d, e, y });
+  await clear(type_id);
+  const a = await insertNode(type_id);
+  const b = await insertNode(type_id);
+  const c = await insertLink(a, b, type_id);
+  const d = await insertNode(type_id);
+  const e = await insertLink(b, d, type_id);
+  const y = await insertLink(a, d, type_id);
+  await check({ a, b, c, d, e, y }, type_id);
 });
 itDelay();
 it('-7', async () => {
-  await clear();
-  const a = await insertNode();
-  const b = await insertNode();
-  const c = await insertLink(a, b);
-  const d = await insertNode();
-  const e = await insertLink(b, d);
-  const y = await insertLink(a, d);
+  await clear(type_id);
+  const a = await insertNode(type_id);
+  const b = await insertNode(type_id);
+  const c = await insertLink(a, b, type_id);
+  const d = await insertNode(type_id);
+  const e = await insertLink(b, d, type_id);
+  const y = await insertLink(a, d, type_id);
   await deleteNode(y);
-  await check({ a, b, c, d, e, y });
+  await check({ a, b, c, d, e, y }, type_id);
 });
 itDelay();
 it('tree', async () => {
-  await clear();
-  const a = await insertNode();
+  await clear(type_id);
+  const a = await insertNode(type_id);
   const { array } = generateTree(a, 100);
-  const ids = await insertNodes(array.map(({ id, ...a }) => a));
+  const ids = await insertNodes(array.map(({ id, ...a }) => ({ ...a, type_id })));
   const ns = {};
   for (let d = 0; d < ids.length; d++) ns[ids[d]] = ids[d];
-  await check({ a, ...ns });
+  await check({ a, ...ns }, type_id);
 });
 itDelay();
 it('multiparental tree', async () => {
-  await clear();
-  const a = await insertNode();
-  const { array } = generateTree(a, 100);
-  const ids = await insertNodes(array.map(({ id, ...a }) => a));
+  await clear(type_id);
+  const a = await insertNode(type_id);
+  const { array } = generateTree(a, 500);
+  const ids = await insertNodes(array.map(({ id, ...a }) => ({ ...a, type_id })));
   const ns = {};
   for (let d = 0; d < ids.length; d++) ns[ids[d]] = ids[d];
-  // await generateMultiparentalTree(array, ns, 20);
-  await check({ a, ...ns });
+  await generateMultiparentalTree(array, ns, 20);
+  await check({ a, ...ns }, type_id);
 });
