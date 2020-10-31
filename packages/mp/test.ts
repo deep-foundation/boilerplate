@@ -65,12 +65,16 @@ const generateTree = (initialId, count = 1000) => {
   let i = initialId + 1;
   const paths = { [initialId]: [initialId] };
   const array: any[] = [{ id: initialId }];
+  const nodes = [...array];
   // const variants = [['node', 'link'], [5, 1]];
   for (let c = 0; c < count; c++) {
-    const s = chance.integer({ min: 0, max: array.length - 1 });
+    const s = chance.integer({ min: 0, max: nodes.length - 1 });
     // const v = chance.weighted(...variants);
-    array.push({ id: i + 0 }, { id: i + 1, from_id: array[s].id, to_id: i + 0 });
-    paths[i + 0] = paths[array[s].id] ? [...paths[array[s].id], array[s].id, i + 0] : [array[s].id, i + 0];
+    const n = { id: i + 0 };
+    const l = { id: i + 1, from_id: nodes[s].id, to_id: i + 0 };
+    array.push(n, l);
+    nodes.push(n);
+    paths[i + 0] = paths[nodes[s].id] ? [...paths[nodes[s].id], nodes[s].id, i + 0] : [nodes[s].id, i + 0];
     i = i + 2;
   }
   array.shift();
@@ -235,7 +239,7 @@ itDelay();
 it('tree', async () => {
   await clear();
   const a = await insertNode();
-  const { array } = generateTree(a, 1000);
+  const { array } = generateTree(a, 100);
   const ids = await insertNodes(array.map(({ id, ...a }) => a));
   const ns = {};
   for (let d = 0; d < ids.length; d++) ns[ids[d]] = ids[d];
@@ -249,6 +253,6 @@ it('multiparental tree', async () => {
   const ids = await insertNodes(array.map(({ id, ...a }) => a));
   const ns = {};
   for (let d = 0; d < ids.length; d++) ns[ids[d]] = ids[d];
-  await generateMultiparentalTree(array, ns, 20);
+  // await generateMultiparentalTree(array, ns, 20);
   await check({ a, ...ns });
 });

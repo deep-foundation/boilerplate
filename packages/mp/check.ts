@@ -16,7 +16,11 @@ export const fetch = async () => {
 
 export const findNoParent = async (notId: number) => {
   const result = await client.query({ query: gql`query FIND_NO_PARENT($notId: Int) {
-    nodes(where: { _not: { _by_path_item: { item_id: {_eq: $notId} } } }) { id }
+    nodes(where: {
+      from_id: { _is_null: true },
+      to_id: { _is_null: true },
+      _not: { _by_path_item: { item_id: {_eq: $notId} } }
+    }) { id }
   }`, variables: { notId } });
   debug(`findNoParent notId #${notId} (${(result?.data?.nodes || []).length})`);
   return { nodes: result?.data?.nodes || [] };
