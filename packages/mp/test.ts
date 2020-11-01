@@ -24,6 +24,7 @@ const insertNode = async (type_id: number) => {
   const result = await client.mutate({ mutation: gql`mutation InsertNode($type_id: Int) {
     insert_nodes(objects: { type_id: $type_id }) { returning { id } }
   }`, variables: { type_id } });
+  if (result?.errors) throw result?.errors;
   const id = result?.data?.insert_nodes?.returning?.[0]?.id;
   debug(`insert node #${id}`);
   return id;
@@ -32,6 +33,7 @@ const insertNodes = async (nodes) => {
   const result = await client.mutate({ mutation: gql`mutation InsertNodes($objects: [nodes_insert_input!]!) {
     insert_nodes(objects: $objects) { returning { id } }
   }`, variables: { objects: nodes } });
+  if (result?.errors) throw result?.errors;
   const returning = result?.data?.insert_nodes?.returning || [];
   const ids = returning.map(({id}) => id);
   debug(`insert nodes ${ids.length}`);
@@ -41,21 +43,24 @@ const insertLink = async (fromId: number, toId: number, type_id: number) => {
   const result = await client.mutate({ mutation: gql`mutation InsertLink($fromId: Int, $toId: Int, $type_id: Int) {
     insert_nodes(objects: { from_id: $fromId, to_id: $toId, type_id: $type_id }) { returning { id } }
   }`, variables: { fromId, toId, type_id } });
+  if (result?.errors) throw result?.errors;
   const id = result?.data?.insert_nodes?.returning?.[0]?.id;
   debug(`insert link #${id} (#${fromId} -> #${toId})`);
   return id;
 };
 const clear = async (type_id: number) => {
-  const c = await client.mutate({ mutation: gql`mutation Clear($type_id: Int) {
+  const result = await client.mutate({ mutation: gql`mutation Clear($type_id: Int) {
     delete_nodes__mp(where: { item: { type_id: { _eq: $type_id } } }) { affected_rows }
     delete_nodes(where: { type_id: { _eq: $type_id } }) { affected_rows }
   }`, variables: { type_id } });
-  debug(`clear`);
+  if (result?.errors) throw result?.errors;
+  debug(`clear type_id #${type_id}`);
 };
 const deleteNode = async (id: number) => {
   const result = await client.mutate({ mutation: gql`mutation DeleteNode($id: Int) {
     delete_nodes(where: { id: { _eq: $id } }) { returning { id } }
   }`, variables: { id } });
+  if (result?.errors) throw result?.errors;
   debug(`delete node #${id}`);
   return result?.data?.delete_nodes?.returning?.[0]?.id;
 };
@@ -121,12 +126,15 @@ let type_id;
 
 beforeAll(async () => {
   jest.setTimeout(1000000);
-  const ids = await insertNodes({});
-  type_id = ids[0];
 });
 afterAll(async () => {
   await clear(type_id);
   await deleteNode(type_id);
+});
+it('prepare', async () => {
+  const ids = await insertNodes({});
+  type_id = ids[0];
+  debug('prepare', ids);
 });
 
 it('+1', async () => {

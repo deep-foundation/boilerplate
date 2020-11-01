@@ -1,0 +1,3 @@
+mutation INSERT_NODES($objects: [nodes_insert_input!]!) {
+  insert_nodes(objects: $objects) { returning { id } }
+}

@@ -12,25 +12,26 @@ import { useMutation, useSubscription } from '@apollo/react-hooks';
 import ReactResizeDetector from 'react-resize-detector';
 
 import { Graph } from "react-d3-graph";
-import { Switch } from '@material-ui/core';
+import { Switch, Typography } from '@material-ui/core';
+import { useAuth } from '@deepcase/auth';
+
+import INSERT_NODES from '../imports/gql/INSERT_NODES.gql';
 
 const Tree = dynamic(() => import('react-d3-tree'), { ssr: false });
 
 const FETCH = gql`subscription FETCH {
-  nodes(limit: 1000) {
+  nodes {
     from_id id to_id type_id in { from_id id to_id type_id } out { from_id id to_id type_id }
   }
 }`;
-const FETCH_LIMITED = gql`subscription FETCH_LIMITED {
-  nodes(where: {
-    _by_item: { path_item: { type_id: { _eq: 1 } } },
-  }) {
+const FETCH_LIMITED = gql`subscription FETCH_LIMITED($where: nodes_bool_exp) {
+  nodes(where: $where) {
     from_id id to_id type_id in { from_id id to_id type_id } out { from_id id to_id type_id }
   }
 }`;
 const GRANT = gql`mutation GRANT($forNodeId: Int) {
   insert_nodes(objects: {
-    type_id: 1,
+    type_id: 2,
     out: { data: {
       to_id: $forNodeId
     } },
@@ -77,17 +78,26 @@ function TreePage() {
 function GraphPage() {
   const [size, setSize] = useState({ w: 0, h: 0 });
   const [limited, setLimited] = useState(false);
+  const auth = useAuth();
 
-  const q = useSubscription(limited ? FETCH_LIMITED : FETCH);
+  const q = useSubscription(FETCH_LIMITED, { variables: {
+    where: {
+      _or: [
+        { _by_item: { path_item_id: { _eq: +auth.id } } },
+        { id: { _eq: +auth.id } },
+      ],
+    } },
+  });
   const [grant] = useMutation(GRANT);
   const [ungrant] = useMutation(UNGRANT);
+  const [insertNodes] = useMutation(INSERT_NODES);
 
   const data = useMemo(() => {
     const nodes = q?.data?.nodes || [];
     const data = {
       links: [],
       nodes: [],
-      hash: [],
+      hash: {},
     };
     for (let i = 0; i < nodes.length; i++) {
       if (nodes[i].from_id && nodes[i].to_id) {
@@ -95,7 +105,8 @@ function GraphPage() {
       } else {
         data.nodes.push({
           id: nodes[i].id.toString(),
-          color: nodes[i]?.type_id ? 'green' : nodes[i]?.in?.length ? 'black' : 'red',
+          // color: nodes[i]?.type_id === 2? 'green' : nodes[i]?.in?.length ? 'black' : 'red',
+          color: +nodes[i]?.id === +auth.id ? 'red': 'black',
         });
       }
       data.hash[nodes[i].id] = nodes[i];
@@ -103,12 +114,15 @@ function GraphPage() {
     return data;
   }, [q]);
 
-  // const onClickGraph = () => {
-  //   console.log(`Clicked the graph background`);
-  // };
+  const onClickGraph = async () => {
+    const ids = await insertNodes([
+      { },
+    ]);
+    console.log(`Clicked the graph background`);
+  };
 
   const onClickNode = (nodeId: string) => {
-    if (data?.hash?.[+nodeId]?.type_id === 1) {
+    if (data?.hash?.[+nodeId]?.type_id === 2) {
       ungrant({ variables: { ruleId: +nodeId } });
     } else {
       grant({ variables: { forNodeId: +nodeId } });
@@ -151,10 +165,10 @@ function GraphPage() {
   //   console.log(`Node ${nodeId} is moved to new position. New position is x= ${x} y= ${y}`);
   // };
 
-  return <div style={{ width: '100vw', height: '100vh', position: 'relative' }} >
+  return <div style={{ width: '100vw', height: '100vh', position: 'absolute', left: 0, top: 0 }} >
     <ReactResizeDetector handleWidth handleHeight onResize={(w: number, h: number) => setSize({ w, h })}/>
     <>
-      {!!data?.nodes?.length && !!data?.links?.length && <Graph
+      {!!data?.nodes?.length && <Graph
         id="deepcase-materialized-path"
         data={{ links: data.links, nodes: data.nodes }}
         config={{
@@ -165,7 +179,7 @@ function GraphPage() {
         onClickNode={onClickNode}
         // onDoubleClickNode={onDoubleClickNode}
         // onRightClickNode={onRightClickNode}
-        // onClickGraph={onClickGraph}
+        onClickGraph={onClickGraph}
         // onClickLink={onClickLink}
         // onRightClickLink={onRightClickLink}
         // onMouseOverNode={onMouseOverNode}
@@ -181,6 +195,9 @@ function GraphPage() {
         onChange={() => setLimited(!limited)}
         name="limited"
       />
+    </div>
+    <div style={{ position: 'absolute', right: 16, top: 16 }}>
+      <Typography>{auth?.id}</Typography>
     </div>
   </div>;
 }

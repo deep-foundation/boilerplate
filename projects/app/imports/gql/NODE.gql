@@ -1,4 +1,4 @@
-query NODE($nodeId: String) {
+query NODE($nodeId: Int) {
   results: nodes(where: {id: {_eq: $nodeId}}) {
     id type_id
     out(distinct_on: [type_id]) {
