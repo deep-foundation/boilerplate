@@ -7,7 +7,6 @@ const nmpsn = process.env.NODES_MP__SCHEMA_NAME || 'public';
 const nmptn = process.env.NODES_MP__TABLE_NAME || 'nodes__mp';
 
 const UP_IS_ROOT = sql`CREATE OR REPLACE FUNCTION ${nmptn}__is_root(node_id integer) RETURNS boolean AS $$
-DECLARE
 DECLARE result BOOLEAN;
 BEGIN
   SELECT COUNT("id") >= 1
@@ -224,7 +223,6 @@ END;
 $trigger$ LANGUAGE plpgsql;`;
 
 const UP_WILL_ROOT = sql`CREATE OR REPLACE FUNCTION ${nmptn}__will_root(node_id integer, link_id integer) RETURNS boolean AS $$
-DECLARE
 DECLARE result BOOLEAN;
 BEGIN
   SELECT COUNT("id") = 0
@@ -240,7 +238,6 @@ END;
 $$ LANGUAGE plpgsql;`;
 
 const UP_DELETE = sql`CREATE OR REPLACE FUNCTION ${nmptn}__will_root(node_id integer, link_id integer) RETURNS boolean AS $$
-DECLARE
 DECLARE result BOOLEAN;
 BEGIN
   SELECT COUNT("id") = 0

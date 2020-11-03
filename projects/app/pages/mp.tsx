@@ -2,7 +2,7 @@ import React, { useMemo, useRef, useState } from 'react';
 import _ from 'lodash';
 import dynamic from "next/dynamic";
 
-import { useQueryStore } from '@deepcase/store/query';
+import { QueryStoreProvider, useQueryStore } from '@deepcase/store/query';
 
 import { wrap } from '../imports/wrap';
 
@@ -12,85 +12,92 @@ import { useMutation, useSubscription } from '@apollo/react-hooks';
 import ReactResizeDetector from 'react-resize-detector';
 
 import { Graph } from "react-d3-graph";
-import { Switch, Typography } from '@material-ui/core';
+import { Button, ButtonGroup, Switch, Typography } from '@material-ui/core';
 import { useAuth } from '@deepcase/auth';
 
 import INSERT_NODES from '../imports/gql/INSERT_NODES.gql';
+import UPDATE_NODES from '../imports/gql/UPDATE_NODES.gql';
+import DELETE_NODES from '../imports/gql/DELETE_NODES.gql';
 
-const Tree = dynamic(() => import('react-d3-tree'), { ssr: false });
-
-const FETCH = gql`subscription FETCH {
-  nodes {
-    from_id id to_id type_id in { from_id id to_id type_id } out { from_id id to_id type_id }
-  }
-}`;
 const FETCH_LIMITED = gql`subscription FETCH_LIMITED($where: nodes_bool_exp) {
   nodes(where: $where) {
     from_id id to_id type_id in { from_id id to_id type_id } out { from_id id to_id type_id }
   }
 }`;
-const GRANT = gql`mutation GRANT($forNodeId: Int) {
-  insert_nodes(objects: {
-    type_id: 2,
-    out: { data: {
-      to_id: $forNodeId
-    } },
-  }) { returning { id } }
-}`;
-const UNGRANT = gql`mutation GRANT($ruleId: Int) {
-  delete_nodes(where: {
-    _or: [
-      { id: { _eq: $ruleId } },
-      { from_id: { _eq: $ruleId } },
-    ],
-  }) { returning { id } }
-}`;
-
-function TreePage() {
-  const q = useSubscription(FETCH);
-
-  const [translate, setTranslate] = useState({ x: 0, y: 0 });
-
-  const data = useMemo(() => {
-    const hash = {};
-    const nodes = q?.data?.nodes || [];
-    const roots = [];
-    for (let i = 0; i < nodes.length; i++) {
-      hash[nodes[i].id] = { node: nodes[i], tree: {
-        name: nodes[i].id,
-        children: [],
-      } };
-      if (!nodes[i]?.in?.length) roots.push(nodes[i].id);
-    }
-    for (let i = 0; i < nodes.length; i++) {
-      hash[nodes[i].id].tree.children.push(...nodes[i]?.out?.map((l) => hash[l.id].tree));
-    }
-    return roots.map(r => hash[r].tree);
-  }, [q]);
-  return <div style={{ width: '100vw', height: '100vh' }} >
-    <ReactResizeDetector handleWidth handleHeight onResize={(w: number, h: number) => setTranslate({ x: w / 2, y: h / 2 })}/>
-    <>
-      {!!data?.length && <Tree data={data} translate={translate}/>}
-    </>
-  </div>;
-}
 
 function GraphPage() {
   const [size, setSize] = useState({ w: 0, h: 0 });
-  const [limited, setLimited] = useState(false);
+  const [limited, setLimited] = useQueryStore('limited', false);
   const auth = useAuth();
 
   const q = useSubscription(FETCH_LIMITED, { variables: {
-    where: {
+    where: limited ? {
       _or: [
-        { _by_item: { path_item_id: { _eq: +auth.id } } },
-        { id: { _eq: +auth.id } },
+        ...(+auth?.id ? [
+          // rule
+          {
+            _by_item: {
+              path_item: {
+                // selector
+                type_id: { _eq: 8 },
+                in: {
+                  // rule_object
+                  type_id: { _eq: 4 },
+                  from: {
+                    // rule
+                    type_id: { _eq: 2 },
+                    out: {
+                      // rule_subject
+                      type_id: { _eq: 3 },
+                      to: {
+                        // selector
+                        type_id: { _eq: 8 },
+                        _by_path_item: { item_id: { _eq: +auth?.id } },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+          // user owned
+          {
+            _by_item: {
+              // user over upper
+              path_item_id: { _eq: +auth?.id },
+              // but has not selector upper
+              _or: [
+                {
+                  // but can be selector link
+                  item: {
+                    from_id: { _is_null: false },
+                    to_id: { _is_null: false },
+                    type_id: { _eq: 8 },
+                  },
+                },
+                {
+                  _not: { by_position: { path_item: {
+                    from_id: { _is_null: false },
+                    to_id: { _is_null: false },
+                    type_id: { _eq: 8 },
+                  } } },
+                },
+              ],
+            },
+          },
+          // is user
+          { id: { _eq: +auth?.id } },
+          // are any user
+          { type_id: { _eq: 6 } },
+          // not usered
+          { _not: { _by_item: { path_item: { type_id: { _eq: 6 } } } } },
+        ] : []),
       ],
-    } },
-  });
-  const [grant] = useMutation(GRANT);
-  const [ungrant] = useMutation(UNGRANT);
+    } : {},
+  } });
   const [insertNodes] = useMutation(INSERT_NODES);
+  const [updateNodes] = useMutation(UPDATE_NODES);
+  const [deleteNodes] = useMutation(DELETE_NODES);
 
   const data = useMemo(() => {
     const nodes = q?.data?.nodes || [];
@@ -100,33 +107,73 @@ function GraphPage() {
       hash: {},
     };
     for (let i = 0; i < nodes.length; i++) {
-      if (nodes[i].from_id && nodes[i].to_id) {
-        data.links.push({ id: nodes[i].id.toString(), source: nodes[i].from_id.toString(), target: nodes[i].to_id.toString() });
+      const n = nodes?.[i];
+      if (n.from_id && n.to_id) {
+        data.links.push({
+          id: n.id.toString(),
+          source: n.from_id.toString(),
+          target: n.to_id.toString(),
+          color: 
+            +n?.type_id === 1 ? 'grey' :
+            +n?.type_id === 2 ? 'purple' :
+            +n?.type_id === 3 ? 'green' :
+            +n?.type_id === 4 ? 'dodgerblue' :
+            +n?.type_id === 5 ? 'fuchsia' :
+            +n?.type_id === 6 ? 'orange' :
+            +n?.type_id === 7 ? 'sienna' :
+            +n?.type_id === 8 ? 'gold' :
+            'grey',
+        });
       } else {
         data.nodes.push({
-          id: nodes[i].id.toString(),
-          // color: nodes[i]?.type_id === 2? 'green' : nodes[i]?.in?.length ? 'black' : 'red',
-          color: +nodes[i]?.id === +auth.id ? 'red': 'black',
+          id: n.id.toString(),
+          // color: n?.type_id === 2? 'green' : n?.in?.length ? 'black' : 'red',
+          color:
+            +n?.id === +auth?.id ? 'red' :
+            +n?.type_id === 1 ? 'grey' :
+            +n?.type_id === 2 ? 'purple' :
+            +n?.type_id === 3 ? 'green' :
+            +n?.type_id === 4 ? 'dodgerblue' :
+            +n?.type_id === 5 ? 'fuchsia' :
+            +n?.type_id === 6 ? 'orange' :
+            +n?.type_id === 7 ? 'sienna' :
+            +n?.type_id === 8 ? 'gold' :
+            'black',
         });
       }
-      data.hash[nodes[i].id] = nodes[i];
+      data.hash[n.id] = n;
     }
+    _.remove(data?.links, l => !data?.hash[l.source] || !data?.hash[l.target]);
     return data;
   }, [q]);
 
+  const [selected, setSelected] = useState(0);
+  const selectedNode = data?.hash?.[selected];
+  const [action, setAction] = useState(0);
+
   const onClickGraph = async () => {
-    const ids = await insertNodes([
-      { },
-    ]);
-    console.log(`Clicked the graph background`);
+    setSelected(0);
   };
 
-  const onClickNode = (nodeId: string) => {
-    if (data?.hash?.[+nodeId]?.type_id === 2) {
-      ungrant({ variables: { ruleId: +nodeId } });
+  const onClickNode = async (nodeId: string) => {
+    if (action) {
+      if (action === 1) {
+        setAction(0);
+        await insertNodes({ variables: { objects: { from_id: selected, to_id: +nodeId } } });
+      }
     } else {
-      grant({ variables: { forNodeId: +nodeId } });
+      setSelected(+nodeId);
     }
+
+    // const result = await insertNodes({ variables: { objects: {} } });
+    // const id = result?.data?.insert_nodes?.returning?.[0]?.id;
+    // await insertNodes({ variables: { objects: { from_id: +nodeId, to_id: +id } } });
+
+    // if (data?.hash?.[+nodeId]?.type_id === 2) {
+    //   ungrant({ variables: { ruleId: +nodeId } });
+    // } else {
+    //   grant({ variables: { forNodeId: +nodeId } });
+    // }
   };
 
   // const onDoubleClickNode = (nodeId) => {
@@ -145,9 +192,10 @@ function GraphPage() {
   //   console.log(`Mouse out node ${nodeId}`);
   // };
 
-  // const onClickLink = (source, target) => {
-  //   console.log(`Clicked link between ${source} and ${target}`);
-  // };
+  const onClickLink = (source, target) => {
+    const link = (data?.links || []).find(l => +l.source === +source && +l.target === +target);
+    if (link) setSelected(+link?.id);
+  };
 
   // const onRightClickLink = (event, source, target) => {
   //   console.log(`Right clicked link between ${source} and ${target}`);
@@ -175,12 +223,14 @@ function GraphPage() {
           height: size.h,
           width: size.w,
           directed: true,
+          link: {
+          },
         }}
         onClickNode={onClickNode}
         // onDoubleClickNode={onDoubleClickNode}
         // onRightClickNode={onRightClickNode}
         onClickGraph={onClickGraph}
-        // onClickLink={onClickLink}
+        onClickLink={onClickLink}
         // onRightClickLink={onRightClickLink}
         // onMouseOverNode={onMouseOverNode}
         // onMouseOutNode={onMouseOutNode}
@@ -199,9 +249,39 @@ function GraphPage() {
     <div style={{ position: 'absolute', right: 16, top: 16 }}>
       <Typography>{auth?.id}</Typography>
     </div>
+    <div style={{ position: 'absolute', left: 0, bottom: 0, width: '100%', padding: 6 }}>
+      <ButtonGroup disabled style={{ marginRight: 6 }}>
+        <Button>#{selectedNode?.id ? selectedNode?.id : '?'}</Button>
+        <Button>#{selectedNode?.from_id ? selectedNode?.from_id : '?'}</Button>
+        <Button disabled> {'=>'} </Button>
+        <Button>#{selectedNode?.to_id ? selectedNode?.to_id : '?'}</Button>
+      </ButtonGroup>
+      <ButtonGroup style={{ marginRight: 6 }} disabled={!selected}>
+        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: null } } })} disabled={!selectedNode?.type_id}>0</Button>
+        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 1 } } })} disabled={selectedNode?.type_id === 1}>1</Button>
+        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 2 } } })} disabled={selectedNode?.type_id === 2}>2</Button>
+        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 3 } } })} disabled={selectedNode?.type_id === 3}>3</Button>
+        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 4 } } })} disabled={selectedNode?.type_id === 4}>4</Button>
+        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 5 } } })} disabled={selectedNode?.type_id === 5}>5</Button>
+        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 6 } } })} disabled={selectedNode?.type_id === 6}>6</Button>
+        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 7 } } })} disabled={selectedNode?.type_id === 7}>7</Button>
+        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 8 } } })} disabled={selectedNode?.type_id === 8}>8</Button>
+      </ButtonGroup>
+      <ButtonGroup disabled={!selectedNode} style={{ marginRight: 6 }}>
+        <Button onClick={() => deleteNodes({ variables: { where: { id: { _eq: selected } } } })}>{'X'}</Button>
+        <Button color={action === 1 ? 'primary' : 'default'} onClick={() => setAction(1)}>{'|=>'}</Button>
+        <Button color={action === 2 ? 'primary' : 'default'} onClick={async () => {
+          const result = await insertNodes({ variables: { objects: {} } });
+          const id = result?.data?.insert_nodes?.returning?.[0]?.id;
+          await insertNodes({ variables: { objects: { from_id: selected, to_id: +id } } });
+        }}>{'|=>O'}</Button>
+      </ButtonGroup>
+    </div>
   </div>;
 }
 
 export default wrap({ Component: function Wrap() {
-  return <GraphPage/>;
+  return <QueryStoreProvider>
+    <GraphPage/>
+  </QueryStoreProvider>;
 } });

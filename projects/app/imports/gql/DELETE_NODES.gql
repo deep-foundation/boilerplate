@@ -1,0 +1,3 @@
+mutation DELETE_NODES($where: nodes_bool_exp!) {
+  delete_nodes(where: $where) { returning { id } }
+}

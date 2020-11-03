@@ -1,0 +1,3 @@
+mutation UPDATE_NODES($where: nodes_bool_exp!, $set: nodes_set_input) {
+  update_nodes(where: $where, _set: $set) { returning { id } }
+}
