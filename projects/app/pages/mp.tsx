@@ -36,23 +36,26 @@ function GraphPage() {
         ...(+auth?.id ? [
           // rule
           {
+            type_id: { _neq: 9 },
             _by_item: {
               path_item: {
                 // selector
-                type_id: { _eq: 8 },
-                in: {
-                  // rule_object
-                  type_id: { _eq: 4 },
-                  from: {
-                    // rule
-                    type_id: { _eq: 2 },
-                    out: {
-                      // rule_subject
-                      type_id: { _eq: 3 },
-                      to: {
-                        // selector
-                        type_id: { _eq: 8 },
-                        _by_path_item: { item_id: { _eq: +auth?.id } },
+                type_id: { _eq: 9 },
+                from: {
+                  in: {
+                    // rule_object
+                    type_id: { _eq: 4 },
+                    from: {
+                      // rule
+                      type_id: { _eq: 2 },
+                      out: {
+                        // rule_subject
+                        type_id: { _eq: 3 },
+                        to: {
+                          // selector
+                          type_id: { _eq: 8 },
+                          _by_path_item: { item_id: { _eq: +auth?.id } },
+                        },
                       },
                     },
                   },
@@ -122,6 +125,7 @@ function GraphPage() {
             +n?.type_id === 6 ? 'orange' :
             +n?.type_id === 7 ? 'sienna' :
             +n?.type_id === 8 ? 'gold' :
+            +n?.type_id === 9 ? 'gold' :
             'grey',
         });
       } else {
@@ -138,6 +142,7 @@ function GraphPage() {
             +n?.type_id === 6 ? 'orange' :
             +n?.type_id === 7 ? 'sienna' :
             +n?.type_id === 8 ? 'gold' :
+            +n?.type_id === 9 ? 'gold' :
             'black',
         });
       }
@@ -266,6 +271,7 @@ function GraphPage() {
         <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 6 } } })} disabled={selectedNode?.type_id === 6}>6</Button>
         <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 7 } } })} disabled={selectedNode?.type_id === 7}>7</Button>
         <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 8 } } })} disabled={selectedNode?.type_id === 8}>8</Button>
+        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 9 } } })} disabled={selectedNode?.type_id === 9}>9</Button>
       </ButtonGroup>
       <ButtonGroup disabled={!selectedNode} style={{ marginRight: 6 }}>
         <Button onClick={() => deleteNodes({ variables: { where: { id: { _eq: selected } } } })}>{'X'}</Button>

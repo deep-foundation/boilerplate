@@ -28,7 +28,7 @@ INSERT INTO "nodes" ("type_id") VALUES (1);
 `;
 
 const DELETE_INITIAL_DATA = sql`
-DELETE FROM "nodes" WHERE id in (1,2,3,4,5,6);
+DELETE FROM "nodes" WHERE id in (1,2,3,4,5,6,7,8,9);
 `;
 
 export const up = async () => {
