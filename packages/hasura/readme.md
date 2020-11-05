@@ -10,4 +10,4 @@ fake development infrastructure of postgresql and hasura
 
 - [Docker](https://docs.docker.com/install/)
 - [Docker Compose](https://docs.docker.com/compose/install/)
-- `(cd ./packages/hasura && docker-compose up -d)`
+- `(cd ./packages/hasura && npm run docker-compose)`
