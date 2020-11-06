@@ -13,6 +13,7 @@
     "start": "npx ts-node ./index.ts"
   },
   "dependencies": {
+    "buffer-replace": "^1.0.0",
     "http-proxy": "^1.18.1",
     "node-tcp-proxy": "0.0.19"
   },
