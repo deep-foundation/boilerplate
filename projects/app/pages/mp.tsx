@@ -12,7 +12,7 @@ import { useMutation, useSubscription } from '@apollo/react-hooks';
 import ReactResizeDetector from 'react-resize-detector';
 
 import { Graph } from "react-d3-graph";
-import { Button, ButtonGroup, Switch, Typography } from '@material-ui/core';
+import { Button, ButtonGroup, Paper, Switch, Typography } from '@material-ui/core';
 import { useAuth } from '@deepcase/auth';
 
 import INSERT_NODES from '../imports/gql/INSERT_NODES.gql';
@@ -33,10 +33,9 @@ function GraphPage() {
   const q = useSubscription(FETCH_LIMITED, { variables: {
     where: limited ? {
       _or: [
-        ...(+auth?.id ? [
+        ...(+(auth?.id || 0) ? [
           // rule
           {
-            type_id: { _neq: 9 },
             _by_item: {
               path_item: {
                 // selector
@@ -54,7 +53,7 @@ function GraphPage() {
                         to: {
                           // selector
                           type_id: { _eq: 8 },
-                          _by_path_item: { item_id: { _eq: +auth?.id } },
+                          _by_path_item: { item_id: { _eq: +(auth?.id || 0) } },
                         },
                       },
                     },
@@ -67,7 +66,7 @@ function GraphPage() {
           {
             _by_item: {
               // user over upper
-              path_item_id: { _eq: +auth?.id },
+              path_item_id: { _eq: +(auth?.id || 0) },
               // but has not selector upper
               _or: [
                 {
@@ -89,7 +88,7 @@ function GraphPage() {
             },
           },
           // is user
-          { id: { _eq: +auth?.id } },
+          { id: { _eq: +(auth?.id || 0) } },
           // are any user
           { type_id: { _eq: 6 } },
           // not usered
@@ -116,13 +115,14 @@ function GraphPage() {
           id: n.id.toString(),
           source: n.from_id.toString(),
           target: n.to_id.toString(),
+          label: `${n.id} ${+n?.type_id}`,
           color: 
             +n?.type_id === 1 ? 'grey' :
             +n?.type_id === 2 ? 'purple' :
             +n?.type_id === 3 ? 'green' :
             +n?.type_id === 4 ? 'dodgerblue' :
             +n?.type_id === 5 ? 'fuchsia' :
-            +n?.type_id === 6 ? 'orange' :
+            +n?.type_id === 6 ? 'red' :
             +n?.type_id === 7 ? 'sienna' :
             +n?.type_id === 8 ? 'gold' :
             +n?.type_id === 9 ? 'gold' :
@@ -131,19 +131,18 @@ function GraphPage() {
       } else {
         data.nodes.push({
           id: n.id.toString(),
-          // color: n?.type_id === 2? 'green' : n?.in?.length ? 'black' : 'red',
-          color:
-            +n?.id === +auth?.id ? 'red' :
+          label: `${n.id} ${+n?.type_id}`,
+          color: 
             +n?.type_id === 1 ? 'grey' :
             +n?.type_id === 2 ? 'purple' :
             +n?.type_id === 3 ? 'green' :
             +n?.type_id === 4 ? 'dodgerblue' :
             +n?.type_id === 5 ? 'fuchsia' :
-            +n?.type_id === 6 ? 'orange' :
+            +n?.type_id === 6 ? 'red' :
             +n?.type_id === 7 ? 'sienna' :
             +n?.type_id === 8 ? 'gold' :
             +n?.type_id === 9 ? 'gold' :
-            'black',
+            'grey',
         });
       }
       data.hash[n.id] = n;
@@ -228,7 +227,20 @@ function GraphPage() {
           height: size.h,
           width: size.w,
           directed: true,
+          staticGraph: false,
+          nodeHighlightBehavior: true,
+          linkHighlightBehavior: true,
+          automaticRearrangeAfterDropNode: true,
           link: {
+            renderLabel: true,
+            labelProperty: "label",
+            highlightColor: "black",
+            semanticStrokeWidth: true,
+          },
+          node: {
+            renderLabel: true,
+            labelProperty: "label",
+            highlightStrokeColor: "black",
           },
         }}
         onClickNode={onClickNode}
