@@ -4,7 +4,7 @@ const ntn = process.env.NODES__TABLE_NAME || 'nodes';
 const nsn = process.env.NODES__SCHEMA_NAME || 'public';
 
 export const up = async () => {
-  await hasura.post({
+  await hasura.query({
     type: 'create_object_relationship',
     args: {
       table: ntn,
@@ -23,7 +23,7 @@ export const up = async () => {
     },
   });
 
-  await hasura.post({
+  await hasura.query({
     type: 'create_object_relationship',
     args: {
       table: ntn,
@@ -42,7 +42,7 @@ export const up = async () => {
     },
   });
 
-  await hasura.post({
+  await hasura.query({
     type: 'create_object_relationship',
     args: {
       table: ntn,
@@ -61,7 +61,7 @@ export const up = async () => {
     },
   });
 
-  await hasura.post({
+  await hasura.query({
     type: 'create_array_relationship',
     args: {
       table: ntn,
@@ -80,7 +80,7 @@ export const up = async () => {
     },
   });
 
-  await hasura.post({
+  await hasura.query({
     type: 'create_array_relationship',
     args: {
       table: ntn,
@@ -101,35 +101,35 @@ export const up = async () => {
 };
 
 export const down = async () => {
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: ntn,
       relationship: 'from',
     },
   });
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: ntn,
       relationship: 'to',
     },
   });
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: ntn,
       relationship: 'type',
     },
   });
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: ntn,
       relationship: 'in',
     },
   });
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: ntn,

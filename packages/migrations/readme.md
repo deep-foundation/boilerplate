@@ -6,6 +6,7 @@
   ```sh
   HASURA_PATH='localhost:8080'
   HASURA_SSL=0
+  HASURA_SECRET='myadminsecretkey'
 
   APP_NAME='@deepcase/migrations'
   ```

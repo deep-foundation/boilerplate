@@ -7,7 +7,7 @@ const nmpsn = process.env.NODES_MP__SCHEMA_NAME || 'public';
 const nmptn = process.env.NODES_MP__TABLE_NAME || 'nodes__mp';
 
 export const up = async () => {
-  await hasura.post({
+  await hasura.query({
     type: 'create_array_relationship',
     args: {
       table: ntn,
@@ -26,7 +26,7 @@ export const up = async () => {
     },
   });
 
-  await hasura.post({
+  await hasura.query({
     type: 'create_array_relationship',
     args: {
       table: ntn,
@@ -45,7 +45,7 @@ export const up = async () => {
     },
   });
 
-  await hasura.post({
+  await hasura.query({
     type: 'create_array_relationship',
     args: {
       table: ntn,
@@ -64,7 +64,7 @@ export const up = async () => {
     },
   });
 
-  await hasura.post({
+  await hasura.query({
     type: 'create_object_relationship',
     args: {
       table: nmptn,
@@ -83,7 +83,7 @@ export const up = async () => {
     },
   });
 
-  await hasura.post({
+  await hasura.query({
     type: 'create_object_relationship',
     args: {
       table: nmptn,
@@ -102,7 +102,7 @@ export const up = async () => {
     },
   });
 
-  await hasura.post({
+  await hasura.query({
     type: 'create_object_relationship',
     args: {
       table: nmptn,
@@ -121,7 +121,7 @@ export const up = async () => {
     },
   });
 
-  await hasura.post({
+  await hasura.query({
     type: 'create_array_relationship',
     args: {
       table: nmptn,
@@ -140,7 +140,7 @@ export const up = async () => {
     },
   });
 
-  await hasura.post({
+  await hasura.query({
     type: 'create_array_relationship',
     args: {
       table: nmptn,
@@ -159,7 +159,7 @@ export const up = async () => {
     },
   });
 
-  await hasura.post({
+  await hasura.query({
     type: 'create_array_relationship',
     args: {
       table: nmptn,
@@ -178,7 +178,7 @@ export const up = async () => {
     },
   });
 
-  await hasura.post({
+  await hasura.query({
     type: 'create_array_relationship',
     args: {
       table: nmptn,
@@ -199,70 +199,70 @@ export const up = async () => {
 };
 
 export const down = async () => {
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: ntn,
       relationship: '_by_item',
     },
   });
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: ntn,
       relationship: '_by_path_item',
     },
   });
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: ntn,
       relationship: '_by_root',
     },
   });
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: nmptn,
       relationship: 'item',
     },
   });
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: nmptn,
       relationship: 'path_item',
     },
   });
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: nmptn,
       relationship: 'root',
     },
   });
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: nmptn,
       relationship: 'by_item',
     },
   });
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: nmptn,
       relationship: 'by_path_item',
     },
   });
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: nmptn,
       relationship: 'by_position',
     },
   });
-  await hasura.post({
+  await hasura.query({
     type: 'drop_relationship',
     args: {
       table: nmptn,

@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const HASURA_PATH = process.env.HASURA_PATH;
 const HASURA_SSL = !!+process.env.HASURA_SSL;
+const HASURA_SECRET = process.env.HASURA_SECRET;
 
 if (!HASURA_PATH) throw new Error('!HASURA_PATH');
 
@@ -9,6 +10,9 @@ const hasura = {
   sql: (sql: string) => axios({
     method: 'post',
     url: `http${HASURA_SSL ? 's' : ''}://${HASURA_PATH}/v1/query`,
+    headers: {
+      ...(HASURA_SECRET ? { 'x-hasura-admin-secret': HASURA_SECRET } : {}),
+    },
     data: {
       type: 'run_sql',
       args: {
@@ -16,9 +20,12 @@ const hasura = {
       },
     },
   }),
-  post: (data: any) => axios({
+  query: (data: any) => axios({
     method: 'post',
     url: `http${HASURA_SSL ? 's' : ''}://${HASURA_PATH}/v1/query`,
+    headers: {
+      ...(HASURA_SECRET ? { 'x-hasura-admin-secret': HASURA_SECRET } : {}),
+    },
     data,
   }),
 };

@@ -4,7 +4,7 @@ const ntn = process.env.NODES__TABLE_NAME || 'nodes';
 const nsn = process.env.NODES__SCHEMA_NAME || 'public';
 
 export const up = async () => {
-  await hasura.post({
+  await hasura.query({
     type: 'track_table',
     args: {
       schema: nsn,
@@ -14,7 +14,7 @@ export const up = async () => {
 };
 
 export const down = async () => {
-  await hasura.post({
+  await hasura.query({
     type: 'untrack_table',
     args: {
       table: {
