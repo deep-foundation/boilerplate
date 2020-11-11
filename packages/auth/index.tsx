@@ -98,4 +98,16 @@ const withAuth = (App: NextApp | any, config: {
 
 export default withAuth;
 
+export function AuthProvider({
+  children,
+}: {
+  children: any;
+}) {
+  const auth = useAuth();
+
+  return <>
+    {children}
+  </>;
+}
+
 export const useAuth = (): IAuth => useContext(AuthContext);

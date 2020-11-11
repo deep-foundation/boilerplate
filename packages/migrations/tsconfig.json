@@ -18,7 +18,7 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "isolatedModules": true,
-    "outDir": "./"
+    "outDir": "./imports"
   },
   "exclude": [
     "./node_modules",
@@ -27,6 +27,6 @@
     "./.export"
   ],
   "include": [
-    "./"
+    "./imports"
   ]
 }

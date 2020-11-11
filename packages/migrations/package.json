@@ -1,6 +1,6 @@
 {
   "name": "@deepcase/migrations",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "ISC",
   "author": "Ivan S Glazunov <ivansglazunov@gmail.com>",
   "repository": {
