@@ -4,7 +4,7 @@ import Debug from 'debug';
 
 const debug = Debug('deepcase:auth:handler');
 
-export const Handler = (options?: any) => (req: NextApiRequest, res: NextApiResponse) => {
+export const Handler = (options?: any) => (req: any, res: any) => {
   const { provider } = req.query;
   debug('handle', { provider });
   if (!provider) return { statusCode: 404 };
@@ -16,10 +16,16 @@ export const Handler = (options?: any) => (req: NextApiRequest, res: NextApiResp
     return;
   }
 
-  passport.authenticate(provider, options)(req, res, () => {
-    debug('authenticate');
-    if (options) return true;
-    // @ts-ignore
-    res?.redirect('/');
-  });
+  if (provider === 'bearer') {
+    passport.authenticate('bearer', { session: false, ...options })(req, res, () => {
+      res.json(req?.user);
+    });
+  } else {
+    passport.authenticate(provider, options)(req, res, () => {
+      debug('authenticate');
+      if (options) return true;
+      // @ts-ignore
+      res?.redirect('/');
+    });
+  }
 };

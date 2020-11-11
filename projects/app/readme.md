@@ -6,6 +6,7 @@
   ```sh
   HASURA_PATH='localhost:8080'
   HASURA_SSL=0
+  HASURA_SECRET='myadminsecretkey'
 
   HOST_URL='http://localhost:4000'
 
@@ -71,3 +72,11 @@ npx cap serve
 ```sh
 ASSET_PREFIX='.' npm run build && ASSET_PREFIX='.' npm run export && npx cap copy electron && npx cap open electron
 ```
+
+## about
+
+### auth
+
+- For now, bearer just use token as userId=token and userRole=user.
+- For now, local auth use username and password as equal numeric node id.
+- For now, local auth has username and password 'abc' for demo auth in demo index page.

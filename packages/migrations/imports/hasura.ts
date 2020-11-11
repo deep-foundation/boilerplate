@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+axios.defaults.validateStatus = () => true;
+
 const HASURA_PATH = process.env.HASURA_PATH;
 const HASURA_SSL = !!+process.env.HASURA_SSL;
 const HASURA_SECRET = process.env.HASURA_SECRET;

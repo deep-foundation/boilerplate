@@ -16,7 +16,7 @@
     "@capacitor/cli": "^2.3.0",
     "@capacitor/core": "^2.3.0",
     "@capacitor/ios": "^2.3.0",
-    "@deepcase/auth": "~0.0.17",
+    "@deepcase/auth": "~0.0.18",
     "@deepcase/store": "~0.0.21",
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",

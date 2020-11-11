@@ -17,11 +17,18 @@ exports.Handler = (options) => (req, res) => {
         res === null || res === void 0 ? void 0 : res.redirect('/');
         return;
     }
-    index_1.passport.authenticate(provider, options)(req, res, () => {
-        debug('authenticate');
-        if (options)
-            return true;
-        res === null || res === void 0 ? void 0 : res.redirect('/');
-    });
+    if (provider === 'bearer') {
+        index_1.passport.authenticate('bearer', Object.assign({ session: false }, options))(req, res, () => {
+            res.json(req === null || req === void 0 ? void 0 : req.user);
+        });
+    }
+    else {
+        index_1.passport.authenticate(provider, options)(req, res, () => {
+            debug('authenticate');
+            if (options)
+                return true;
+            res === null || res === void 0 ? void 0 : res.redirect('/');
+        });
+    }
 };
 //# sourceMappingURL=handler.js.map

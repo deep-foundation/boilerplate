@@ -13,14 +13,14 @@ export function wrap(options: IWrapOptions) {
     const auth = useAuth();
     const [client, setClient] = useState<ApolloClient<any> | void>(generateApolloClient({
       initialStore: {},
-      token: auth?.token,
+      token: auth?.token || 'anonymous',
     }));
     const [lastToken, setLastToken] = useState(auth?.token);
 
     const updateClient = () => {
       setClient(generateApolloClient({
         initialStore: {},
-        token: auth?.token,
+        token: auth?.token || 'anonymous',
       }));
     };
 

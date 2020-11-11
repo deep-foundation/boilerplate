@@ -1,6 +1,6 @@
 {
   "name": "@deepcase/auth",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "license": "ISC",
   "author": "Ivan S Glazunov <ivansglazunov@gmail.com>",
   "repository": {
@@ -23,6 +23,7 @@
     "node": "^14.7.0",
     "passport": "^0.4.1",
     "passport-github": "^1.1.0",
+    "passport-http-bearer": "^1.0.1",
     "url": "^0.11.0"
   },
   "devDependencies": {

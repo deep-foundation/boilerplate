@@ -8,6 +8,7 @@ import fetch from 'node-fetch';
 interface IOptions {
   initialStore?: any;
   token?: string;
+  secret?: string;
   ssl?: Boolean;
   path?: string;
   headers?: any;
@@ -15,7 +16,8 @@ interface IOptions {
 
 export function generateHeaders(options: IOptions) {
   const headers: IOptions['headers'] = {};
-  // headers.Authorization = options.token ? `Bearer ${options.token}` : 'Bearer anonymous';
+  if (options.token) headers.Authorization = `Bearer ${options.token}`;
+  if (options.secret) headers['x-hasura-admin-secret'] = options.secret;
   return headers;
 }
 
@@ -36,6 +38,7 @@ export function generateApolloClient(
     uri: `http${ssl ? 's' : ''}://${path || ''}`,
     // @ts-ignore
     fetch,
+    headers,
   });
 
   // @ts-ignore

@@ -1,6 +1,7 @@
 import { applyPassport } from '@deepcase/auth/passport/index';
 import github from '@deepcase/auth/passport/github';
 import LocalStrategy from 'passport-local';
+import BearerStrategy from 'passport-http-bearer';
 import Debug from 'debug';
 import isInteger from 'lodash/isInteger';
 import { generateApolloClient } from './hasura/client';
@@ -17,7 +18,7 @@ export const insertNode = async (client, objects: any) => {
 };
 
 export const initPassport = () => {
-  const client = generateApolloClient({});
+  const client = generateApolloClient({ secret: process.env.HASURA_SECRET });
 
   return applyPassport((passport) => {
     passport.use(github);
@@ -36,6 +37,15 @@ export const initPassport = () => {
         if (result?.data?.results?.[0] && +username === +password) done(null, { id: nodeId });
         else done(null, false);
       } else done(null, false);
+    }));
+
+    // need real world token convert
+    passport.use(new BearerStrategy(async (token, done) => {
+      const user = {
+        "X-Hasura-Role": 'user',
+        "X-Hasura-User-Id": token,
+      };
+      return done(null, user);
     }));
 
     passport.serializeUser((user, done) => {
