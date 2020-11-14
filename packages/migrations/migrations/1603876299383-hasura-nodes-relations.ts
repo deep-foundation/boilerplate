@@ -12,8 +12,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes',
+            schema: nsn,
+            name: ntn,
           },
           column_mapping: {
             from_id: 'id',
@@ -31,8 +31,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes',
+            schema: nsn,
+            name: ntn,
           },
           column_mapping: {
             to_id: 'id',
@@ -50,8 +50,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes',
+            schema: nsn,
+            name: ntn,
           },
           column_mapping: {
             type_id: 'id',
@@ -69,8 +69,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes',
+            schema: nsn,
+            name: ntn,
           },
           column_mapping: {
             id: 'to_id',
@@ -88,8 +88,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes',
+            schema: nsn,
+            name: ntn,
           },
           column_mapping: {
             id: 'from_id',

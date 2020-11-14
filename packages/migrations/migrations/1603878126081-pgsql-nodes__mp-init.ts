@@ -9,12 +9,12 @@ const UP = sql`CREATE TABLE ${nmpsn}."${nmptn}" (
   path_item_id integer,
   path_item_depth integer,
   root_id integer,
-  position_id text DEFAULT public.gen_random_uuid()
+  position_id text DEFAULT ${nmpsn}.gen_random_uuid()
 );
-CREATE SEQUENCE public.${nmptn}_id_seq
+CREATE SEQUENCE ${nmpsn}.${nmptn}_id_seq
 AS integer START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;
-ALTER SEQUENCE public.${nmptn}_id_seq OWNED BY public.${nmptn}.id;
-ALTER TABLE ONLY public.${nmptn} ALTER COLUMN id SET DEFAULT nextval('public.${nmptn}_id_seq'::regclass);
+ALTER SEQUENCE ${nmpsn}.${nmptn}_id_seq OWNED BY ${nmpsn}.${nmptn}.id;
+ALTER TABLE ONLY ${nmpsn}.${nmptn} ALTER COLUMN id SET DEFAULT nextval('${nmpsn}.${nmptn}_id_seq'::regclass);
 `;
 
 const DOWN = `DROP TABLE ${nmpsn}."${nmptn}";`;

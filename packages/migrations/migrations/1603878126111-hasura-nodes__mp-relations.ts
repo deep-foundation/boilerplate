@@ -15,8 +15,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes__mp',
+            schema: nmpsn,
+            name: nmptn,
           },
           column_mapping: {
             id: 'item_id',
@@ -34,8 +34,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes__mp',
+            schema: nmpsn,
+            name: nmptn,
           },
           column_mapping: {
             id: 'path_item_id',
@@ -53,8 +53,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes__mp',
+            schema: nmpsn,
+            name: nmptn,
           },
           column_mapping: {
             id: 'root_id',
@@ -72,8 +72,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes',
+            schema: nsn,
+            name: ntn,
           },
           column_mapping: {
             item_id: 'id',
@@ -91,8 +91,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes',
+            schema: nsn,
+            name: ntn,
           },
           column_mapping: {
             path_item_id: 'id',
@@ -110,8 +110,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes',
+            schema: nsn,
+            name: ntn,
           },
           column_mapping: {
             root_id: 'id',
@@ -129,8 +129,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes__mp',
+            schema: nmpsn,
+            name: nmptn,
           },
           column_mapping: {
             item_id: 'item_id',
@@ -148,8 +148,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes__mp',
+            schema: nmpsn,
+            name: nmptn,
           },
           column_mapping: {
             path_item_id: 'path_item_id',
@@ -167,8 +167,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes__mp',
+            schema: nmpsn,
+            name: nmptn,
           },
           column_mapping: {
             position_id: 'position_id',
@@ -186,8 +186,8 @@ export const up = async () => {
       using: {
         manual_configuration: {
           remote_table: {
-            schema: 'public',
-            name: 'nodes__mp',
+            schema: nmpsn,
+            name: nmptn,
           },
           column_mapping: {
             root_id: 'root_id',

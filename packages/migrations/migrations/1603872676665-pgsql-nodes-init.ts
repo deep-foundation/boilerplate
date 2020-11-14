@@ -10,10 +10,10 @@ CREATE TABLE ${nsn}."${ntn}" (
   to_id integer,
   type_id integer
 );
-CREATE SEQUENCE public.${ntn}_id_seq
+CREATE SEQUENCE ${nsn}.${ntn}_id_seq
 AS integer START WITH 1 INCREMENT BY 1 NO MINVALUE NO MAXVALUE CACHE 1;
-ALTER SEQUENCE public.${ntn}_id_seq OWNED BY public.${ntn}.id;
-ALTER TABLE ONLY public.${ntn} ALTER COLUMN id SET DEFAULT nextval('public.${ntn}_id_seq'::regclass);
+ALTER SEQUENCE ${nsn}.${ntn}_id_seq OWNED BY ${nsn}.${ntn}.id;
+ALTER TABLE ONLY ${nsn}.${ntn} ALTER COLUMN id SET DEFAULT nextval('${nsn}.${ntn}_id_seq'::regclass);
 `;
 
 const DOWN = `DROP TABLE ${nsn}."${ntn}";`;
