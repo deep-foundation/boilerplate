@@ -1,12 +1,12 @@
 import hasura, { sql } from '../imports/hasura';
 
-const ntn = process.env.NODES__TABLE_NAME || 'nodes';
-const nsn = process.env.NODES__SCHEMA_NAME || 'public';
+export const ntn = process.env.NODES__TABLE_NAME || 'nodes';
+export const nsn = process.env.NODES__SCHEMA_NAME || 'public';
 
-const nmpsn = process.env.NODES_MP__SCHEMA_NAME || 'public';
-const nmptn = process.env.NODES_MP__TABLE_NAME || 'nodes__mp';
+export const nmpsn = process.env.NODES_MP__SCHEMA_NAME || 'public';
+export const nmptn = process.env.NODES_MP__TABLE_NAME || 'nodes__mp';
 
-const UP_IS_ROOT = sql`CREATE OR REPLACE FUNCTION ${nmptn}__is_root(node_id integer) RETURNS boolean AS $$
+export const UP_IS_ROOT = sql`CREATE OR REPLACE FUNCTION ${nmptn}__is_root(node_id integer) RETURNS boolean AS $$
 DECLARE result BOOLEAN;
 BEGIN
   SELECT COUNT("id") >= 1
@@ -22,7 +22,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;`;
 
-const UP_INSERT = sql`CREATE OR REPLACE FUNCTION ${nmptn}__insert_node__function()
+export const UP_INSERT = sql`CREATE OR REPLACE FUNCTION ${nmptn}__insert_node__function()
 RETURNS TRIGGER AS $trigger$
 DECLARE
   fromFlow RECORD;
@@ -222,7 +222,7 @@ BEGIN
 END;
 $trigger$ LANGUAGE plpgsql;`;
 
-const UP_WILL_ROOT = sql`CREATE OR REPLACE FUNCTION ${nmptn}__will_root(node_id integer, link_id integer) RETURNS boolean AS $$
+export const UP_WILL_ROOT = sql`CREATE OR REPLACE FUNCTION ${nmptn}__will_root(node_id integer, link_id integer) RETURNS boolean AS $$
 DECLARE result BOOLEAN;
 BEGIN
   SELECT COUNT("id") = 0
@@ -237,7 +237,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;`;
 
-const UP_DELETE = sql`CREATE OR REPLACE FUNCTION ${nmptn}__will_root(node_id integer, link_id integer) RETURNS boolean AS $$
+export const UP_DELETE = sql`CREATE OR REPLACE FUNCTION ${nmptn}__will_root(node_id integer, link_id integer) RETURNS boolean AS $$
 DECLARE result BOOLEAN;
 BEGIN
   SELECT COUNT("id") = 0
@@ -332,16 +332,16 @@ BEGIN
 END;
 $trigger$ LANGUAGE plpgsql;`;
 
-const UP_TRIGGERS = `CREATE TRIGGER ${nmptn}__delete_node__trigger AFTER DELETE ON "${ntn}" FOR EACH ROW EXECUTE PROCEDURE ${nmptn}__delete_node__function();
+export const UP_TRIGGERS = `CREATE TRIGGER ${nmptn}__delete_node__trigger AFTER DELETE ON "${ntn}" FOR EACH ROW EXECUTE PROCEDURE ${nmptn}__delete_node__function();
 
 CREATE TRIGGER ${nmptn}__insert_node__trigger AFTER INSERT ON "${ntn}" FOR EACH ROW EXECUTE PROCEDURE ${nmptn}__insert_node__function();`;
 
-const DOWN_TRIGGERS = `DROP TRIGGER IF EXISTS ${nmptn}__delete_node__trigger ON ${ntn};
+export const DOWN_TRIGGERS = `DROP TRIGGER IF EXISTS ${nmptn}__delete_node__trigger ON ${ntn};
 DROP TRIGGER IF EXISTS ${nmptn}__insert_node__trigger ON ${ntn}`;
-const DOWN_IS_ROOT = `DROP FUNCTION IF EXISTS ${nmptn}__is_root;`;
-const DOWN_INSERT = `DROP FUNCTION IF EXISTS ${nmptn}__insert_node__function`;
-const DOWN_WILL_ROOT = `DROP FUNCTION IF EXISTS ${nmptn}__will_root;`;
-const DOWN_DELETE = `DROP FUNCTION IF EXISTS ${nmptn}__delete_node__function`;
+export const DOWN_IS_ROOT = `DROP FUNCTION IF EXISTS ${nmptn}__is_root;`;
+export const DOWN_INSERT = `DROP FUNCTION IF EXISTS ${nmptn}__insert_node__function`;
+export const DOWN_WILL_ROOT = `DROP FUNCTION IF EXISTS ${nmptn}__will_root;`;
+export const DOWN_DELETE = `DROP FUNCTION IF EXISTS ${nmptn}__delete_node__function`;
 
 export const up = async () => {
   await hasura.sql(UP_IS_ROOT);

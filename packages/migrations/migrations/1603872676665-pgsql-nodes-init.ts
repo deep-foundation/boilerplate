@@ -1,9 +1,9 @@
 import hasura, { sql } from '../imports/hasura';
 
-const ntn = process.env.NODES__TABLE_NAME || 'nodes';
-const nsn = process.env.NODES__SCHEMA_NAME || 'public';
+export const ntn = process.env.NODES__TABLE_NAME || 'nodes';
+export const nsn = process.env.NODES__SCHEMA_NAME || 'public';
 
-const UP = sql`
+export const UP = sql`
 CREATE TABLE ${nsn}."${ntn}" (
   id integer,
   from_id integer,
@@ -16,7 +16,7 @@ ALTER SEQUENCE ${nsn}.${ntn}_id_seq OWNED BY ${nsn}.${ntn}.id;
 ALTER TABLE ONLY ${nsn}.${ntn} ALTER COLUMN id SET DEFAULT nextval('${nsn}.${ntn}_id_seq'::regclass);
 `;
 
-const DOWN = `DROP TABLE ${nsn}."${ntn}";`;
+export const DOWN = `DROP TABLE ${nsn}."${ntn}";`;
 
 export const up = async () => {
   await hasura.sql(UP);

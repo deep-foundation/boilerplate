@@ -1,12 +1,12 @@
 import hasura, { sql } from '../imports/hasura';
 
-const ntn = process.env.NODES__TABLE_NAME || 'nodes';
-const nsn = process.env.NODES__SCHEMA_NAME || 'public';
+export const ntn = process.env.NODES__TABLE_NAME || 'nodes';
+export const nsn = process.env.NODES__SCHEMA_NAME || 'public';
 
-const nmpsn = process.env.NODES_MP__SCHEMA_NAME || 'public';
-const nmptn = process.env.NODES_MP__TABLE_NAME || 'nodes__mp';
+export const nmpsn = process.env.NODES_MP__SCHEMA_NAME || 'public';
+export const nmptn = process.env.NODES_MP__TABLE_NAME || 'nodes__mp';
 
-const INSERT_INITIAL_DATA = sql`
+export const INSERT_INITIAL_DATA = sql`
 -- type 1 type
 INSERT INTO "nodes" ("type_id") VALUES (1);
 -- type 2 rule
@@ -27,7 +27,7 @@ INSERT INTO "nodes" ("type_id") VALUES (1);
 INSERT INTO "nodes" ("type_id") VALUES (1);
 `;
 
-const DELETE_INITIAL_DATA = sql`
+export const DELETE_INITIAL_DATA = sql`
 DELETE FROM "nodes" WHERE id in (1,2,3,4,5,6,7,8,9);
 `;
 

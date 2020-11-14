@@ -1,10 +1,10 @@
 import hasura from '../imports/hasura';
 
-const ntn = process.env.NODES__TABLE_NAME || 'nodes';
-const nsn = process.env.NODES__SCHEMA_NAME || 'public';
+export const ntn = process.env.NODES__TABLE_NAME || 'nodes';
+export const nsn = process.env.NODES__SCHEMA_NAME || 'public';
 
-const nmpsn = process.env.NODES_MP__SCHEMA_NAME || 'public';
-const nmptn = process.env.NODES_MP__TABLE_NAME || 'nodes__mp';
+export const nmpsn = process.env.NODES_MP__SCHEMA_NAME || 'public';
+export const nmptn = process.env.NODES_MP__TABLE_NAME || 'nodes__mp';
 
 export const up = async () => {
   await hasura.query({

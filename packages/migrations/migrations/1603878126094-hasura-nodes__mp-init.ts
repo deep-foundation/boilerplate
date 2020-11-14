@@ -1,7 +1,7 @@
 import hasura from '../imports/hasura';
 
-const nmpsn = process.env.NODES_MP__SCHEMA_NAME || 'public';
-const nmptn = process.env.NODES_MP__TABLE_NAME || 'nodes__mp';
+export const nmpsn = process.env.NODES_MP__SCHEMA_NAME || 'public';
+export const nmptn = process.env.NODES_MP__TABLE_NAME || 'nodes__mp';
 
 export const up = async () => {
   await hasura.query({

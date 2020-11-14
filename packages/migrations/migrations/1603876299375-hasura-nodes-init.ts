@@ -1,7 +1,7 @@
 import hasura from '../imports/hasura';
 
-const ntn = process.env.NODES__TABLE_NAME || 'nodes';
-const nsn = process.env.NODES__SCHEMA_NAME || 'public';
+export const ntn = process.env.NODES__TABLE_NAME || 'nodes';
+export const nsn = process.env.NODES__SCHEMA_NAME || 'public';
 
 export const up = async () => {
   await hasura.query({
