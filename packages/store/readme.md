@@ -61,3 +61,9 @@ const [capacitor, setCapacitor] = useCapacitorStore('demo', 5);
   - [x] android
   - [x] ios
   - [x] electron
+
+## publish
+
+```sh
+npm run publish
+```

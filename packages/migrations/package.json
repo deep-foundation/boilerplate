@@ -11,10 +11,12 @@
   "description": "",
   "scripts": {
     "build": "npx tsc --project tsconfig.json",
+    "unbuild": "rm -f ./imports/*.js && rm -f ./imports/*.js.map",
     "lint": "npx tslint -c tslint.json --project tsconfig.json",
     "up": "npx migrate up $NAME --compiler='ts:./compiler.js'",
     "down": "npx migrate down $NAME --compiler='ts:./compiler.js'",
-    "create": "npx migrate create $NAME"
+    "create": "npx migrate create $NAME",
+    "publish": "npm run build && npm publish && npm run unbuild"
   },
   "bin": "./index.js",
   "dependencies": {

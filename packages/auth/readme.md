@@ -116,3 +116,9 @@ export default function Page() {
   </>;
 }
 ```
+
+## publish
+
+```sh
+npm run publish
+```

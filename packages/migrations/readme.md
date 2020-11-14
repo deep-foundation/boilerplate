@@ -17,3 +17,9 @@
   NODES__SCHEMA_NAME='public'
   NODES__TABLE_NAME='nodes'
   ```
+
+## publish
+
+```sh
+npm run publish
+```
