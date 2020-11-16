@@ -4,6 +4,9 @@ import redirect from './redirect';
 import NextApp, { AppInitialProps, AppContext } from 'next/app';
 import { NextPageContext } from 'next';
 import axios from 'axios';
+import Debug from 'debug';
+
+const debug = Debug('deepcase:auth');
 
 export interface IAuthResult {
   id?: string;
@@ -113,15 +116,23 @@ export function AuthClientProvider({
 }) {
   const auth = useAuth();
   const [result, _setResult] = useState(auth?.result);
-  useEffect(() => _setResult(auth?.result), [auth?.result]);
+  useEffect(
+    () => {
+      _setResult(auth?.result);
+      debug('useEffect', auth);
+    },
+    [auth?.result],
+  );
   const setResult = useCallback(
     async (result) => {
-      _setResult(result);
-      axios({
-        method: 'post',
-        url: '/api/auth/token',
-        data: result,
-      }).then(() => {}, () => {});
+      debug('setResult', result);
+      if (!result.id || !result.token) {
+        _setResult({});
+        axios.get('/api/auth/logout').then(() => {}, () => {});
+      } else {
+        _setResult(result);
+        axios.get('/api/auth/token', { params: result }).then(() => {}, () => {});
+      }
     },
     [],
   );

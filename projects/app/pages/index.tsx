@@ -92,6 +92,8 @@ export function Auth() {
     <div><a href="/api/auth/github">github</a></div>
     <div><a href="/api/auth/local?username=abc&password=abc">local abc:abc</a></div>
     <div><a href="/api/auth/local?username=qwe&password=qwe">local qwe:qwe</a></div>
+    <div><button onClick={() => auth.setResult({ id: 'abc', token: 'abc' })}>set abc id and token</button></div>
+    <div><button onClick={() => auth.setResult({})}>logout</button></div>
     <div>
       <pre><code>
         {JSON.stringify(auth)}

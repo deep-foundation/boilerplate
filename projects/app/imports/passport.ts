@@ -3,6 +3,7 @@ import { applyPassport } from '@deepcase/auth/passport/index';
 import Debug from 'debug';
 import BearerStrategy from 'passport-http-bearer';
 import LocalStrategy from 'passport-local';
+import { Strategy as CustomStrategy } from 'passport-custom';
 import AUTH_LOCAL from './gql/AUTH_LOCAL.gql';
 import { generateApolloClient } from './hasura/client';
 
@@ -23,7 +24,7 @@ export const initPassport = () => {
       else done(null, { id, token });
     }));
 
-    // need real world token convert
+    // need real world token to user convert
     passport.use(new BearerStrategy(async (token, done) => {
       const user = {
         "X-Hasura-Role": 'user',
@@ -32,14 +33,24 @@ export const initPassport = () => {
       return done(null, user);
     }));
 
-    passport.serializeUser((user, done) => {
-      debug('serializeUser', user);
-      done(null, { id: user.id, token: user.id });
+    // need real world token to user convert
+    passport.use('token', new CustomStrategy(async (req, done) => {
+      const { token } = req.query;
+      console.log('tokenStrategy', req.query);
+      if (typeof(token) === 'string') {
+        return done(null, { id: token, token });
+      }
+      return done(null, false);
+    }));
+
+    passport.serializeUser((result, done) => {
+      debug('serializeUser', result);
+      done(null, { id: result.id, token: result.id });
     });
 
-    passport.deserializeUser((id, done) => {
-      debug('deserializeUser', id);
-      done(null, { id, token: id });
+    passport.deserializeUser((result, done) => {
+      debug('deserializeUser', result);
+      done(null, result);
     });
   });
 };

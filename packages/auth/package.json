@@ -24,6 +24,7 @@
     "next-cookies": "^2.0.3",
     "node": "^14.7.0",
     "passport": "^0.4.1",
+    "passport-custom": "^1.1.1",
     "passport-github": "^1.1.0",
     "passport-http-bearer": "^1.0.1",
     "url": "^0.11.0"
