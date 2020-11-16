@@ -110,7 +110,7 @@ export default function Page() {
     <div><a href="/api/auth/local?username=qwe&password=qwe">local qwe:qwe</a></div>
     <div>
       <pre><code>
-        {JSON.stringify(auth)}
+        {JSON.stringify(auth?.result)}
       </code></pre>
     </div>
   </>;

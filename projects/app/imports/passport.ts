@@ -1,21 +1,12 @@
-import { applyPassport } from '@deepcase/auth/passport/index';
 import github from '@deepcase/auth/passport/github';
-import LocalStrategy from 'passport-local';
-import BearerStrategy from 'passport-http-bearer';
+import { applyPassport } from '@deepcase/auth/passport/index';
 import Debug from 'debug';
-import isInteger from 'lodash/isInteger';
+import BearerStrategy from 'passport-http-bearer';
+import LocalStrategy from 'passport-local';
+import AUTH_LOCAL from './gql/AUTH_LOCAL.gql';
 import { generateApolloClient } from './hasura/client';
-import NODE from './gql/NODE.gql';
-import INSERT_NODES from './gql/INSERT_NODES.gql';
 
 const debug = Debug('deepcase:passport');
-
-export const insertNode = async (client, objects: any) => {
-  const result = await client.mutate({ mutation: INSERT_NODES, variables: { objects } });
-  const id = result?.data?.insert_nodes?.returning?.[0]?.id;
-  debug(`insert node #${id}`);
-  return id;
-};
 
 export const initPassport = () => {
   const client = generateApolloClient({ secret: process.env.HASURA_SECRET });
@@ -24,19 +15,12 @@ export const initPassport = () => {
     passport.use(github);
 
     passport.use(new LocalStrategy(async (username, password, done) => {
-      debug('LocalStrategy', { username, password });
-      const nodeId = +username;
-      // fake register
-      if (+username === 0 && +password === 0) {
-        const nodeId = await insertNode(client, { type_id: 6 });
-        if (typeof(nodeId) === 'number') done(null, { id: nodeId });
-        else done(null, false);
-      } else if (username === 'abc' && password === 'abc') done(null, { id: 'abc' });
-      else if (isInteger(nodeId)) {
-        const result = await client.query({ query: NODE, variables: { nodeId } });
-        if (result?.data?.results?.[0] && +username === +password) done(null, { id: nodeId });
-        else done(null, false);
-      } else done(null, false);
+      debug('LocalStrategy', { username });
+
+      const result = await client.query({ query: AUTH_LOCAL, variables: { username, password } });
+      const { id, token, error } = result?.data?.auth?.local || {};
+      if (error) done(null, false);
+      else done(null, { id, token });
     }));
 
     // need real world token convert

@@ -1,0 +1,7 @@
+query AUTH_LOCAL($username: String, $password: String) {
+  auth {
+    local(username: $username, password: $password) {
+      id token error
+    }
+  }
+}

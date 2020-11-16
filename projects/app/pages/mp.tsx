@@ -33,7 +33,7 @@ function GraphPage() {
   const q = useSubscription(FETCH_LIMITED, { variables: {
     where: limited ? {
       _or: [
-        ...(+(auth?.id || 0) ? [
+        ...(+(auth?.result?.id || 0) ? [
           // rule
           {
             _by_item: {
@@ -53,7 +53,7 @@ function GraphPage() {
                         to: {
                           // selector
                           type_id: { _eq: 8 },
-                          _by_path_item: { item_id: { _eq: +(auth?.id || 0) } },
+                          _by_path_item: { item_id: { _eq: +(auth?.result?.id || 0) } },
                         },
                       },
                     },
@@ -66,7 +66,7 @@ function GraphPage() {
           {
             _by_item: {
               // user over upper
-              path_item_id: { _eq: +(auth?.id || 0) },
+              path_item_id: { _eq: +(auth?.result?.id || 0) },
               // but has not selector upper
               _or: [
                 {
@@ -88,7 +88,7 @@ function GraphPage() {
             },
           },
           // is user
-          { id: { _eq: +(auth?.id || 0) } },
+          { id: { _eq: +(auth?.result?.id || 0) } },
           // are any user
           { type_id: { _eq: 6 } },
           // not usered
@@ -264,7 +264,7 @@ function GraphPage() {
       />
     </div>
     <div style={{ position: 'absolute', right: 16, top: 16 }}>
-      <Typography>{auth?.id}</Typography>
+      <Typography>{auth?.result?.id}</Typography>
     </div>
     <div style={{ position: 'absolute', left: 0, bottom: 0, width: '100%', padding: 6 }}>
       <ButtonGroup disabled style={{ marginRight: 6 }}>

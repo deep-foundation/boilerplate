@@ -5,10 +5,10 @@ import url from 'url';
 import redirect from 'micro-redirect';
 export { passport };
 
-import { IAuth } from '../index';
+import { IAuthResult } from '../index';
 
 export interface ISession {
-  passport: { user: IAuth };
+  passport: { user: IAuthResult };
 }
 
 let applied = false;

@@ -1,19 +1,25 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import nextCookie from 'next-cookies';
 import redirect from './redirect';
 import NextApp, { AppInitialProps, AppContext } from 'next/app';
 import { NextPageContext } from 'next';
+import axios from 'axios';
 
-export interface IAuth {
-  id: string;
-  [key: string]: any;
+export interface IAuthResult {
+  id?: string;
+  token?: string;
+  error?: string;
+}
+export interface IAuthContext {
+  result: IAuthResult;
+  setResult: (result: IAuthResult) => void;
 }
 export type AuthProviderProps<IAuth> = Readonly<AppInitialProps> & {
-  session: IAuth;
+  session: IAuthResult;
 };
 
-export const AuthContext = React.createContext<IAuth>(
-  (null as unknown) as IAuth,
+export const AuthContext = React.createContext<IAuthContext>(
+  (null as unknown) as IAuthContext,
 );
 
 export const redirectToLogin = (ctx: NextPageContext, loginPage: string = process.env.AUTH_LOGIN) => {
@@ -28,7 +34,7 @@ export const redirectToLogin = (ctx: NextPageContext, loginPage: string = proces
 };
 
 export const defaultConfig = {
-  handleUser: (user: IAuth, ctx) => {
+  handleUser: (user: IAuthResult, ctx) => {
     if (!user) redirectToLogin(ctx.ctx);
   },
   handleSession: (session: any, ctx) => {
@@ -36,7 +42,7 @@ export const defaultConfig = {
       redirectToLogin(ctx.ctx);
       return Promise.resolve({
         pageProps: null,
-        session: (null as unknown) as IAuth,
+        session: (null as unknown) as IAuthResult,
       });
     }
   },
@@ -44,15 +50,15 @@ export const defaultConfig = {
 
 // any is needed to use as JSX element
 const withAuth = (App: NextApp | any, config: {
-  handleUser: (user: IAuth, ctx) => any;
+  handleUser: (user: IAuthResult, ctx) => any;
   handleSession: (session: any, ctx) => any;
 } = defaultConfig) => {
   const _config = { ...defaultConfig, ...config };
-  return class AuthProvider extends React.Component<AuthProviderProps<IAuth>> {
+  return class AuthProvider extends React.Component<AuthProviderProps<IAuthResult>> {
     static displayName = process.env.APP_NAME;
     static async getInitialProps(
       ctx: AppContext,
-    ): Promise<AuthProviderProps<IAuth>> {
+    ): Promise<AuthProviderProps<IAuthResult>> {
       // Get inner app's props
       let appProps: AppInitialProps;
       if (NextApp.getInitialProps) {
@@ -71,12 +77,12 @@ const withAuth = (App: NextApp | any, config: {
       const {
         passport: { user },
       }: {
-        passport: { user: IAuth },
+        passport: { user: IAuthResult },
       } = JSON.parse(serializedCookie);
 
       _config.handleUser(user, ctx);
 
-      const session: IAuth = user;
+      const session: IAuthResult = user;
 
       return {
         ...appProps,
@@ -88,7 +94,7 @@ const withAuth = (App: NextApp | any, config: {
       const { session, ...appProps } = this.props;
 
       return (
-        <AuthContext.Provider value={session}>
+        <AuthContext.Provider value={{ result: session, setResult: (result: IAuthResult) => null }}>
           <App {...appProps} />
         </AuthContext.Provider>
       );
@@ -98,16 +104,35 @@ const withAuth = (App: NextApp | any, config: {
 
 export default withAuth;
 
-export function AuthProvider({
+export function AuthClientProvider({
   children,
+  useState,
 }: {
   children: any;
+  useState: (defaultValue?: IAuthResult) => [IAuthResult, (result: IAuthResult) => void];
 }) {
   const auth = useAuth();
+  const [result, _setResult] = useState(auth?.result);
+  useEffect(() => _setResult(auth?.result), [auth?.result]);
+  const setResult = useCallback(
+    async (result) => {
+      _setResult(result);
+      axios({
+        method: 'post',
+        url: '/api/auth/token',
+        data: result,
+      }).then(() => {}, () => {});
+    },
+    [],
+  );
 
   return <>
-    {children}
+    <AuthContext.Provider value={{ result, setResult }}>
+      {children}
+    </AuthContext.Provider>
   </>;
 }
 
-export const useAuth = (): IAuth => useContext(AuthContext);
+export function useAuth(): IAuthContext {
+  return useContext(AuthContext);
+}
