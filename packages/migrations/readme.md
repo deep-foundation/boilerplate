@@ -16,6 +16,9 @@
   NODES_MP__TABLE_NAME='nodes__mp'
   NODES__SCHEMA_NAME='public'
   NODES__TABLE_NAME='nodes'
+
+  AUTH_RS_NAME='auth'
+  AUTH_RS_PATH='http://dockerhost:4000/api/auth/hrs'
   ```
 
 ## publish
