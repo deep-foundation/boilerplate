@@ -6,7 +6,6 @@ const debug = Debug('deepcase:auth:handler');
 
 export const Handler = (options?: any) => (req: any, res: any) => {
   const { provider, id, token } = req.query;
-  console.log(req.query);
   debug('handle', { provider, id, token });
   if (!provider) return { statusCode: 404 };
   if (provider === 'logout') {

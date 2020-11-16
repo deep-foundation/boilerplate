@@ -36,7 +36,6 @@ export const initPassport = () => {
     // need real world token to user convert
     passport.use('token', new CustomStrategy(async (req, done) => {
       const { token } = req.query;
-      console.log('tokenStrategy', req.query);
       if (typeof(token) === 'string') {
         return done(null, { id: token, token });
       }
