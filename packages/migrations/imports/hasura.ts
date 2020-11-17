@@ -38,7 +38,7 @@ export const hasura = {
       validateStatus: hasura.validateStatus,
     });
     result.error = hasura.getError(result);
-    if (result.error) debug('error', result);
+    if (result.error) debug('error', result?.error, result?.data);
     return result;
   },
 };
