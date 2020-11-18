@@ -20,7 +20,7 @@ export const LocalStoreProvider = ({
       key: string,
       defaultValue: T,
     ): [T, (value: T) => any, () => any] {
-      const [value, _setValue] = useState<string>(typeof(localStorage) === 'undefined' ? JSON.stringify(defaultValue) : localStorage.getItem(key));
+      const [value, _setValue] = useState<string>(typeof(localStorage) === 'undefined' ? JSON.stringify(defaultValue) : (localStorage.getItem(key) || JSON.stringify(defaultValue)));
       useEffect(
         () => {
           const item = localStorage.getItem(key);
