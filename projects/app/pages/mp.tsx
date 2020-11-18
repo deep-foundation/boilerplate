@@ -12,7 +12,7 @@ import { useMutation, useSubscription } from '@apollo/react-hooks';
 import ReactResizeDetector from 'react-resize-detector';
 
 import { Graph } from "react-d3-graph";
-import { Button, ButtonGroup, Paper, Switch, Typography } from '@material-ui/core';
+import { Button, ButtonGroup, Paper, Switch, Tooltip, Typography } from '@material-ui/core';
 import { useAuth } from '@deepcase/auth';
 
 import INSERT_NODES from '../imports/gql/INSERT_NODES.gql';
@@ -27,75 +27,10 @@ const FETCH_LIMITED = gql`subscription FETCH_LIMITED($where: nodes_bool_exp) {
 
 function GraphPage() {
   const [size, setSize] = useState({ w: 0, h: 0 });
-  const [limited, setLimited] = useQueryStore('limited', false);
   const auth = useAuth();
 
   const q = useSubscription(FETCH_LIMITED, { variables: {
-    where: limited ? {
-      _or: [
-        ...(+(auth?.result?.id || 0) ? [
-          // rule
-          {
-            _by_item: {
-              path_item: {
-                // selector
-                type_id: { _eq: 9 },
-                from: {
-                  in: {
-                    // rule_object
-                    type_id: { _eq: 4 },
-                    from: {
-                      // rule
-                      type_id: { _eq: 2 },
-                      out: {
-                        // rule_subject
-                        type_id: { _eq: 3 },
-                        to: {
-                          // selector
-                          type_id: { _eq: 8 },
-                          _by_path_item: { item_id: { _eq: +(auth?.result?.id || 0) } },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-          // user owned
-          {
-            _by_item: {
-              // user over upper
-              path_item_id: { _eq: +(auth?.result?.id || 0) },
-              // but has not selector upper
-              _or: [
-                {
-                  // but can be selector link
-                  item: {
-                    from_id: { _is_null: false },
-                    to_id: { _is_null: false },
-                    type_id: { _eq: 8 },
-                  },
-                },
-                {
-                  _not: { by_position: { path_item: {
-                    from_id: { _is_null: false },
-                    to_id: { _is_null: false },
-                    type_id: { _eq: 8 },
-                  } } },
-                },
-              ],
-            },
-          },
-          // is user
-          { id: { _eq: +(auth?.result?.id || 0) } },
-          // are any user
-          { type_id: { _eq: 6 } },
-          // not usered
-          { _not: { _by_item: { path_item: { type_id: { _eq: 6 } } } } },
-        ] : []),
-      ],
-    } : {},
+    where: {},
   } });
   const [insertNodes] = useMutation(INSERT_NODES);
   const [updateNodes] = useMutation(UPDATE_NODES);
@@ -256,13 +191,6 @@ function GraphPage() {
         // onNodePositionChange={onNodePositionChange}
       />}
     </>
-    <div style={{ position: 'absolute', left: 16, top: 16 }}>
-      <Switch
-        checked={limited}
-        onChange={() => setLimited(!limited)}
-        name="limited"
-      />
-    </div>
     <div style={{ position: 'absolute', right: 16, top: 16 }}>
       <Typography>{auth?.result?.id}</Typography>
     </div>
@@ -274,16 +202,36 @@ function GraphPage() {
         <Button>#{selectedNode?.to_id ? selectedNode?.to_id : '?'}</Button>
       </ButtonGroup>
       <ButtonGroup style={{ marginRight: 6 }} disabled={!selected}>
-        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: null } } })} disabled={!selectedNode?.type_id}>0</Button>
-        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 1 } } })} disabled={selectedNode?.type_id === 1}>1</Button>
-        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 2 } } })} disabled={selectedNode?.type_id === 2}>2</Button>
-        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 3 } } })} disabled={selectedNode?.type_id === 3}>3</Button>
-        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 4 } } })} disabled={selectedNode?.type_id === 4}>4</Button>
-        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 5 } } })} disabled={selectedNode?.type_id === 5}>5</Button>
-        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 6 } } })} disabled={selectedNode?.type_id === 6}>6</Button>
-        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 7 } } })} disabled={selectedNode?.type_id === 7}>7</Button>
-        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 8 } } })} disabled={selectedNode?.type_id === 8}>8</Button>
-        <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 9 } } })} disabled={selectedNode?.type_id === 9}>9</Button>
+        <Tooltip title="none">
+          <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: null } } })} disabled={!selectedNode?.type_id}>0</Button>
+        </Tooltip>
+        <Tooltip title="type">
+          <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 1 } } })} disabled={selectedNode?.type_id === 1}>1</Button>
+        </Tooltip>
+        <Tooltip title="rule">
+          <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 2 } } })} disabled={selectedNode?.type_id === 2}>2</Button>
+        </Tooltip>
+        <Tooltip title="rule_subject">
+          <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 3 } } })} disabled={selectedNode?.type_id === 3}>3</Button>
+        </Tooltip>
+        <Tooltip title="rule_object">
+          <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 4 } } })} disabled={selectedNode?.type_id === 4}>4</Button>
+        </Tooltip>
+        <Tooltip title="rule_action">
+          <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 5 } } })} disabled={selectedNode?.type_id === 5}>5</Button>
+        </Tooltip>
+        <Tooltip title="subject">
+          <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 6 } } })} disabled={selectedNode?.type_id === 6}>6</Button>
+        </Tooltip>
+        <Tooltip title="own">
+          <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 7 } } })} disabled={selectedNode?.type_id === 7}>7</Button>
+        </Tooltip>
+        <Tooltip title="selector">
+          <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 8 } } })} disabled={selectedNode?.type_id === 8}>8</Button>
+        </Tooltip>
+        <Tooltip title="selection">
+          <Button onClick={() => updateNodes({ variables: { where: { id: { _eq: selected } }, set: { type_id: 9 } } })} disabled={selectedNode?.type_id === 9}>9</Button>
+        </Tooltip>
       </ButtonGroup>
       <ButtonGroup disabled={!selectedNode} style={{ marginRight: 6 }}>
         <Button onClick={() => deleteNodes({ variables: { where: { id: { _eq: selected } } } })}>{'X'}</Button>
