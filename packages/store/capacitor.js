@@ -18,6 +18,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -48,8 +57,9 @@ exports.CapacitorStoreProvider = ({ context = exports.CapacitorStoreContext, chi
                 core_1.Storage.remove({ key }).then(() => setState(defaultValue));
                 capacitorStorageEvent.emit(key, defaultValue);
             });
-            getStateRef.current = () => core_1.Storage.get({ key }).then(({ value }) => {
-                if (typeof (value) === 'undefined' || lodash_1.isNull(value)) {
+            getStateRef.current = () => core_1.Storage.get({ key }).then(({ value }) => __awaiter(this, void 0, void 0, function* () {
+                const { keys } = yield core_1.Storage.keys();
+                if (!~keys.indexOf(key)) {
                     setState(defaultValue);
                 }
                 else {
@@ -68,7 +78,7 @@ exports.CapacitorStoreProvider = ({ context = exports.CapacitorStoreContext, chi
                             setState(valueParsed);
                     }
                 }
-            });
+            }));
             react_1.useEffect(() => {
                 debug('init', { key, defaultValue });
                 getStateRef.current();

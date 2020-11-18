@@ -29,15 +29,15 @@ exports.LocalContext = react_1.createContext(store_1.defaultContext);
 exports.LocalStoreProvider = ({ context = exports.LocalContext, children, }) => {
     const [useStore] = react_1.useState(() => {
         return function useStore(key, defaultValue) {
-            const [value, _setValue] = react_1.useState(typeof (localStorage) === 'undefined' ? JSON.stringify(defaultValue) : (localStorage.getItem(key) || JSON.stringify(defaultValue)));
+            const [value, _setValue] = react_1.useState(typeof (localStorage) === 'undefined' ? JSON.stringify(defaultValue) : (localStorage.hasOwnProperty(key) ? localStorage.getItem(key) : JSON.stringify(defaultValue)));
             react_1.useEffect(() => {
-                const item = localStorage.getItem(key);
-                if (typeof (item) === 'undefined' || lodash_1.isNull(item)) {
+                if (!localStorage.hasOwnProperty(key)) {
                     const json = JSON.stringify(defaultValue);
                     localStorage.setItem(key, json);
                     _setValue(json);
                 }
                 const fn = (value) => {
+                    const item = localStorage.getItem(key);
                     if (typeof (item) === 'undefined' || lodash_1.isNull(item))
                         _setValue(JSON.stringify(defaultValue));
                     else

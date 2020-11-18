@@ -39,8 +39,9 @@ export const CapacitorStoreProvider = ({
         Storage.remove({ key }).then(() => setState(defaultValue));
         capacitorStorageEvent.emit(key, defaultValue);
       });
-      getStateRef.current = () => Storage.get({ key }).then(({ value }) => {
-        if (typeof(value) === 'undefined' || isNull(value)) {
+      getStateRef.current = () => Storage.get({ key }).then(async ({ value }) => {
+        const { keys } = await Storage.keys();
+        if (!~keys.indexOf(key)) {
           setState(defaultValue);
         } else {
           let valueParsed: any;

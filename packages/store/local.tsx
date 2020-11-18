@@ -23,13 +23,13 @@ export const LocalStoreProvider = ({
       const [value, _setValue] = useState<string>(typeof(localStorage) === 'undefined' ? JSON.stringify(defaultValue) : (localStorage.hasOwnProperty(key) ? localStorage.getItem(key) : JSON.stringify(defaultValue)));
       useEffect(
         () => {
-          const item = localStorage.getItem(key);
-          if (typeof(item) === 'undefined' || isNull(item)) {
+          if (!localStorage.hasOwnProperty(key)) {
             const json = JSON.stringify(defaultValue);
             localStorage.setItem(key, json);
             _setValue(json);
           }
           const fn = (value) => {
+            const item = localStorage.getItem(key);
             if (typeof(item) === 'undefined' || isNull(item)) _setValue(JSON.stringify(defaultValue));
             else _setValue(value);
           };
