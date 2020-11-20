@@ -59,10 +59,7 @@ exports.CapacitorStoreProvider = ({ context = exports.CapacitorStoreContext, chi
             });
             getStateRef.current = () => core_1.Storage.get({ key }).then(({ value }) => __awaiter(this, void 0, void 0, function* () {
                 const { keys } = yield core_1.Storage.keys();
-                if (!~keys.indexOf(key)) {
-                    setState(defaultValue);
-                }
-                else {
+                if (!!~keys.indexOf(key)) {
                     let valueParsed;
                     try {
                         valueParsed = JSON.parse(value);

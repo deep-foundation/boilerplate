@@ -41,9 +41,7 @@ export const CapacitorStoreProvider = ({
       });
       getStateRef.current = () => Storage.get({ key }).then(async ({ value }) => {
         const { keys } = await Storage.keys();
-        if (!~keys.indexOf(key)) {
-          setState(defaultValue);
-        } else {
+        if (!!~keys.indexOf(key)) {
           let valueParsed: any;
           try {
             valueParsed = JSON.parse(value);
