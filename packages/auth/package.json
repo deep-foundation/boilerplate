@@ -1,6 +1,6 @@
 {
   "name": "@deepcase/auth",
-  "version": "0.0.21",
+  "version": "0.0.22",
   "license": "ISC",
   "author": "Ivan S Glazunov <ivansglazunov@gmail.com>",
   "repository": {
@@ -17,9 +17,11 @@
   },
   "bin": "./index.js",
   "dependencies": {
+    "apollo-server-micro": "^2.19.0",
     "axios": "^0.21.0",
     "cookie-session": "^1.4.0",
     "debug": "^4.1.1",
+    "micro-cors": "^0.1.1",
     "micro-redirect": "^1.0.2",
     "next-cookies": "^2.0.3",
     "node": "^14.7.0",

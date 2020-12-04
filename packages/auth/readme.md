@@ -117,6 +117,51 @@ export default function Page() {
 }
 ```
 
+Hasura Remote Schema with secure codes
+```tsx
+// pages/api/hrs.ts
+import { ApolloServer, gql } from 'apollo-server-micro';
+import Cors from 'micro-cors';
+import Debug from 'debug';
+import isInteger from 'lodash/isInteger';
+import { Handler } from '@deepcase/auth/hrs';
+import random from 'lodash/random';
+
+const debug = Debug('deepcase:auth:hrs');
+
+const codesHash = {};
+
+const { config, handler } = Handler({
+  local: async ({ username, password }) => {
+    debug('local', { username });
+    if (username === 'abc' && password === 'abc') {
+      return { id: 'abc', token: 'abc' };
+    }
+    return { error: '!user' };
+  },
+  sendCode: ({ address }) => {
+    const code = `${random(0, 9)}${random(0, 9)}${random(0, 9)}${random(0, 9)}`;
+    const id = Math.random().toString(36).slice(2);
+    codesHash[id] = code;
+    console.log({ address, id, code });
+    return { id };
+  },
+  checkCode: ({ sendId, code }) => {
+    if (!codesHash[sendId]) {
+      return { error: '!id' };
+    }
+    if (codesHash[sendId] === code) {
+      return { id: 'abc', token: 'abc' };
+    } else {
+      return { error: '!code' };
+    }
+  },
+});
+
+export { config };
+export default handler;
+```
+
 ## publish
 
 ```sh
