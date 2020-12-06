@@ -37,9 +37,9 @@ export interface IAuthSendResult {
 }
 
 export interface IAuthQueryResolvers {
-  local: (args: { username: string; password: string; }, context: any, info: any) => IAuthQueryResult;
-  sendCode: (args: { address: string }, context: any, info: any) => IAuthSendResult;
-  checkCode: (args: { sendId: string; code: string; }, context: any, info: any) => IAuthQueryResult;
+  local: (args: { username: string; password: string; }, context: any, info: any) => IAuthQueryResult | Promise<IAuthQueryResult>;
+  sendCode: (args: { address: string }, context: any, info: any) => IAuthSendResult | Promise<IAuthSendResult>;
+  checkCode: (args: { sendId: string; code: string; }, context: any, info: any) => IAuthQueryResult | Promise<IAuthQueryResult>;
 }
 
 export const generateResolvers = (queryResolvers: IAuthQueryResolvers) => {
