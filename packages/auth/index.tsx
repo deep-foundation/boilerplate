@@ -116,13 +116,6 @@ export function AuthClientProvider({
 }) {
   const auth = useAuth();
   const [result, _setResult] = useState(auth?.result);
-  useEffect(
-    () => {
-      _setResult(auth?.result);
-      debug('useEffect', auth);
-    },
-    [auth?.result],
-  );
   const setResult = useCallback(
     async (result) => {
       debug('setResult', result);

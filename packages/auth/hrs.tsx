@@ -26,14 +26,14 @@ export const typeDefs = gql`
 `;
 
 export interface IAuthQueryResult {
-  id: string;
-  token: string;
-  error: string;
+  id?: string;
+  token?: string;
+  error?: string;
 }
 
 export interface IAuthSendResult {
-  id: string;
-  error: string;
+  id?: string;
+  error?: string;
 }
 
 export interface IAuthQueryResolvers {

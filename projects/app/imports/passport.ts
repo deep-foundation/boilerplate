@@ -26,6 +26,7 @@ export const initPassport = () => {
 
     // need real world token to user convert
     passport.use(new BearerStrategy(async (token, done) => {
+      debug('BearerStrategy', { token });
       const user = {
         "X-Hasura-Role": 'user',
         "X-Hasura-User-Id": token,
@@ -36,6 +37,7 @@ export const initPassport = () => {
     // need real world token to user convert
     passport.use('token', new CustomStrategy(async (req, done) => {
       const { token } = req.query;
+      debug('CustomStrategy', { token });
       if (typeof(token) === 'string') {
         return done(null, { id: token, token });
       }
