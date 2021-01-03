@@ -58,6 +58,7 @@ export const Handler = (resolvers?: IAuthQueryResolvers) => {
     context: () => {
       return {};
     },
+    introspection: true,
   });
   const handler = apolloServer.createHandler({ path: '/api/auth/hrs' });
   const config = {
